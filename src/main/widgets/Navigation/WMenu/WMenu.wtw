@@ -1,0 +1,5 @@
+<WObject Wt_id="menu" Wt_isInline="1" Wt_className="WMenu" Wt_styleClass="nav nav-pills nav-stacked">
+	<WObject Wt_id="menuitem1" Wt_isInline="0" Wt_isItemDisabled="0" Wt_className="WMenuItem" Wt_isItemHidden="0" Wt_text="Text 1" Wt_styleClass=""/>
+	<WObject Wt_id="menuitem2" Wt_isInline="0" Wt_isItemDisabled="0" Wt_className="WMenuItem" Wt_isItemHidden="0" Wt_text="Text 2" Wt_styleClass=""/>
+	<WObject Wt_id="menuitem3" Wt_isInline="0" Wt_isItemDisabled="0" Wt_className="WMenuItem" Wt_isItemHidden="0" Wt_text="Text 3" Wt_styleClass=""/>
+</WObject>

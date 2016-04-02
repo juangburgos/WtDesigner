@@ -1,0 +1,1 @@
+<WObject Wt_className="WTemplate" Wt_id="wtempl" Wt_templateText="&lt;p> &lt;label>Please enter your name: ${my-name-edit}&lt;/label> &lt;/p>" Wt_isInline="0"/>

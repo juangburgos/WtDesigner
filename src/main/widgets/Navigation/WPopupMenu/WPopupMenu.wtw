@@ -1,0 +1,5 @@
+<WObject Wt_id="popupmenu" Wt_isInline="1" Wt_className="WPopupMenu" Wt_text="" Wt_styleClass="Wt-popup dropdown-menu">
+	<WObject Wt_id="popupitem1" Wt_icon="" Wt_isInline="0" Wt_isCheckable="0" Wt_isChecked="0" Wt_isCloseable="0" Wt_className="WPopupItem" Wt_text="Text 1" Wt_isSelectable="0" Wt_styleClass=""/>
+	<WObject Wt_id="popupitem2" Wt_icon="" Wt_isInline="0" Wt_isCheckable="0" Wt_isChecked="0" Wt_isCloseable="0" Wt_className="WPopupItem" Wt_text="Text 2" Wt_isSelectable="0" Wt_styleClass=""/>
+	<WObject Wt_id="popupitem3" Wt_icon="" Wt_isInline="0" Wt_isCheckable="0" Wt_isChecked="0" Wt_isCloseable="0" Wt_className="WPopupItem" Wt_text="Text 3" Wt_isSelectable="0" Wt_styleClass=""/>
+</WObject>

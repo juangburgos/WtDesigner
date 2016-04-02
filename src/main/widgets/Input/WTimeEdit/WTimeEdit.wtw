@@ -1,0 +1,1 @@
+<WObject Wt_className="WTimeEdit" Wt_id="time_edit" Wt_minuteStep="1" Wt_format="HH:mm:ss" Wt_isInline="0"/>

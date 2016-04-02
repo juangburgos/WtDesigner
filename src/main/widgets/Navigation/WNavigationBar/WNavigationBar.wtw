@@ -1,0 +1,11 @@
+  <WObject Wt_id="navbar" Wt_className="WNavigationBar" Wt_isInline="0" Wt_styleClass="navbar" Wt_title="Title" Wt_responsive="1">
+   <WObject Wt_className="WMenu" Wt_id="nv_menu" Wt_isInline="1" Wt_styleClass="nav-pills nav">
+    <WObject Wt_className="WMenuItem" Wt_id="nv_menu_item1" Wt_isInline="0" Wt_text="SomeText" Wt_styleClass="" Wt_isItemHidden="0" Wt_isItemDisabled="0"/>
+    <WObject Wt_className="WMenuItem" Wt_id="nv_menu_item2" Wt_isInline="0" Wt_text="SomeText" Wt_styleClass="" Wt_isItemHidden="0" Wt_isItemDisabled="0"/>
+  </WObject>
+  <WObject Wt_id="nv_pp_menu" Wt_className="WPopupMenu" Wt_isInline="0" Wt_styleClass="dropdown-menu Wt-popup" Wt_text="">
+    <WObject Wt_id="nv_pp_item1" Wt_className="WPopupItem" Wt_icon="" Wt_isSelectable="0" Wt_isInline="0" Wt_isCheckable="0" Wt_styleClass="" Wt_text="SomeText" Wt_isCloseable="0" Wt_isChecked="0"/>
+    <WObject Wt_id="nv_pp_item2" Wt_className="WPopupItem" Wt_icon="" Wt_isSelectable="0" Wt_isInline="0" Wt_isCheckable="0" Wt_styleClass="" Wt_text="SomeText" Wt_isCloseable="0" Wt_isChecked="0"/>
+  </WObject>
+  <WObject Wt_className="WLineEdit" Wt_id="nv_line_edit" Wt_isInline="0" Wt_styleClass="search-query" Wt_emptyText="Some Text"/>
+</WObject>

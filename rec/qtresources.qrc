@@ -1,0 +1,38 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+
+<file alias="logo_icon">./WtDesigner_logo.ico</file>
+<file alias="logo_vector">./WtDesigner_logo_vector.svg</file>
+<file alias="logo_loading">./WtDesigner_loading.svg</file>
+
+<file alias="plus-circle">./icons/plus-circle.svg</file>
+<file alias="refresh">./icons/refresh.svg</file>
+<file alias="book">./icons/book.svg</file>
+<file alias="clipboard">./icons/clipboard.svg</file>
+<file alias="times-circle">./icons/times-circle.svg</file>
+<file alias="files-o">./icons/files-o.svg</file>
+<file alias="repeat">./icons/repeat.svg</file>
+<file alias="scissors">./icons/scissors.svg</file>
+<file alias="file-code-o">./icons/file-code-o.svg</file>
+<file alias="file">./icons/file.svg</file>
+<file alias="pencil-square-o">./icons/pencil-square-o.svg</file>
+<file alias="floppy-o">./icons/floppy-o.svg</file>
+<file alias="folder-open">./icons/folder-open.svg</file>
+<file alias="times">./icons/times.svg</file>
+<file alias="trash">./icons/trash.svg</file>
+<file alias="info-circle">./icons/info-circle.svg</file>
+<file alias="cogs">./icons/cogs.svg</file>
+<file alias="file-text-o">./icons/file-text-o.svg</file>
+<file alias="undo">./icons/undo.svg</file>
+<file alias="eye">./icons/eye.svg</file>
+<file alias="arrow-circle-left">./icons/arrow-circle-left.svg</file>
+<file alias="arrow-circle-right">./icons/arrow-circle-right.svg</file>
+<file alias="arrow-circle-up">./icons/arrow-circle-up.svg</file>
+
+<file alias="desktop">./icons/desktop.svg</file>
+<file alias="laptop">./icons/laptop.svg</file>
+<file alias="tablet">./icons/tablet.svg</file>
+<file alias="mobile-phone">./icons/mobile-phone.svg</file>
+
+</qresource>
+</RCC>

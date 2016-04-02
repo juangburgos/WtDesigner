@@ -1,0 +1,1 @@
+<WObject Wt_className="WSpinBox" Wt_id="spinbox" Wt_minimum="0" Wt_maximum="100" Wt_value="1" Wt_isInline="0"/>

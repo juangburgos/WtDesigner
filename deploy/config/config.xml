@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>WtDesigner</Name>
+    <Version>1.0.0</Version>
+    <Title>WtDesigner</Title>
+    <Publisher>Juan Gonzalez Burgos</Publisher>
+    <StartMenuDir>WtDesigner</StartMenuDir>
+    <TargetDir>@ApplicationsDir@/WtDesigner</TargetDir>
+    <AllowSpaceInPath>true</AllowSpaceInPath>
+	<WizardStyle>Modern</WizardStyle>
+</Installer>

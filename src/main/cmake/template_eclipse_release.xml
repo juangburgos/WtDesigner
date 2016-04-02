@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.cdt.launch.applicationLaunchType">
+	<intAttribute key="org.eclipse.cdt.launch.ATTR_BUILD_BEFORE_LAUNCH_ATTR" value="2"/>
+	<stringAttribute key="org.eclipse.cdt.launch.COREFILE_PATH" value=""/>
+	<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_ARGUMENTS" value="@WT_PARAMS@"/>
+	<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="@PROJECT_NAME@.exe"/>
+	<stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="@PROJECT_NAME@-Release@release"/>
+	<booleanAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_AUTO_ATTR" value="true"/>
+	<stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="org.eclipse.cdt.core.default.config.1"/>
+	<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+		<listEntry value="/@PROJECT_NAME@-Release@release"/>
+	</listAttribute>
+	<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+		<listEntry value="4"/>
+	</listAttribute>
+	<mapAttribute key="org.eclipse.debug.core.environmentVariables">
+		<mapEntry key="Path" value="@WT_BIN_PATH@"/>
+	</mapAttribute>
+</launchConfiguration>

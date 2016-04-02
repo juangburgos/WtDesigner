@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Wt User Interface File v.1.0.0 -->
+<!-- Default Empty Project Configuration -->
+<WtCreator Wt_title="Untitled Wt Webapp" Rev="1.0" Wt_theme="Boostrap 3">
+ <WStyleSheet Path="resources/main.css"/>
+ <WRoot Wt_styleClass="" Wt_className="WContainerWidget" Wt_isInline="0" Wt_id="wt_root">
+  <WObject Wt_styleClass="btn-default btn with-label" Wt_text="Click Me" Wt_className="WPushButton" Wt_emptyText="" Wt_link="" Wt_isInline="1" Wt_id="button">
+   <WConnection Wt_Signal="clicked" Wt_Receiver="text" Wt_Parameter="hidden" Wt_Slot="toggleStyleClass"/>
+  </WObject>
+  <WObject Wt_styleClass="hidden" Wt_text="Hello World" Wt_className="WText" Wt_isInline="1" Wt_id="text" Wt_textFormat="0"/>
+ </WRoot>
+</WtCreator>

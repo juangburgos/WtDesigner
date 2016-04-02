@@ -1,0 +1,1 @@
+<WObject Wt_className="WInPlaceEdit" Wt_id="inplace_edit" Wt_text="This is editable text" Wt_placeholderText="Enter something" Wt_buttonsEnabled="1" Wt_isInline="0"/>

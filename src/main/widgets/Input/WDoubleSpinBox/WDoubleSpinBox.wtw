@@ -1,0 +1,1 @@
+<WObject Wt_className="WDoubleSpinBox" Wt_id="doublespinbox" Wt_minimum="0.0" Wt_maximum="100.0" Wt_value="1.0" Wt_singleStep="1.0" Wt_decimals="2" Wt_isInline="0"/>

@@ -1,0 +1,1 @@
+<WObject Wt_className="WProgressBar" Wt_id="progressbar" Wt_styleClass="progress" Wt_minimum="0.0" Wt_maximum="100.0" Wt_value="30.0" Wt_isInline="0"/>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.cdt.launch.applicationLaunchType">
+	<stringAttribute key="org.eclipse.cdt.debug.mi.core.DEBUG_NAME" value="gdb"/>
+	<stringAttribute key="org.eclipse.cdt.debug.mi.core.DEV" value="/dev/ttyS0"/>
+	<stringAttribute key="org.eclipse.cdt.debug.mi.core.DEV_SPEED" value="115200"/>
+	<stringAttribute key="org.eclipse.cdt.debug.mi.core.GDB_INIT" value=".gdbinit"/>
+	<stringAttribute key="org.eclipse.cdt.debug.mi.core.HOST" value="localhost"/>
+	<stringAttribute key="org.eclipse.cdt.debug.mi.core.PORT" value="10000"/>
+	<booleanAttribute key="org.eclipse.cdt.debug.mi.core.REMOTE_TCP" value="false"/>
+	<stringAttribute key="org.eclipse.cdt.debug.mi.core.commandFactory" value="org.eclipse.cdt.debug.mi.core.standardCommandFactory"/>
+	<booleanAttribute key="org.eclipse.cdt.debug.mi.core.verboseMode" value="false"/>
+	<intAttribute key="org.eclipse.cdt.launch.ATTR_BUILD_BEFORE_LAUNCH_ATTR" value="2"/>
+	<stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_ID" value="org.eclipse.cdt.debug.mi.core.GDBServerCDebugger"/>
+	<stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_START_MODE" value="run"/>
+	<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_ARGUMENTS" value="@WT_PARAMS@"/>
+	<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="@PROJECT_NAME@.exe"/>
+	<stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="@PROJECT_NAME@-Debug@debug"/>
+	<booleanAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_AUTO_ATTR" value="false"/>
+	<stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="org.eclipse.cdt.core.default.config.1"/>
+	<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+		<listEntry value="/@PROJECT_NAME@-Debug@debug"/>
+	</listAttribute>
+	<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+		<listEntry value="4"/>
+	</listAttribute>
+	<mapAttribute key="org.eclipse.debug.core.environmentVariables">
+		<mapEntry key="Path" value="@WT_BIN_PATH@"/>
+	</mapAttribute>
+	<stringAttribute key="process_factory_id" value="org.eclipse.cdt.dsf.gdb.GdbProcessFactory"/>
+</launchConfiguration>

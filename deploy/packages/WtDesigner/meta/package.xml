@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>WtDesigner</DisplayName>
+    <Description>A WYSIWYG designer for the Wt C++ library.</Description>
+    <Version>1.0.0</Version>
+    <ReleaseDate>2016-04-03</ReleaseDate>
+    <Default>true</Default>
+    <Script>installscript.qs</Script>
+    <ForcedInstallation>true</ForcedInstallation>
+</Package>

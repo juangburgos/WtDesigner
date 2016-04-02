@@ -1,0 +1,5 @@
+<WObject Wt_id="tabwidget" Wt_isInline="0" Wt_className="WTabWidget" Wt_styleClass="">
+	<WObject Wt_id="tabitem1" Wt_isInline="0" Wt_className="WTabItem" Wt_isTabEnabled="1" Wt_isTabHidden="0" Wt_tabText="Text 1" Wt_isTabCloseable="0" Wt_styleClass=""/>
+	<WObject Wt_id="tabitem2" Wt_isInline="0" Wt_className="WTabItem" Wt_isTabEnabled="1" Wt_isTabHidden="0" Wt_tabText="Text 2" Wt_isTabCloseable="0" Wt_styleClass=""/>
+	<WObject Wt_id="tabitem3" Wt_isInline="0" Wt_className="WTabItem" Wt_isTabEnabled="1" Wt_isTabHidden="0" Wt_tabText="Text 3" Wt_isTabCloseable="0" Wt_styleClass=""/>
+</WObject>
