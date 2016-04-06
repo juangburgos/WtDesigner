@@ -18,6 +18,8 @@
 #include <QMetaEnum>
 #include <QDebug>
 
+#include <functional> // [LINUX]
+
 #include "mixedclasses.h"
 #include "mainpage.h"
 #include "helperfunctions.h"
@@ -52,8 +54,8 @@ Wt::Signals::connection WtQtInteractWidget::Wt_Connect_Step1(Wt::WInteractWidget
 
 Wt::Signals::connection WtQtInteractWidget::Wt_Connect_Step2(Wt::EventSignal< Wt::WMouseEvent > &wsignalfun, Wt::WWidget *wreceiver, Wt_Slots_ wslot, QStringList &wparameter)
 {
-	try
-	{
+    //try
+    //{
 		switch (wslot)
 		{
 		case WtQtWidget::Wt_Slots_setStyleClass:
@@ -67,12 +69,12 @@ Wt::Signals::connection WtQtInteractWidget::Wt_Connect_Step2(Wt::EventSignal< Wt
 		default:
 			break;
 		}
-	}
-	catch (Wt::Dbo::Exception* e)
+    /*}
+    catch (Wt::Dbo::Exception* e)
 	{
 		qDebug() << "[ERROR] : Exception occurred in WtQtInteractWidget::Wt_Connect_Step2";
 	}
-
+    */
 	return Wt::Signals::connection();
 
 		// http://www.webtoolkit.eu/wt/doc/reference/html/namespaceWt_1_1Signals.html
@@ -3047,7 +3049,8 @@ void WtQtMenuItem::Wt_setItemHidden(QString hidden)
 WtQtPopupMenu::WtQtPopupMenu(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : WtQtContainerWidget(0, qparent)
 {
 	m_isRightWMenu = false;
-	m_isSubmenu = !qparent->property("Wt_className").compare("WPopupMenu");
+    QString strTemp = qparent->property("Wt_className").toString();
+    m_isSubmenu = !strTemp.compare("WPopupMenu");
 	WtQtContainerWidget::setHidden(true);
 	m_beingDeleted = false;
 	m_wparent      = NULL;

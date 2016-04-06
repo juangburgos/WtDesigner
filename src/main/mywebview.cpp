@@ -82,7 +82,8 @@ bool MyWebView::eventFilter(QObject *watched, QEvent *event)
 			if (frame != NULL)
 			{
 				QWebHitTestResult hitTestResult = frame->hitTestContent(pos);
-				QWebElement elemCurrent = FindCloserWidget(hitTestResult.element());
+                QWebElement welemTemp = hitTestResult.element();
+                QWebElement elemCurrent = FindCloserWidget(welemTemp);
 				// if the clicked elem is not the same as the previously clicked
 				if (elemCurrent != m_old_click_element)
 				{
@@ -142,8 +143,8 @@ void MyWebView::ChangeClickedElemColor(QWebElement &hitTestResult)
 void MyWebView::on_HighlightTreeSelectedElem(QString name)
 {
 	if (!m_boolEnableEvtProcess) { return; }
-
-	QWebElement webelem = FindElementByName(page()->mainFrame()->documentElement(), name);
+    QWebElement welemTemp = page()->mainFrame()->documentElement();
+    QWebElement webelem = FindElementByName(welemTemp, name);
 	
 	if (webelem.isNull())
 	{
@@ -281,7 +282,8 @@ QWebElement MyWebView::FindCloserContainer(QWebElement &elem)
 {
 	// find by elem id
 	bool       bIsContainer = false;
-	WDomElem * welem = m_pMainWindow->m_treemodel.getElemByName (elem.attribute("id"));
+    QString strTemp = elem.attribute("id");
+    WDomElem * welem = m_pMainWindow->m_treemodel.getElemByName (strTemp);
 	// check if valid parent
 	if (welem)
 	{
@@ -306,7 +308,8 @@ QWebElement MyWebView::FindCloserContainer(QWebElement &elem)
 	{
 		if (!elem.parent().isNull())
 		{
-			return FindCloserContainer(elem.parent());
+            QWebElement welemTemp = elem.parent();
+            return FindCloserContainer(welemTemp);
 		}
 		else
 		{
@@ -317,7 +320,8 @@ QWebElement MyWebView::FindCloserContainer(QWebElement &elem)
 
 QWebElement MyWebView::FindCloserWidget(QWebElement &elem)
 {
-	WDomElem * welem = m_pMainWindow->m_treemodel.getElemByName(elem.attribute("id"));
+    QString strTemp = elem.attribute("id");
+    WDomElem * welem = m_pMainWindow->m_treemodel.getElemByName(strTemp);
 	// check if valid parent
 	if (welem)
 	{
@@ -325,7 +329,8 @@ QWebElement MyWebView::FindCloserWidget(QWebElement &elem)
 	}
 	else
 	{
-		return FindCloserWidget(elem.parent());
+        QWebElement welemTemp = elem.parent();
+        return FindCloserWidget(welemTemp);
 	}
 }
 

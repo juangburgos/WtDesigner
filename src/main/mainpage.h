@@ -29,7 +29,7 @@
 #include <QMap>
 #include <QPair>
 
-#include "wtwithqtlib/wqapplication.h"
+#include "wtwithqtlib/WQApplication.h"
 #include <Wt/WServer>
 
 #include "mixedclasses.h"

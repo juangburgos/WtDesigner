@@ -760,7 +760,8 @@ void MyTreeModel::cleanInvalidElems(QDomElement *elem)
 		}
 		else
 		{
-			cleanInvalidElems(&elem->childNodes().at(i).toElement());
+            QDomElement elemTemp = elem->childNodes().at(i).toElement();
+            cleanInvalidElems(&elemTemp);
 		}
 	}
 }
@@ -836,7 +837,8 @@ bool MyTreeModel::appendElemIntoIndex(QByteArray config, QModelIndex index)
 	{
 		if (root.childNodes().at(j).toElement().tagName().compare(g_strValidNodeTag, Qt::CaseInsensitive) == 0)
 		{
-			result &= appendElem(root.childNodes().at(j).toElement(), index);
+            QDomElement elemTemp = root.childNodes().at(j).toElement();
+            result &= appendElem(elemTemp, index);
 			j--;
 		}
 	}
@@ -872,7 +874,8 @@ void MyTreeModel::getUniqueIdList(QDomElement *elem)
 		{
 			continue;
 		}
-		getUniqueIdList(&elem->childNodes().at(i).toElement());
+        QDomElement elemTemp = elem->childNodes().at(i).toElement();
+        getUniqueIdList(&elemTemp);
 	}
 }
 

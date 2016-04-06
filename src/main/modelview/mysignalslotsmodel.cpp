@@ -715,7 +715,8 @@ bool MySignalSlotModel::loadNewConfiguration(QDomElement elem)
 	{
 		if (elem.childNodes().at(i).isElement() && !elem.childNodes().at(i).toElement().attribute(g_strConnectionTag).isEmpty())
 		{
-			result &= insertElem(i, elem.childNodes().at(i).toElement());
+            QDomElement elemTemp = elem.childNodes().at(i).toElement();
+            result &= insertElem(i, elemTemp, QModelIndex());
 		}
 	}
 
@@ -742,7 +743,8 @@ void MySignalSlotModel::cleanInvalidElems(QDomElement *elem)
 		}
 		else
 		{
-			cleanInvalidElems(&elem->childNodes().at(i).toElement());
+            QDomElement elemTemp = elem->childNodes().at(i).toElement();
+            cleanInvalidElems(&elemTemp);
 		}
 	}
 }

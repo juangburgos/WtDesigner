@@ -716,7 +716,8 @@ void MainWindow::on_actionCut_triggered()
 		QClipboard *clipboard = QApplication::clipboard();
 		clipboard->setText(doc.toString());
 		// remove from tree and webpage and store in command stack (done here better because in paste crashes with no simple fix)
-		MyUndoRemoveElem *remCommand = new MyUndoRemoveElem(&m_treemodel, rootElem.attribute(g_strIdAttr), this);
+        QString strTemp = rootElem.attribute(g_strIdAttr);
+        MyUndoRemoveElem *remCommand = new MyUndoRemoveElem(&m_treemodel, strTemp, this);
 		m_commandHistory.push(remCommand);
 	}
 }
@@ -914,14 +915,14 @@ void MainWindow::LoadProjectPath(QString strProjPathToLoad)
 		ui.treeviewWtResources->setRootIndex(m_resourcesmodel.index(g_strLocalResourcesPath));
 		// reload stylesheets list
 		ui.listWtStylesheets->clear();
-		auto allStylesheets = m_treemodel.getAllTrackedCssFiles();
+        QList<QFileInfo> allStylesheets = m_treemodel.getAllTrackedCssFiles();
 		for (int i = 0; i < allStylesheets.count(); i++)
 		{
 			new QListWidgetItem(allStylesheets.at(i).filePath(), ui.listWtStylesheets);
 		}
 		// reload javascripts list
 		ui.listWtJavascripts->clear();
-		auto allJavascripts = m_treemodel.getAllTrackedJsFiles();
+        QList<QFileInfo> allJavascripts = m_treemodel.getAllTrackedJsFiles();
 		for (int i = 0; i < allJavascripts.count(); i++)
 		{
 			new QListWidgetItem(allJavascripts.at(i).filePath(), ui.listWtJavascripts);
@@ -1007,7 +1008,7 @@ void MainWindow::UpdatePropertyTree(QDomElement elem)
 		if (strClassName.compare("QObject") == 0) { break; }
 		strClassName.remove(1, 3);
 		// add class to model
-		m_propertymodel.appendNode(strClassName);
+        m_propertymodel.appendNode(strClassName, QModelIndex());
 		// iterate properties
 		for (int i = 0; i < pmetaSuperObj->propertyCount(); i++)
 		{
@@ -1038,7 +1039,8 @@ void MainWindow::UpdatePropertyTree(QDomElement elem)
 	{
 		if (rootnode->getChild(i)->countChild() == 0)
 		{
-			m_propertymodel.removeNodeByName(rootnode->getChild(i)->getString());
+            QString strTemp = rootnode->getChild(i)->getString();
+            m_propertymodel.removeNodeByName(strTemp, QModelIndex());
 			i--;
 		}
 	}
@@ -1377,7 +1379,7 @@ void MainWindow::on_treeviewWtTree_contextMenu(const QPoint &point)
 	QModelIndex index = ui.treeviewWtTree->indexAt(point);
 
 	// for icons
-	auto mapIcons = m_pwidgetmodel->getMapIconsByClassName();
+    QMap<QString, QIcon>  mapIcons = m_pwidgetmodel->getMapIconsByClassName();
 
 	if (!index.isValid())
 	{
@@ -1402,7 +1404,8 @@ void MainWindow::on_treeviewWtTree_contextMenu(const QPoint &point)
 	if (strClassName.compare("WTabWidget") == 0)
 	{
 		act1 = rightClickMenu.addAction(tr("Add ") + "WTabItem child");
-		act1->setIcon(mapIcons.value("WTabItem"));
+        QIcon iconTemp = mapIcons.value("WTabItem");
+        act1->setIcon(iconTemp);
 		res  = rightClickMenu.exec(ui.treeviewWtTree->mapToGlobal(point));
 		if (res == act1)
 		{
@@ -1412,7 +1415,8 @@ void MainWindow::on_treeviewWtTree_contextMenu(const QPoint &point)
 	else if (strClassName.compare("WMenu") == 0)
 	{
 		act1 = rightClickMenu.addAction(tr("Add ") + "WMenuItem child");
-		act1->setIcon(mapIcons.value("WMenuItem"));
+        QIcon iconTemp = mapIcons.value("WMenuItem");
+        act1->setIcon(iconTemp);
 		res  = rightClickMenu.exec(ui.treeviewWtTree->mapToGlobal(point));
 		if (res == act1)
 		{
@@ -1874,7 +1878,7 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 		FindLibFileNames();
 	}
 	// create replace tokens list
-	QList<QPair<QString, QString>> listReplaceTokens;
+    QList<QPair<QString, QString> > listReplaceTokens;
 	listReplaceTokens.append(QPair<QString, QString>("@PROJNAME@"       , m_strProjName          ));
 	listReplaceTokens.append(QPair<QString, QString>("@PROJNAMELOWER@"  , m_strProjName.toLower()));
 	listReplaceTokens.append(QPair<QString, QString>("@PROJNAMEUPPER@"  , m_strProjName.toUpper()));
@@ -2096,7 +2100,7 @@ void MainWindow::on_trackedFileWasMoved(QString strRelSourceFilePath, QString st
 
 void MainWindow::on_removedTrackedCssFile(QFileInfo fileRef)
 {
-	auto item = ui.listWtStylesheets->findItems(fileRef.filePath(), Qt::MatchExactly).first();
+    QListWidgetItem * item = ui.listWtStylesheets->findItems(fileRef.filePath(), Qt::MatchExactly).first();
 	if (item)
 	{
 		int remRow = ui.listWtStylesheets->row(item);
@@ -2113,7 +2117,7 @@ void MainWindow::on_appendedTrackedCssFile(QFileInfo fileRef)
 
 void MainWindow::on_removedTrackedJsFile(QFileInfo fileRef)
 {
-	auto item = ui.listWtJavascripts->findItems(fileRef.filePath(), Qt::MatchExactly).first();
+    QListWidgetItem * item = ui.listWtJavascripts->findItems(fileRef.filePath(), Qt::MatchExactly).first();
 	if (item)
 	{
 		int remRow = ui.listWtJavascripts->row(item);

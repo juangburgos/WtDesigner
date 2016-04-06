@@ -94,7 +94,7 @@ QString FindWtBinaryDir (QString strRefDir = "", int level = 0);
 
 QStringList FindWtLibFiles(QString strLibDir, QStringList listOfLibNames);
 
-QString ProcessCMakeTemplate(QString strInputFile, QString strOutputFile, QList<QPair<QString, QString>> listStrPairs);
+QString ProcessCMakeTemplate(QString strInputFile, QString strOutputFile, QList<QPair<QString, QString> > listStrPairs);
 
 bool    ValidateWtIncludeDir(QString strIncludeDir);
 bool    ValidateWtLibraryDir(QString strLibraryDir);
