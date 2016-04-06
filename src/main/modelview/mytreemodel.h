@@ -71,8 +71,8 @@ public:
 	bool          removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
 	bool          insertRows(int row, int count, const QModelIndex & parent = QModelIndex());
 
-	bool          appendElem(QDomElement &element = QDomElement(), const QModelIndex & parent = QModelIndex());
-	bool          insertElem(int row, QDomElement &element = QDomElement(), const QModelIndex & parent = QModelIndex());
+    bool          appendElem(QDomElement &element, const QModelIndex & parent);
+    bool          insertElem(int row, QDomElement &element, const QModelIndex & parent);
 
 	QDomDocument  getDocument() { return domDocument; }
 

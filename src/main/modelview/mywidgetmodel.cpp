@@ -59,7 +59,8 @@ void WWidgetNode::setupNodeChildren()
 			if (newinfo.isDir())
 			{
 				// create category child
-				child = new WWidgetNode(CATEGORY, newinfo.absoluteFilePath(), count, this);
+                QString strTemp = newinfo.absoluteFilePath();
+                child = new WWidgetNode(CATEGORY, strTemp, count, this);
 				childWWidgetNodes.append(child);
 				count++;
 			}
@@ -74,7 +75,8 @@ void WWidgetNode::setupNodeChildren()
 					if (list.at(j).filePath().contains(".wtw"))
 					{
 						// create widget child
-						child = new WWidgetNode(WIDGET, newinfo.absoluteFilePath(), count, this);
+                        QString strTemp = newinfo.absoluteFilePath();
+                        child = new WWidgetNode(WIDGET, strTemp, count, this);
 						// discirminate some widgets (do not add to WWidgetNode tree but yes to QObject tree)
 						QString strName = child->getName();
 						if (strName.compare("WTabItem"  ) != 0 &&

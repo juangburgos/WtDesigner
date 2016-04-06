@@ -332,7 +332,7 @@ void MyUndoRemoveConnect::undo()
 	elem.setAttribute("Wt_Receiver" , m_strReceiver);
 	elem.setAttribute("Wt_Slot"     , m_strSlot);
 	elem.setAttribute("Wt_Parameter", m_strParameter);
-	if (m_psigslotmodel->insertElem(m_row, elem))
+    if (m_psigslotmodel->insertElem(m_row, elem, QModelIndex()))
 	{
 		// change tree
 		Q_EMIT m_pmainwindow->ConnectionChanged(m_strSender, m_strSignal, m_strReceiver, m_strSlot, m_strParameter);
@@ -430,7 +430,7 @@ void MyUndoAppendConnect::redo()
 		elem.setAttribute("Wt_Receiver" , m_strReceiver);
 		elem.setAttribute("Wt_Slot"     , m_strSlot);
 		elem.setAttribute("Wt_Parameter", m_strParameter);
-		if (m_psigslotmodel->insertElem(m_row,elem))
+        if (m_psigslotmodel->insertElem(m_row, elem, QModelIndex()))
 		{
 			// change tree
 			Q_EMIT m_pmainwindow->ConnectionChanged(m_strSender, m_strSignal, m_strReceiver, m_strSlot, m_strParameter);
@@ -445,7 +445,9 @@ void MyUndoAppendConnect::redo()
 		// safety measure
 		if (m_psigslotmodel->getRootItem() == NULL) { return; }
 		// append element
-		if (m_psigslotmodel->appendElem())
+        QDomElement elemTemp;
+        const QModelIndex indexTemp;
+        if (m_psigslotmodel->appendElem(elemTemp, indexTemp))
 		{
 			// store index of new appended elem
 			WConnectElem *wroot = m_psigslotmodel->getRootItem();

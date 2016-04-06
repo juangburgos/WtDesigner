@@ -421,7 +421,7 @@ QByteArray ProcessHEADtag(QWebElement *element, QByteArray filepath /*= ""*/)
 		{
 			break;
 		}
-		element    = &element->nextSibling();
+        *element = element->nextSibling();
 	}
 	// check if <head> found
 	if (element->tagName().compare("head", Qt::CaseInsensitive) != 0)
@@ -994,7 +994,8 @@ void SetIconColor(QString svgres, QIcon &svgicon, QString svgcolor)
 	QDomDocument doc;
 	doc.setContent(baData);
 	// recurivelly change color
-	SetAttrRecur(doc.documentElement(), "path", "fill", "white");
+    QDomElement elemTemp = doc.documentElement();
+    SetAttrRecur(elemTemp, "path", "fill", "white");
 	// create svg renderer with edited contents
 	QSvgRenderer svgRenderer(doc.toByteArray());
 	// create pixmap target
@@ -1022,7 +1023,8 @@ void SetAttrRecur(QDomElement &elem, QString strtagname, QString strattr, QStrin
 		{
 			continue;
 		}
-		SetAttrRecur(elem.childNodes().at(i).toElement(), strtagname, strattr, strattrval);
+        QDomElement elemTemp = elem.childNodes().at(i).toElement();
+        SetAttrRecur(elemTemp, strtagname, strattr, strattrval);
 	}
 }
 
@@ -1391,10 +1393,12 @@ QString FindWtIncludeDir(QString strRefDir /*= ""*/, int level/* = 0*/)
 		strListSearchPaths.append(qgetenv("SYSTEMDRIVE") + "/");
 		strListSearchPaths.append(QDir(qgetenv("PROGRAMFILES")).absolutePath() + "/");
 		strListSearchPaths.append(QDir(qgetenv("PROGRAMFILES(x86)")).absolutePath() + "/");
-#elif Q_OS_UNIX // TODO
-		strListSearchPaths.append();
-		strListSearchPaths.append();
-#elif Q_OS_OSX // TODO
+#endif
+#ifdef Q_OS_UNIX // [LINUX]
+        strListSearchPaths.append("/usr/local/include/");
+        strListSearchPaths.append("/usr/include/");
+#endif
+#ifdef Q_OS_OSX // TODO
 		strListSearchPaths.append();
 		strListSearchPaths.append();
 #endif // Q_OS_WIN
@@ -1446,10 +1450,12 @@ QString FindWtLibraryDir(QString strRefDir /*= ""*/, int level/* = 0*/)
 		strListSearchPaths.append(qgetenv("SYSTEMDRIVE") + "/");
 		strListSearchPaths.append(QDir(qgetenv("PROGRAMFILES")).absolutePath() + "/");
 		strListSearchPaths.append(QDir(qgetenv("PROGRAMFILES(x86)")).absolutePath() + "/");
-#elif Q_OS_UNIX // TODO
-		strListSearchPaths.append();
-		strListSearchPaths.append();
-#elif Q_OS_OSX // TODO
+#endif
+#ifdef Q_OS_UNIX // [LINUX]
+        strListSearchPaths.append("/usr/local/lib/");
+        strListSearchPaths.append("/usr/lib/");
+#endif
+#ifdef Q_OS_OSX // TODO
 		strListSearchPaths.append();
 		strListSearchPaths.append();
 #endif // Q_OS_WIN
@@ -1501,10 +1507,12 @@ QString FindWtBinaryDir(QString strRefDir /*= ""*/, int level/* = 0*/)
 		strListSearchPaths.append(qgetenv("SYSTEMDRIVE") + "/");
 		strListSearchPaths.append(QDir(qgetenv("PROGRAMFILES")).absolutePath() + "/");
 		strListSearchPaths.append(QDir(qgetenv("PROGRAMFILES(x86)")).absolutePath() + "/");
-#elif Q_OS_UNIX // TODO
-		strListSearchPaths.append();
-		strListSearchPaths.append();
-#elif Q_OS_OSX // TODO
+#endif
+#ifdef Q_OS_UNIX // TODO
+        strListSearchPaths.append("/usr/local/lib/");
+        strListSearchPaths.append("/usr/lib/");
+#endif
+#ifdef Q_OS_OSX // TODO
 		strListSearchPaths.append();
 		strListSearchPaths.append();
 #endif // Q_OS_WIN

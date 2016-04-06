@@ -167,14 +167,16 @@ void MainPage::LoadRecursiveTree(QDomElement element, Wt::WContainerWidget *wpar
 		for (int i = 0; i < listStlyeElems.count(); i++)
 		{
 			elem = listStlyeElems.at(i).toElement();
-			AddStyleSheetFile(elem.attribute(g_strStylePathAttr));
+            QString strTemp = elem.attribute(g_strStylePathAttr);
+            AddStyleSheetFile(strTemp);
 		}
 		// first find and load all javascripts
 		QDomNodeList listJavasElems = element.elementsByTagName(g_strJavascriptTag);
 		for (int i = 0; i < listJavasElems.count(); i++)
 		{
 			elem = listJavasElems.at(i).toElement();
-			AddJavaScriptFile(elem.attribute(g_strJavasPathAttr));
+            QString strTemp = elem.attribute(g_strJavasPathAttr);
+            AddJavaScriptFile(strTemp);
 		}
 		// find root and load widget tree configuration recursivelly
 		QDomNode node = element.firstChildElement(g_strWRootTag);
