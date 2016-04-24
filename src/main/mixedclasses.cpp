@@ -1058,7 +1058,7 @@ QVector<WtQtRadioButton*> WtQtRadioButton::getSiblings()
 
 bool WtQtRadioButton::isFirstToPrint()
 {
-	bool boolIsFirst = false;
+	bool boolIsFirst = true; // [NOTE] needs to be true by default to handle the case where there are no siblings
 	QVector<WtQtRadioButton*> siblings = getSiblings();
 	for(int i = 0; i < siblings.count(); i++)
 	{
