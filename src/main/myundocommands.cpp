@@ -292,8 +292,9 @@ void MyUndoEditProperty::redo()
 		m_pmainwindow->UpdatePropertyTree(domElem->getElem()); // refresh prop model/view?
 	}
 	// some cases require reload
-	if (m_strPropChanged.compare(g_strIdAttr) == 0 ||
-		m_strPropChanged.compare(g_strInlineAttr) == 0)
+	if (m_strPropChanged.compare(g_strIdAttr)      == 0 ||
+		m_strPropChanged.compare(g_strInlineAttr)  == 0 ||
+		m_strPropChanged.compare("Wt_htmlTagName") == 0)
 	{
 		// shutdown and start again
 		m_pmainwindow->on_ReloadWtServer();

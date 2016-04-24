@@ -1221,7 +1221,8 @@ void MapAllProperties(QDomDocument *doc, QObject *parent)
 			elem.setAttribute("value", value);
 			doc->documentElement().appendChild(elem);
 			// reset otherwise Wt for some reason unsets them
-			parent->setProperty(name.toStdString().c_str(), value); // TODO : post to avoid crash bug ???
+			if (name.compare("Wt_htmlTagName") == 0) { continue; } // ignore Wt_htmlTagName to avoid crash
+			parent->setProperty(name.toStdString().c_str(), value); 
 		}
 		// iterate through children
 		for (int i = 0; i < parent->children().count(); i++)
@@ -1247,9 +1248,10 @@ void HelpUpdateAllProperties(QObject *rootobj)
 		{
 			metaproperty = metaobject->property(i);
 			name = QString::fromLatin1(metaproperty.name());
-			if (!name.contains("Wt_")) { continue; } // ignore non Wt_properties
-			if (name.compare("Wt_className") == 0) { continue; } // ignore Wt_className
-			if (name.compare("Wt_id") == 0) { continue; } // ignore Wt_id
+			if (!name.contains("Wt_"         )     ) { continue; } // ignore non Wt_properties
+			if (name.compare("Wt_className"  ) == 0) { continue; } // ignore Wt_className
+			if (name.compare("Wt_id"         ) == 0) { continue; } // ignore Wt_id
+			if (name.compare("Wt_htmlTagName") == 0) { continue; } // ignore Wt_htmlTagName to avoid crash
 			value = metaproperty.read(rootobj).toString();
 			// reset otherwise Wt for some reason unsets them
 			rootobj->setProperty(name.toStdString().c_str(), value);

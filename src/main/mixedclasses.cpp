@@ -193,6 +193,7 @@ QString WtQtContainerWidget::Wt_htmlTagName()
 
 void WtQtContainerWidget::Wt_setHtmlTagName(QString tagname)
 {
+	if (tagname.isEmpty()) { return; }
 	setHtmlTagName(tagname.toStdString());
 }
 

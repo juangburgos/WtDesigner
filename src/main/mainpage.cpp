@@ -214,7 +214,7 @@ void MainPage::LoadRecursiveTree(QDomElement element, Wt::WContainerWidget *wpar
 			name = QString::fromLatin1(metaproperty.name());
 			if (!name.contains("Wt_")) { continue; } // ignore non Wt_properties
 			if (name.compare("Wt_className") == 0) { continue; } // ignore Wt_className 
-			if (name.compare("Wt_htmlTagName") == 0) { continue; } // ignore Wt_htmlTagName TODO : Wt bug, makes app crash !!!
+			//if (name.compare("Wt_htmlTagName") == 0) { continue; } // [NOTE] : app crash bug due to this is handled now both in helperfunctions::MapAllProperties and in helperfunctions::HelpUpdateAllProperties
 			value = element.attribute(name, "");
 			if (!value.isEmpty()) 
 			{ 
