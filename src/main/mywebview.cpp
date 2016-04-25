@@ -287,6 +287,7 @@ QWebElement MyWebView::FindCloserContainer(QWebElement &elem)
 	{
 		QDomElement delem = welem->getElem();
 		if (delem.attribute(g_strClassAttr).compare("WContainerWidget") == 0 ||
+			delem.attribute(g_strClassAttr).compare("WAnchor"         ) == 0 ||
 			delem.attribute(g_strClassAttr).compare("WGroupBox"       ) == 0 ||
 			delem.attribute(g_strClassAttr).compare("WPanel"          ) == 0 ||
 			delem.attribute(g_strClassAttr).compare("WMenuItem"       ) == 0 ||

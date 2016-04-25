@@ -1002,8 +1002,11 @@ void MainWindow::UpdatePropertyTree(QDomElement elem)
 		{
 			strPropName = QString("%1").arg(pmetaSuperObj->property(i).name());
 			if (!strPropName.contains("Wt")) { continue; }
-			// IGNORE Wt_htmlTagName for other than WContainerWidget
-			if (elem.attribute(g_strClassAttr, "").compare("WContainerWidget") != 0 && strPropName.compare("Wt_htmlTagName") == 0) { continue; } // 
+			// IGNORE Wt_htmlTagName for other than WContainerWidget OR WAnchor
+			if ( ( elem.attribute(g_strClassAttr, "").compare("WContainerWidget") != 0 
+				 && elem.attribute(g_strClassAttr, "").compare("WAnchor") != 0      ) 
+				 && strPropName.compare("Wt_htmlTagName") == 0 )
+			{ continue; } // skip
 			// remove prop from previous class
 			if (!strOldClassName.isEmpty())
 			{

@@ -898,6 +898,7 @@ WDomElem * MyTreeModel::findCloserContainer(WDomElem * child)
 	QDomElement delem = child->getElem();
 
 	if (delem.attribute(g_strClassAttr).compare("WContainerWidget") == 0 ||
+		delem.attribute(g_strClassAttr).compare("WAnchor"         ) == 0 ||
 		delem.attribute(g_strClassAttr).compare("WGroupBox"       ) == 0 ||
 		delem.attribute(g_strClassAttr).compare("WPanel"          ) == 0 ||
 		delem.attribute(g_strClassAttr).compare("WMenuItem"       ) == 0 ||

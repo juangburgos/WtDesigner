@@ -1354,6 +1354,10 @@ Wt::WContainerWidget * GetWContainerParent(QObject *qparent)
 	{																							    
 		wobject = dynamic_cast<WtQtNavigationBar*>(qparent)->getWtParent();                         strParentType = "WNavigationBar";
 	}
+	else if (qparent->property("Wt_className").toString().compare("WAnchor") == 0)
+	{
+		wobject = dynamic_cast<Wt::WAnchor*>(dynamic_cast<WtQtAnchor*>(qparent));                   strParentType = "WAnchor";
+	}
 	else
 	{
 		wobject = dynamic_cast<Wt::WContainerWidget*>(dynamic_cast<WtQtContainerWidget*>(qparent)); strParentType = "WContainerWidget";
