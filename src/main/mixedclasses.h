@@ -284,10 +284,12 @@ class WtQtAnchor : public WtQtContainerWidget, public Wt::WAnchor // [NOTE] if i
 		Q_PROPERTY(QString Wt_link           READ Wt_link           WRITE Wt_setLink        )
 		Q_PROPERTY(QString Wt_target         READ Wt_target         WRITE Wt_setTarget      )
 		Q_PROPERTY(QString Wt_text           READ Wt_text           WRITE Wt_setText        )
+		Q_PROPERTY(QString Wt_textFormat     READ Wt_textFormat     WRITE Wt_setTextFormat  )
 		// Cpp code generation
 		Q_PROPERTY(QString Cpp_link          READ Cpp_link)
 		Q_PROPERTY(QString Cpp_target        READ Cpp_target)
 		Q_PROPERTY(QString Cpp_text          READ Cpp_text)
+		Q_PROPERTY(QString Cpp_textFormat    READ Cpp_textFormat)
 
 public:
 	WtQtAnchor(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
@@ -317,11 +319,19 @@ public:
 	QString Wt_text();
 	void    Wt_setText(QString text);
 
+	QString Wt_textFormat();
+	void    Wt_setTextFormat(QString textFormat);
+
 	// Cpp code generation
 	QString Cpp_link();
 	QString Cpp_target();
 	QString Cpp_text();
 	//QString Cpp_htmlTagName(); // REIMPLEMENT EMPTY
+	QString Cpp_textFormat();
+
+private:
+	QString m_strText; // Added to fix Wt bug of returning no text after being set upon initialization
+
 
 };
 

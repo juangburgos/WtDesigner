@@ -290,12 +290,47 @@ void WtQtAnchor::Wt_setTarget(QString target)
 
 QString WtQtAnchor::Wt_text()
 {
-	return QString::fromStdString(text().toUTF8());
+	QString htext = QString::fromStdString(text().toUTF8());
+
+	if (htext.compare(m_strText) != 0)
+	{
+		setText(Wt::WString::fromUTF8(m_strText.toStdString()));
+		htext = QString::fromStdString(text().toUTF8());
+	}
+
+	return htext;
+
+	//htext.replace("<", "&lt;");
+	//htext.replace(">", "&gt;");
+	//htext.replace('"', "'");
+	//htext.replace("\n", "&#xA;"); // [NOTE] This must be better done by the user if desired, otherwise it corrupts html
 }
 
 void WtQtAnchor::Wt_setText(QString text)
 {
-	setTextFormat(Wt::PlainText); setText(Wt::WString::fromUTF8(text.toStdString()));
+
+	setText(Wt::WString::fromUTF8(text.toStdString()));
+	m_strText = text;
+}
+
+QString WtQtAnchor::Wt_textFormat()
+{
+	// XHTMLText
+	// Format text as XSS - safe XHTML markup'ed text.
+	// XHTMLUnsafeText
+	// Format text as XHTML markup'ed text.
+	// PlainText
+	// Format text as plain text.
+	//
+	// * The default format is Wt::XHTMLText.
+	return QString("%1").arg((int)textFormat());
+}
+
+void WtQtAnchor::Wt_setTextFormat(QString textFormat)
+{
+	setTextFormat((Wt::TextFormat)textFormat.toInt());
+	// refresh
+	setText(Wt::WString::fromUTF8(m_strText.toStdString()));
 }
 
 
@@ -3833,6 +3868,8 @@ QString WtQtAnchor::Cpp_text()
 	return Wt_id() + "->" + "setTextFormat(Wt::PlainText); " + Wt_id() + "->" + "setText(Wt::WString::fromUTF8(\"" + Wt_text() + "\"));";
 }
 
+
+
 //QString WtQtAnchor::Cpp_htmlTagName()
 //{
 //	return "";
@@ -3857,6 +3894,10 @@ QString WtQtText::Cpp_textFormat()
 }
 
 
+QString WtQtAnchor::Cpp_textFormat()
+{
+	return Wt_id() + "->" + "setTextFormat((Wt::TextFormat)" + Wt_textFormat() + ");";
+}
 
 
 
