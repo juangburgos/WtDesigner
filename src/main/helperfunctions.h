@@ -86,7 +86,7 @@ void SetAttrRecur(QDomElement &elem, QString strtagname, QString strattr, QStrin
 bool CheckValidProjPath(const QString &strProjPath);
 QString GetProjFileName(const QString &strProjPath);
 
-void CopyAllFilesInPath(QString strSourcePath, QString strTargetPath, QStringList strListTypes);
+bool CopyAllFilesInPath(QString strSourcePath, QString strTargetPath, QStringList strListTypes);
 
 QString FindWtIncludeDir(QString strRefDir = "", int level = 0);
 QString FindWtLibraryDir(QString strRefDir = "", int level = 0);

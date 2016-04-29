@@ -876,7 +876,18 @@ void MainWindow::LoadProjectPath(QString strProjPathToLoad)
 	QString strProjFileName = GetProjFileName(strProjPathToLoad);
 	// Copy project root /resources/ folder to local root
 	QString strProjResourcesPath = strProjPathToLoad + g_strResourcesPathConst;
-	CopyAllFilesInPath(strProjResourcesPath, g_strLocalResourcesPath, QStringList() << "*.*");
+	// Show message if could not import project (copy files locally)
+	while (!CopyAllFilesInPath(strProjResourcesPath, g_strLocalResourcesPath, QStringList() << "*.*"))
+	{
+		QMessageBox msgBox;
+		msgBox.setText("Error while importing project.");
+		msgBox.setInformativeText("There were some problems importing your project. Would you like to try again?");
+		msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+		msgBox.setIcon(QMessageBox::Question);
+		msgBox.setDefaultButton(QMessageBox::Yes);
+		QMessageBox::StandardButton ret = (QMessageBox::StandardButton)msgBox.exec();
+		if (ret == QMessageBox::No) { return; }
+	}
 	// Create temporary folder
 	QDir().mkdir(g_strLocalTempPath);
 	// Open and load project file

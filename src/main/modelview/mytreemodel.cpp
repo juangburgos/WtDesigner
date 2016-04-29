@@ -466,8 +466,8 @@ bool MyTreeModel::removeRows(int row, int count, const QModelIndex & parent /*= 
 	{
 		parentElem = static_cast<WDomElem*>(parent.internalPointer());	
 	}
-	// remove from Id list
-	mstrlistAllIds.removeAll(parentElem->getChild(row)->getElem().attribute(g_strIdAttr));
+	// remove from Id list recursivelly
+	removeFromUniqueIdList(&parentElem->getChild(row)->getElem());
 	// remove children from underlying DOM and WDomElem tree
 	result &= parentElem->removeChild(row, count);
 
@@ -597,6 +597,12 @@ bool MyTreeModel::insertElem(int row, QDomElement &element /*= QDomElement()*/, 
 	// do recursively DOESNT SEEM NECESSARY, IT WAS CAUSING BUG
 
 	debugTreeState(wRootHiddenElem, "[AFTER] insertElem");
+
+	// fixes bug with ids incorrectly added to list when inserting fails due to undefined parent
+	if (!result)
+	{
+		removeFromUniqueIdList(&element);
+	}
 
 	return result;
 }
@@ -844,13 +850,19 @@ bool MyTreeModel::appendElemIntoIndex(QByteArray config, QModelIndex index)
 void MyTreeModel::getUniqueIdList(QDomElement *elem)
 {
 	// overwrite Id if not unique by appending _copy
-	while (mstrlistAllIds.contains(elem->attribute(g_strIdAttr,"")))
+	QString strIdAttr = elem->attribute(g_strIdAttr, "");
+	if (strIdAttr.isEmpty())
 	{
-		qDebug() << "[ERROR] Repeated id in tree : " << elem->attribute(g_strIdAttr);
-		elem->setAttribute(g_strIdAttr, elem->attribute(g_strIdAttr)+"_cp");
+		qDebug() << "[ERROR] Found empty Id in MyTreeModel::getUniqueIdList";
+	}
+	while (mstrlistAllIds.contains(strIdAttr))
+	{
+		qDebug() << "[ERROR] Repeated id in tree : " << strIdAttr << " in MyTreeModel::getUniqueIdList";
+		strIdAttr += "_cp";
+		elem->setAttribute(g_strIdAttr, strIdAttr);
 	}
 	// append unique id to list
-	mstrlistAllIds.append(elem->attribute(g_strIdAttr));
+	mstrlistAllIds.append(strIdAttr);
 	// do for all children
 	for (int i = 0; i < elem->childNodes().count(); i++)
 	{
@@ -1290,4 +1302,34 @@ doc($inputDocument)//" + g_strConnectionTag + "/\n\
 	}
 
 	return listAllReceivers;
+}
+
+void MyTreeModel::replaceIdInUniqueList(QString strOldId, QString strNewId)
+{
+	// remove old, append new
+	mstrlistAllIds.removeAll(strOldId);
+	mstrlistAllIds.append(strNewId);
+}
+
+void MyTreeModel::removeFromUniqueIdList(QDomElement *elem)
+{
+	// remove id of this element
+	QString strIdAttr = elem->attribute(g_strIdAttr, "");
+	if (strIdAttr.isEmpty())
+	{
+		qDebug() << "[ERROR] Found empty Id in MyTreeModel::removeFromUniqueIdList";
+	}
+	// remove from list
+	mstrlistAllIds.removeAll(strIdAttr);
+	// do for all children
+	for (int i = 0; i < elem->childNodes().count(); i++)
+	{
+		// if not a valid node then continue (might be a signal or something)
+		if (elem->childNodes().at(i).toElement().tagName().compare(g_strValidNodeTag, Qt::CaseInsensitive) != 0 &&
+			elem->childNodes().at(i).toElement().tagName().compare(g_strWRootTag, Qt::CaseInsensitive) != 0)
+		{
+			continue;
+		}
+		removeFromUniqueIdList(&elem->childNodes().at(i).toElement());
+	}
 }

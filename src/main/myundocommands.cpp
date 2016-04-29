@@ -246,6 +246,8 @@ void MyUndoEditProperty::undo()
 		if (!domElem) { qDebug() << "[ERROR] Could not find element " << m_strNewPropVal << " in MyUndoEditProperty::undo"; return; }
 		domElem->getElem().setAttribute(m_strPropChanged, m_strOldPropVal);
 		m_pmainwindow->UpdatePropertyTree(domElem->getElem()); // refresh prop model/view?
+		// fixes bug when changing id of element and then copying and pasting that element
+		m_pmainwindow->m_treemodel.replaceIdInUniqueList(m_strNewPropVal, m_strOldPropVal);
 	}
 	else
 	{
@@ -259,7 +261,7 @@ void MyUndoEditProperty::undo()
 	if (m_strPropChanged.compare(g_strIdAttr) == 0 ||
 		m_strPropChanged.compare(g_strInlineAttr) == 0)
 	{
-		// shutdown and start again
+		// shutdown and start again (NOTE this does not reloads configuration or resets the internal loaded tree)
 		m_pmainwindow->on_ReloadWtServer();
 	}
 	else
@@ -282,6 +284,8 @@ void MyUndoEditProperty::redo()
 			domElem->getElem().setAttribute(m_strPropChanged, m_strNewPropVal);
 			m_pmainwindow->UpdatePropertyTree(domElem->getElem()); // refresh prop model/view?
 		}
+		// fixes bug when changing id of element and then copying and pasting that element
+		m_pmainwindow->m_treemodel.replaceIdInUniqueList(m_strOldPropVal, m_strNewPropVal);
 	}
 	else
 	{
@@ -296,7 +300,7 @@ void MyUndoEditProperty::redo()
 		m_strPropChanged.compare(g_strInlineAttr)  == 0 ||
 		m_strPropChanged.compare("Wt_htmlTagName") == 0)
 	{
-		// shutdown and start again
+		// shutdown and start again (NOTE this does not reloads configuration or resets the internal loaded tree)
 		m_pmainwindow->on_ReloadWtServer();
 	}
 	else

@@ -1058,13 +1058,15 @@ QString GetProjFileName(const QString &strProjPath)
 	return it.fileName();
 }
 
-void CopyAllFilesInPath(QString strSourcePath, QString strTargetPath, QStringList strListTypes)
+bool CopyAllFilesInPath(QString strSourcePath, QString strTargetPath, QStringList strListTypes)
 {
+	bool b_retVal = true;
 	// create target path if it doesnt exist, if it does, delete it
 	if (!QDir(strTargetPath).exists())
 	{
 		if (!QDir().mkdir(strTargetPath))
 		{
+			b_retVal = false;
 			qDebug() << "[ERROR] Could not create path " << strTargetPath << " in helperfunctions::CopyAllFilesInPath";
 		}
 	}
@@ -1101,11 +1103,14 @@ void CopyAllFilesInPath(QString strSourcePath, QString strTargetPath, QStringLis
 		{
 			QFile::remove(strTargetPath + strFilePath);
 		}
-		if (!QFile::copy(it.filePath(), strTargetPath + strFilePath))
+		while (!QFile::copy(it.filePath(), strTargetPath + strFilePath))
 		{
+			b_retVal = false;
 			qDebug() << QString("[ERROR] : Could not copy file : '" + it.filePath() + "' into '" + strTargetPath + strFilePath + "' in helperfunctions::CopyAllFilesInPath");
 		}
 	}
+	// return success or not
+	return b_retVal;
 }
 
 void GetStylesFromHtml(QByteArray &config)
