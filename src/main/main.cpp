@@ -28,6 +28,11 @@ int main(int argc, char *argv[])
 {
 	// create qt application
 	QApplication a(argc, argv);
+
+#ifdef Q_OS_UNIX
+    QApplication::addLibraryPath("./plugins");
+#endif
+
 	// show splash screen
 	QPixmap pixmap(":/logo_loading"); // NOTE : had to convert text to path in inkscape for text to show
 	QSplashScreen splash(pixmap);
