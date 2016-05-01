@@ -4,6 +4,10 @@
 *.DS_Store
 *.rc
 
+*.run
+*.swo
+*.swp
+
 deploy/packages/WtDesigner/data/*.*
 deploy/packages/WtDesigner/data/**
 

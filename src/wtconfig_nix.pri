@@ -23,7 +23,6 @@ LIBS         += -L/usr/local/lib/
 
 				
 CONFIG(debug, debug|release) {
-
         LIBS += -lboost_system \
                 -lboost_thread \
                 -lwttest       \
