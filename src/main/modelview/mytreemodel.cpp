@@ -467,7 +467,8 @@ bool MyTreeModel::removeRows(int row, int count, const QModelIndex & parent /*= 
 		parentElem = static_cast<WDomElem*>(parent.internalPointer());	
 	}
 	// remove from Id list recursivelly
-	removeFromUniqueIdList(&parentElem->getChild(row)->getElem());
+    QDomElement tmpElem = parentElem->getChild(row)->getElem();
+    removeFromUniqueIdList(&tmpElem);
 	// remove children from underlying DOM and WDomElem tree
 	result &= parentElem->removeChild(row, count);
 
@@ -1333,6 +1334,7 @@ void MyTreeModel::removeFromUniqueIdList(QDomElement *elem)
 		{
 			continue;
 		}
-		removeFromUniqueIdList(&elem->childNodes().at(i).toElement());
+        QDomElement tmpElem = elem->childNodes().at(i).toElement();
+        removeFromUniqueIdList(&tmpElem);
 	}
 }
