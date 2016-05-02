@@ -106,7 +106,10 @@ public:
 	void CheckIfJavascriptPath(QString strPath, bool isAdd);
 
 	void SetupPersistSettings();
+
+#ifdef Q_OS_WIN
 	void FindLibFileNames();
+#endif
 
 public Q_SLOTS:
 	void on_MouseMovedOverElem(QString elem, QString strClass);
@@ -225,11 +228,12 @@ private:
 
 	QProgressDialog  * mp_ProcessDialog = NULL;
 
+#ifdef Q_OS_WIN
 	QString            m_strIncludeDir;
 	QString            m_strLibraryDir;
 	QString            m_strBinaryDir ;
 	QStringList        m_listLibFileNames;
-
+#endif
 	QString            m_strServerPort ;
 	QString            m_strWtTitle    ;
 	QString            m_strWtTheme    ;

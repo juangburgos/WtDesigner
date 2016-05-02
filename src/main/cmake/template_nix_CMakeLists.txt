@@ -1,0 +1,25 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.4)
+Project(@PROJNAME@)
+
+# Copy resources to build tree
+FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+# Copy run script to build tree
+FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/@PROJNAME@.sh DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+SET(@PROJNAMELOWER@_SRC main.cpp
+               @PROJNAMELOWER@.cpp)
+
+ADD_EXECUTABLE(@PROJNAME@ ${@PROJNAMELOWER@_SRC})
+
+TARGET_LINK_LIBRARIES(@PROJNAME@
+  debug wt optimized wt
+  debug wthttp optimized wthttp
+  debug boost_date_time optimized boost_date_time
+  debug boost_filesystem optimized boost_filesystem
+  debug boost_program_options optimized boost_program_options
+  debug boost_regex optimized boost_regex
+  debug boost_signals optimized boost_signals
+  debug boost_system optimized boost_system
+  debug boost_thread optimized boost_thread
+  debug boost_random optimized boost_random
+  )

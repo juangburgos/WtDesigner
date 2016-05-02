@@ -1405,14 +1405,12 @@ QString FindWtIncludeDir(QString strRefDir /*= ""*/, int level/* = 0*/)
 		strListSearchPaths.append(QDir(qgetenv("PROGRAMFILES")).absolutePath() + "/");
 		strListSearchPaths.append(QDir(qgetenv("PROGRAMFILES(x86)")).absolutePath() + "/");
 #endif
-#ifdef Q_OS_UNIX // [LINUX]
-        strListSearchPaths.append("/usr/local/include/");
-        strListSearchPaths.append("/usr/include/");
-#endif
-#ifdef Q_OS_OSX // TODO
-		strListSearchPaths.append();
-		strListSearchPaths.append();
-#endif // Q_OS_WIN
+//#ifdef Q_OS_UNIX 
+//
+//#endif
+//#ifdef Q_OS_OSX 
+//
+//#endif 
 	}
 	strListSearchPaths.removeAll(""); // clean
 	// look in subdirectories
@@ -1462,14 +1460,12 @@ QString FindWtLibraryDir(QString strRefDir /*= ""*/, int level/* = 0*/)
 		strListSearchPaths.append(QDir(qgetenv("PROGRAMFILES")).absolutePath() + "/");
 		strListSearchPaths.append(QDir(qgetenv("PROGRAMFILES(x86)")).absolutePath() + "/");
 #endif
-#ifdef Q_OS_UNIX // [LINUX]
-        strListSearchPaths.append("/usr/local/lib/");
-        strListSearchPaths.append("/usr/lib/");
-#endif
-#ifdef Q_OS_OSX // TODO
-		strListSearchPaths.append();
-		strListSearchPaths.append();
-#endif // Q_OS_WIN
+//#ifdef Q_OS_UNIX
+//
+//#endif
+//#ifdef Q_OS_OSX 
+//
+//#endif 
 }
 	strListSearchPaths.removeAll(""); // clean
 	// look in subdirectories
@@ -1519,14 +1515,12 @@ QString FindWtBinaryDir(QString strRefDir /*= ""*/, int level/* = 0*/)
 		strListSearchPaths.append(QDir(qgetenv("PROGRAMFILES")).absolutePath() + "/");
 		strListSearchPaths.append(QDir(qgetenv("PROGRAMFILES(x86)")).absolutePath() + "/");
 #endif
-#ifdef Q_OS_UNIX // TODO
-        strListSearchPaths.append("/usr/local/lib/");
-        strListSearchPaths.append("/usr/lib/");
-#endif
-#ifdef Q_OS_OSX // TODO
-		strListSearchPaths.append();
-		strListSearchPaths.append();
-#endif // Q_OS_WIN
+//#ifdef Q_OS_UNIX 
+//
+//#endif
+//#ifdef Q_OS_OSX 
+//
+//#endif 
 }
 	strListSearchPaths.removeAll(""); // clean
 	// look in subdirectories

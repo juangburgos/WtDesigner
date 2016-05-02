@@ -102,9 +102,11 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
 	m_dialogConfig.setTabletWidthRef  (&m_tablet_width  );
 	m_dialogConfig.setLaptopWidthRef  (&m_laptop_width  );
 	m_dialogConfig.setComputerWidthRef(&m_computer_width);
+#ifdef Q_OS_WIN
 	m_dialogConfig.setIncludeDirRef   (&m_strIncludeDir);
 	m_dialogConfig.setLibraryDirRef   (&m_strLibraryDir);
 	m_dialogConfig.setBinaryDirRef    (&m_strBinaryDir);
+#endif
 	m_dialogConfig.setServerPortRef   (&m_strServerPort);
 	m_dialogConfig.setWtThemeRef      (&m_strWtTheme);
 	m_dialogConfig.setWtTitleRef      (&m_strWtTitle);
@@ -149,10 +151,12 @@ void MainWindow::SetupPersistSettings()
 	m_tablet_width   = 768;
 	m_laptop_width   = 992;
 	m_computer_width = 1200;
+#ifdef Q_OS_WIN
 	// set default cmake directories
 	m_strIncludeDir  = "";
 	m_strLibraryDir  = "";
 	m_strBinaryDir   = "";
+#endif
 	//
 	m_strServerPort = "8080";  
 	m_strWtTheme    = g_strThemeBootstrat3;
@@ -174,6 +178,7 @@ void MainWindow::SetupPersistSettings()
 	m_computer_width = m_settings.value("m_computer_width", m_computer_width ).toInt();
 	m_settings.endGroup();
 
+#ifdef Q_OS_WIN
 	// begin cmake config settings
 	m_settings.beginGroup("cmake");
 	m_strIncludeDir = m_settings.value("m_strincludedir", m_strIncludeDir).toString();
@@ -208,6 +213,7 @@ void MainWindow::SetupPersistSettings()
 		m_settings.setValue("m_strbinarydir", m_strBinaryDir);
 	}
 	m_settings.endGroup();
+#endif
 
 	// begin application config settings
 	m_settings.beginGroup("application");
@@ -216,7 +222,7 @@ void MainWindow::SetupPersistSettings()
 	m_settings.endGroup();
 }
 
-
+#ifdef Q_OS_WIN
 void MainWindow::FindLibFileNames()
 { // list of dependencies according to http://redmine.webtoolkit.eu/projects/wt/wiki/Installing_Wt_on_Ubuntu?version=34
 	// NOTE : returns empty if one or more libs are missing (wt, wtd, wthttp, wthttpd must be there if m_strLibraryDir was found)
@@ -233,7 +239,7 @@ void MainWindow::FindLibFileNames()
 													  );
 	// NOTE : later if empty then set on CMake's boost finder
 }
-
+#endif
 
 void MainWindow::SetAllIcons(QString svgcolor)
 {
@@ -1336,8 +1342,10 @@ void MainWindow::on_ReloadWtServer()
 {
 	StopWtServer(); 
 	StartWtServer();
+#ifdef Q_OS_WIN
 	// because this is called when config is changed (i.e. the lib path might have changed)
 	m_listLibFileNames.clear();
+#endif
 }
 
 void MainWindow::on_receivedDragOnWebview(QByteArray baconfigChunk, QString strParentElemId)
@@ -1838,6 +1846,7 @@ void MainWindow::on_push_refresh_clicked()
 
 void MainWindow::on_actionExport_to_CMake_triggered()
 {
+#ifdef Q_OS_WIN
 	// Try to find Wt installation again
 	if (m_strIncludeDir.isEmpty())
 	{
@@ -1877,14 +1886,17 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 	{
 		FindLibFileNames();
 	}
+#endif
 	// create replace tokens list
     QList<QPair<QString, QString> > listReplaceTokens;
 	listReplaceTokens.append(QPair<QString, QString>("@PROJNAME@"       , m_strProjName          ));
 	listReplaceTokens.append(QPair<QString, QString>("@PROJNAMELOWER@"  , m_strProjName.toLower()));
 	listReplaceTokens.append(QPair<QString, QString>("@PROJNAMEUPPER@"  , m_strProjName.toUpper()));
+#ifdef Q_OS_WIN
 	listReplaceTokens.append(QPair<QString, QString>("@WT_INCLUDE_PATH@", m_strIncludeDir        ));
 	listReplaceTokens.append(QPair<QString, QString>("@WT_LIB_PATH@"    , m_strLibraryDir        ));
 	listReplaceTokens.append(QPair<QString, QString>("@WT_BIN_PATH@"    , m_strBinaryDir         )); // NOTE : does not seem necessary to replace "/" for "\\" 
+#endif
 	// join params separated be space
 	QString strJointParams;
 	for (int i = WT_PARDOCROOT; i <= WT_VALHTTPPORT; i++)
@@ -1901,7 +1913,8 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 	}
 	listReplaceTokens.append(QPair<QString, QString>("@WT_PARAMS@"      , strJointParams         ));
 	// if lib files are defined
-	QString strCorrectCMakeFile = "./cmake/template_CMakeListsWithGen.txt";
+	QString strCorrectCMakeFile; 
+#ifdef Q_OS_WIN
 	if (!m_listLibFileNames.isEmpty())
 	{
 		// complete replace tokens list with lib file names
@@ -1925,7 +1938,7 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 		listReplaceTokens.append( QPair<QString, QString>("@BOOST_THREAD_RELEASE@"         ,m_listLibFileNames.filter(QRegExp("(\w)*thread[^gd]+.(lib|a)"           )).first()) );
 		listReplaceTokens.append( QPair<QString, QString>("@BOOST_RANDOM_DEBUG@"           ,m_listLibFileNames.filter(QRegExp("(\w)*random(.)*gd(.)*.(lib|a)"       )).first()) );
 		listReplaceTokens.append( QPair<QString, QString>("@BOOST_RANDOM_RELEASE@"         ,m_listLibFileNames.filter(QRegExp("(\w)*random[^gd]+.(lib|a)"           )).first()) );
-		// redefine to the one without generator
+		// the one without generator
 		strCorrectCMakeFile = "./cmake/template_CMakeLists.txt";
 	}
 	else
@@ -1935,6 +1948,10 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 		QMessageBox::critical(0, QObject::tr("Invalid Wt Library Files"), QObject::tr("Could not find Wt Library Files.\nSelect a valid library path in Settings."));
 		return;
 	}
+#endif
+#ifndef Q_OS_WIN
+	strCorrectCMakeFile = "./cmake/template_nix_CMakeLists.txt";
+#endif
 	QString strNewFileName;
 	QMessageBox msgBox;
 	QMessageBox::StandardButton respose;
@@ -1952,6 +1969,7 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 	{
 		ProcessCMakeTemplate(strCorrectCMakeFile, strNewFileName, listReplaceTokens);
 	}
+#ifdef Q_OS_WIN
 	// process "./cmake/template_vs.xml"
 	respose = QMessageBox::Ok;
 	strNewFileName = m_strProjRootPath + "/" + m_strProjName.toLower() + ".vcxproj.user";
@@ -1994,6 +2012,7 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 	{
 		ProcessCMakeTemplate("./cmake/template_eclipse_debug.xml", strNewFileName, listReplaceTokens);
 	}
+#endif
 	// process "./cmake/template_project.h"
 	respose = QMessageBox::Ok;
 	strNewFileName = m_strProjRootPath + "/" + m_strProjName.toLower() + ".h";
@@ -2036,6 +2055,22 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 	{
 		ProcessCMakeTemplate("./cmake/template_main.cpp", strNewFileName, listReplaceTokens);
 	}
+#ifndef Q_OS_WIN
+	// process "./cmake/template_script.sh"
+	respose = QMessageBox::Ok;
+	strNewFileName = m_strProjRootPath + "/" + m_strProjName+ ".sh";
+	if (QFile(strNewFileName).exists())
+	{
+		msgBox.setText(tr("File ") + strNewFileName + tr(" already exists.\nWould you like to overwrite it?"));
+		msgBox.setIcon(QMessageBox::Critical);
+		msgBox.setStandardButtons(QMessageBox::Cancel | QMessageBox::Ok);
+		respose = (QMessageBox::StandardButton)msgBox.exec();
+	}
+	if (respose == QMessageBox::Ok)
+	{
+		ProcessCMakeTemplate("./cmake/template_script.sh", strNewFileName, listReplaceTokens);
+	}
+#endif
 	// Aknowledge finished
 	QMessageBox::information(0, QObject::tr("Finished Task"), QObject::tr("Finished exporting CMake project to %1.").arg(m_strProjRootPath));
 }
