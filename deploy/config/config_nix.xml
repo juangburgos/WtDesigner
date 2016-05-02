@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>WtDesigner</Name>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Title>WtDesigner (Linux 64-bit)</Title>
     <Publisher>Juan Gonzalez Burgos</Publisher>
     <StartMenuDir>WtDesigner</StartMenuDir>
