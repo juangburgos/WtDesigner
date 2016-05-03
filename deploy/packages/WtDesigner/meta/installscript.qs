@@ -24,6 +24,6 @@ Component.prototype.createOperations = function()
     {
         // fix path for run script and icon
         component.addOperation("Replace", "@TargetDir@/WtDesigner.desktop", "{UNKNOWN_PATH}", "@TargetDir@");
-        component.addOperation("Copy","@TargetDir@/WtDesigner.desktop","/usr/share/applications/WtDesigner.desktop")
+        component.addElevatedOperation("Copy","@TargetDir@/WtDesigner.desktop","/usr/share/applications/WtDesigner.desktop")
     }
 }

@@ -11,11 +11,17 @@
 
 [Download Linux Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Linux64/v.1.0.1/)
 
-* Run WtDesigner installer with **sudo**:
+* Might be necessary to:
 
 ```bash
-$ sudo ./WtDesignerInstallerV.1.0.1.run
+$ chmod +x ./WtDesignerInstallerV.1.0.1.run
 ```
+
+* Tested on **CentOS7** and **Ubuntu14.04**
+
+* Installer might ask for **sudo** password to copy _WtDesigner.desktop_ to _/usr/shared/applications/_.
+
+* If WtDesigner does not show the webpage contents, hit the **Refresh** buttton until the contents appear.
 
 ***
 
