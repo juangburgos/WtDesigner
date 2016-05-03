@@ -1,11 +1,21 @@
 # WtDesigner
 
-[Download Windows Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Windowsx64/v.1.0.0/)
+***
 
-**IMPORTANT:**
+[Download Windows Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Windowsx64/v.1.0.1/)
 
 * Install "vcredist_x64.exe" before running WtDesigner for the first time.
 * Run WtDesigner with Administrator rights in Windows.
+
+***
+
+[Download Linux Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Linux64/v.1.0.1/)
+
+* Run WtDesigner installer with **sudo**:
+
+```bash
+$ sudo ./WtDesignerInstallerV.1.0.1.run
+```
 
 ***
 
@@ -39,16 +49,16 @@ WtDesigner was created as an attempt to reduce the complexity of creating beauti
 
 ## How
 
-WtDesigner is a tool which is also inspired by (Qt)[http://www.qt.io] (specifically QtDesigner), and it is based on the Wt library and Qt itself. It provides an easy way to develop the front-end of the web application by means of drag-and-drop elements, blocks and templates. Furthermore, it allows to preview the looks of the application, tweak it and see the results instantly without having to recompile your application.
+WtDesigner is a tool which is also inspired by [Qt](http://www.qt.io) (specifically QtDesigner), and it is based on the Wt library and Qt itself. It provides an easy way to develop the front-end of the web application by means of drag-and-drop elements, blocks and templates. Furthermore, it allows to preview the looks of the application, tweak it and see the results instantly without having to recompile your application.
 
 
-WtDesigner can be used as a stand-alone application in Windows (and soon Linux and Mac) but it also integrates into your workflow by means of popular IDE plugins.
+WtDesigner can be used as a stand-alone application in Windows (and soon Linux and Mac) but it also integrates into your workflow by means of popular IDE plugins (**Coming soon...**).
 
 ***
 
 ## Tutorials
 
-[Youtube Videos](https://www.youtube.com/playlist?list=PLy_hF6QxSYC0nQtPUdxEeLUsM3PNnqApI) (**Coming soon...**)
+[Youtube Videos](https://www.youtube.com/playlist?list=PLy_hF6QxSYC0nQtPUdxEeLUsM3PNnqApI)
 
 ## Thanks
 

@@ -1,13 +1,21 @@
 TODO
 
-- Populate /packages/WtDesigner/data with executable and dependencies
-- Copy src/linux_extras to /packages/WtDesigner/data
-- Copy rec/WtDesigner_logo.png to /packages/WtDesigner/data/WtDesigner_logo.png
-- Update "package.xml" with release version and date.
-- Update "config.xml" with release version and date.
+- Compile in Windows using Configuration Properties -> Linker -> Manifest File:
+	> UAC Execution Level = requireAdministrator
+- Populate "deploy/packages/WtDesigner/data" with executable and dependencies
+- Copy "vcredist_x64.exe" to "/packages/WtDesigner/data/vcredist_x64.exe"
+- Copy "src/linux_extras/*.*" to "/packages/WtDesigner/data"
+- Copy rec/WtDesigner_logo.xpm to /packages/WtDesigner/data/WtDesigner_logo.xpm
+- Update "deploy/packages/WtDesigner/metapackage.xml" with release version and date.
+- Update "deploy/config/config.xml" and "deploy/config/config_nix.xml" with release version and date.
 - Update "WtDesigner.desktop" with release version.
 - Update About Dialog content.
 - Update version in the binarycreator command
+
+- Upload Binaries to Sourceforge and Github Releases
+
+- Update Readme.md with latest changes and download links
+
 
 Generate installer with:
 
