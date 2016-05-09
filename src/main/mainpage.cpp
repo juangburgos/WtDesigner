@@ -31,7 +31,8 @@ MainPage::MainPage(const Wt::WEnvironment& env, MainWindow *mainwindow) :
 	m_qtroot     = NULL; 
 	// necessary to dynamically update webpage
 	enableUpdates(true);
-
+	// don't know if necessary
+	Wt::WString::setDefaultEncoding(Wt::UTF8);
 }
 
 MainPage::~MainPage()
@@ -217,7 +218,7 @@ void MainPage::LoadRecursiveTree(QDomElement element, Wt::WContainerWidget *wpar
 			if (!name.contains("Wt_")) { continue; } // ignore non Wt_properties
 			if (name.compare("Wt_className") == 0) { continue; } // ignore Wt_className 
 			//if (name.compare("Wt_htmlTagName") == 0) { continue; } // [NOTE] : app crash bug due to this is handled now both in helperfunctions::MapAllProperties and in helperfunctions::HelpUpdateAllProperties
-			value = element.attribute(name, "");
+			value = QString::fromUtf8(element.attribute(name, "").toUtf8());
 			if (!value.isEmpty()) 
 			{ 
 				object->setProperty(metaproperty.name(), value);
@@ -936,6 +937,10 @@ void SignalEmiter::on_PropertyChanged(QString strElemChanged, QString strPropCha
 	{
 		// We now have exclusive access to the application: we can safely modify the widget tree for example.
 		QObject* objChanged = FindElementById(this, strElemChanged);
+
+		// [FIX] from Qt to Wt
+		strNewPropVal = DecodeTextXML(strNewPropVal);
+
 		objChanged->setProperty(strPropChanged.toStdString().c_str(), strNewPropVal);
 		// Push the changes to the browser
 		mp_owner->triggerUpdate();

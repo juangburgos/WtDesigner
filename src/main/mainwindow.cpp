@@ -663,7 +663,7 @@ void MainWindow::on_actionImport_from_HTML_triggered()
 		QByteArray htmlsource = file.readAll();
 		// get wui configuration from html
 		QDir fpath = QFileInfo(file).absoluteDir();
-		baData = GetWtFromHtml(htmlsource, NULL, "", fpath.absolutePath().toLatin1());
+		baData = GetWtFromHtml(htmlsource, NULL, "", fpath.absolutePath().toUtf8());
 		// Copy each stylesheet and possible resources. Update baData path to local /styles/
 		GetStylesFromHtml(baData);
 		// load into tree model for validation
@@ -769,7 +769,7 @@ void MainWindow::on_actionPaste_triggered()
 		if (mimeData->hasText()) 
 		{
 			// get config chunk and validate
-			QByteArray baconfigChunk = mimeData->text().toLatin1();
+			QByteArray baconfigChunk = mimeData->text().toUtf8();
 			QString errorStr;
 			int     errorLine;
 			int     errorColumn;
@@ -1281,10 +1281,13 @@ void MainWindow::on_ReceivedAutoGenCpp(QByteArray config)
 		//
 		if (file.open(QIODevice::ReadWrite | QFile::Truncate))
 		{
-			// generate configuration xml text from object tree and store in file
-			QTextStream stream(&file);
-			// get config from tree model
-			stream << config;
+			//// generate configuration xml text from object tree and store in file
+			//QTextStream stream(&file);
+			//// get config from tree model
+			//stream << config;
+			// [FIX] Half the problem was solved with this.
+			//       Here last 3 come with "?"
+			file.write(config);
 		}
 		else
 		{
@@ -1703,7 +1706,7 @@ void MainWindow::CheckIfStylesheetPath(QString strPath, bool isAdd)
 {
 	// same as CheckIfStylesheet but for all files in a path
 	QDir m_Path(strPath);
-	QDirIterator it(m_Path.absolutePath().toLatin1(), QStringList() << "*.css", QDir::Files, QDirIterator::Subdirectories);
+	QDirIterator it(m_Path.absolutePath().toUtf8(), QStringList() << "*.css", QDir::Files, QDirIterator::Subdirectories);
 	// iterate css files
 	while (it.hasNext())
 	{
@@ -1751,7 +1754,7 @@ void MainWindow::CheckIfJavascriptPath(QString strPath, bool isAdd)
 {
 	// same as CheckIfJavascript but for all files in a path
 	QDir m_Path(strPath);
-	QDirIterator it(m_Path.absolutePath().toLatin1(), QStringList() << "*.js", QDir::Files, QDirIterator::Subdirectories);
+	QDirIterator it(m_Path.absolutePath().toUtf8(), QStringList() << "*.js", QDir::Files, QDirIterator::Subdirectories);
 	// iterate css files
 	while (it.hasNext())
 	{
@@ -2099,7 +2102,7 @@ void MainWindow::on_actionHtml_Code_triggered()
 		return;
 	}
 	QString strHtml = m_WebView->page()->mainFrame()->toHtml();
-	tmpFile.write(strHtml.toLatin1());
+	tmpFile.write(strHtml.toUtf8());
 	tmpFile.flush();
 	tmpFile.close();
 	QDesktopServices::openUrl(QUrl("file:///" + tmpFile.fileName(), QUrl::TolerantMode));

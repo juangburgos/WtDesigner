@@ -1,16 +1,16 @@
 body{
-	margin      : 100 ;
-	padding     : 100 ;
+	margin      : 95 ;
+	padding     : 95 ;
 	font-family : "helvetica", arial;
 }
 
 #wt_root
 {
-	position : fixed;
-	left     : 0    ;
-	top      : 0    ;
-	height   : 100% ;
-	width    : 100% ;
+	position        : fixed;
+	left            : 0    ;
+	top             : 0    ;
+	height          : 100% ;
+	width           : 100% ;
 	background-color: white;
+	overflow-y      : auto ;
 }
-

@@ -629,6 +629,11 @@ void WtQtPushButton::Wt_setInline(QString isinline)
 //	setHtmlTagName(tagname.toStdString());
 //}
 
+// QUrl::fromPercentEncoding : Returns a decoded copy of input. input is first decoded from percent encoding, then converted from UTF-8 to unicode.
+// http://doc.qt.io/qt-5/qurl.html#fromPercentEncoding
+// QUrl::toPercentEncoding   : Returns an encoded copy of input. input is first converted to UTF-8, and all ASCII-characters that are not in the unreserved group are percent encoded.
+// http://doc.qt.io/qt-5/qurl.html#toPercentEncoding
+
 QString WtQtPushButton::Wt_emptyText()
 {
 	return QString::fromStdString(emptyText().toUTF8());
@@ -641,12 +646,16 @@ void WtQtPushButton::Wt_setEmptyText(QString emptytext)
 
 QString WtQtPushButton::Wt_text()
 {
+	// [FIX] Now the problem is that this feeds both Qt side and autogencpp
+	//       Now it works fine on the Qt site, but not autogencpp side
+	//       Need to find an easy way to make both work
 	return QString::fromStdString(text().toUTF8());
+	//return QString::fromStdWString(text().value()).toUtf8();
 }
 
-void WtQtPushButton::Wt_setText(QString text)
+void WtQtPushButton::Wt_setText(QString text)	
 {
-	setText(Wt::WString::fromUTF8(text.toStdString()));
+	setText(Wt::WString::fromUTF8(text.toUtf8().toStdString()));
 }
 
 QString WtQtPushButton::Wt_link()
@@ -3906,7 +3915,11 @@ QString WtQtAnchor::Cpp_textFormat()
 
 QString WtQtPushButton::Cpp_text()
 {
-	return Wt_id() + "->" + "setText(Wt::WString::fromUTF8(\"" + Wt_text() + "\"));";
+	QString strTemp = Wt_text();
+	// [FIX] Here they go out corretcly
+	return Wt_id() + "->" + "setText(Wt::WString::fromUTF8(\"" + strTemp.toUtf8() + "\"));";
+
+	//return Wt_id() + "->" + "setText(Wt::WString::fromUTF8(\"" + Wt_text() + "\"));";
 }
 
 QString WtQtPushButton::Cpp_link()

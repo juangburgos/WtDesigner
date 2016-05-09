@@ -24,6 +24,8 @@
 #include <QVector>
 #include <QVariant>
 
+#include <Wt/Utils>
+
 #include <Wt/WObject>
 #include <Wt/WWidget>
 #include <Wt/WWebWidget>

@@ -38,6 +38,7 @@
 #include <QtGlobal>
 #include <QMap>
 #include <QStandardPaths>
+#include <QUrl>
 
 #include <Wt/WContainerWidget>
 
@@ -99,5 +100,9 @@ QString ProcessCMakeTemplate(QString strInputFile, QString strOutputFile, QList<
 bool    ValidateWtIncludeDir(QString strIncludeDir);
 bool    ValidateWtLibraryDir(QString strLibraryDir);
 bool    ValidateWtBinaryDir (QString strBinaryDir );
+
+QString EncodeTextXML(QString strInputRaw);
+QString DecodeTextXML(QString strInputEncoded);
+
 
 #endif

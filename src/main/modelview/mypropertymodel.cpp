@@ -17,6 +17,7 @@
 
 #include "mypropertymodel.h"
 #include "myglobals.h"
+#include "../helperfunctions.h"
 
 #include <QMessageBox>
 
@@ -259,7 +260,7 @@ QVariant MyPropertyModel::data(const QModelIndex &index, int role) const
 
 			if (!wRootElement.isNull())
 			{
-				return wRootElement.attribute(welem->getString(), ""); // Display attribute if available
+				return DecodeTextXML(wRootElement.attribute(welem->getString(), "")); // Display attribute if available
 			}
 			return "";
 
@@ -385,7 +386,8 @@ bool MyPropertyModel::setData(const QModelIndex &index, const QVariant &value, i
 	WPropNode *wnode = getNodeByIndex(index);
 
 	// early exit (if value did not change at all)
-	if (value.toString().compare(wRootElement.attribute(wnode->getString())) == 0)
+	QString strNewValue = EncodeTextXML(value.toString());
+	if (strNewValue.compare(wRootElement.attribute(wnode->getString())) == 0)
 	{
 		return false;
 	}
@@ -393,20 +395,19 @@ bool MyPropertyModel::setData(const QModelIndex &index, const QVariant &value, i
 	// check if repeated Id
 	if (wnode->getString().compare(g_strIdAttr) == 0)
 	{
-        QString strTemp = value.toString();
-        if (isNewIdCppKeyword(strTemp))
+		if (isNewIdCppKeyword(strNewValue))
 		{
 			QMessageBox msgBox;
 			msgBox.setIcon(QMessageBox::Critical);
-            msgBox.setText(tr("The id = \"") + strTemp+ tr("\" is a C++ keyword. Please use a different id."));
+			msgBox.setText(tr("The id = \"") + strNewValue + tr("\" is a C++ keyword. Please use a different id."));
 			msgBox.exec();
 			return false;
 		}
-        if (isNewIdRepeated(strTemp))
+		if (isNewIdRepeated(strNewValue))
 		{
 			QMessageBox msgBox;
 			msgBox.setIcon(QMessageBox::Critical);
-            msgBox.setText(tr("The id = \"") + strTemp + tr("\" is already in use. Please use a different one."));
+			msgBox.setText(tr("The id = \"") + strNewValue + tr("\" is already in use. Please use a different one."));
 			msgBox.exec();
 			return false;
 		}
@@ -416,7 +417,7 @@ bool MyPropertyModel::setData(const QModelIndex &index, const QVariant &value, i
 	wnode->strOldId  = wRootElement.attribute(g_strIdAttr);
 	wnode->strOldVal = wRootElement.attribute(wnode->getString());
 
-	wRootElement.setAttribute(wnode->getString(), value.toString());
+	wRootElement.setAttribute(wnode->getString(), strNewValue);
 
 	Q_EMIT dataChanged(index, index);
 
