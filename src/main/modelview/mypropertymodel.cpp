@@ -384,6 +384,12 @@ bool MyPropertyModel::setData(const QModelIndex &index, const QVariant &value, i
 	// change data (in QDomElement)
 	WPropNode *wnode = getNodeByIndex(index);
 
+	// early exit (if value did not change at all)
+	if (value.toString().compare(wRootElement.attribute(wnode->getString())) == 0)
+	{
+		return false;
+	}
+
 	// check if repeated Id
 	if (wnode->getString().compare(g_strIdAttr) == 0)
 	{
