@@ -133,7 +133,7 @@ public:
 	QString Cpp_id()         ;
 	QString Cpp_declare()    ;
 	QString Cpp_instantiate(); 
-	// TODO : Id WTF was it missing ?????????????????????????
+
 	virtual QString Cpp_styleClass() ;
 	virtual QString Cpp_isInline()   ;
 	// NOT Q_PROPERTY
@@ -1753,6 +1753,58 @@ private:
 	QString                m_strParentId;
 };
 
+// Made-up widget, on WtDesigner should behave as empty container, no childrem, but
+// upon cpp autogen should insert headerLocation in includes with <> if isGlobalInclude
+// or "" if not, and declare the class according to promotedClass
+class WtQtPromotedWidget : public WtQtWidget, public Wt::WContainerWidget
+{
+	Q_OBJECT
+		// Specific if is promoted widget
+		Q_PROPERTY(QString Wt_promotedClass        READ Wt_promotedClass      WRITE Wt_setPromotedClass )
+		Q_PROPERTY(QString Wt_headerLocation       READ Wt_headerLocation     WRITE Wt_setHeaderLocation)
+		Q_PROPERTY(QString Wt_isGlobalInclude      READ Wt_isGlobalInclude    WRITE Wt_setGlobalInclude )
+		// Cpp code generation
+		//Q_PROPERTY(QString Cpp_promotedClass       READ Cpp_promotedClass  ) // [NOTE] Not necessary   
+		//Q_PROPERTY(QString Cpp_headerLocation      READ Cpp_headerLocation ) // [NOTE] Not necessary
+		//Q_PROPERTY(QString Cpp_isGlobalInclude     READ Cpp_isGlobalInclude) // [NOTE] Not necessary
+public:
+	WtQtPromotedWidget(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
+	~WtQtPromotedWidget();
+	WtQtPromotedWidget(const WtQtPromotedWidget& other);
+
+	QString Wt_className(); // "WPromotedWidget" not real, just to follow convention
+
+	QString Wt_id();
+	void    Wt_setId(QString id);
+
+	QString Wt_styleClass();
+	void    Wt_setStyleClass(QString styleclass);
+
+	QString Wt_isInline();
+	void    Wt_setInline(QString isinline);
+
+	//QString Wt_htmlTagName();
+	//void    Wt_setHtmlTagName(QString tagname);
+
+	QString Wt_promotedClass();
+	void    Wt_setPromotedClass(QString promotedClass);
+
+	QString Wt_headerLocation();
+	void    Wt_setHeaderLocation(QString headerLocation);
+
+	QString Wt_isGlobalInclude();
+	void    Wt_setGlobalInclude(QString isGlobalInclude);
+
+	// Cpp code generation
+	QString Cpp_declare();     // declare as Wt_promotedClass
+	QString Cpp_instantiate(); // instantiate as Wt_promotedClass
+
+private:
+	QString m_strPromotedClass;
+	QString m_strHeaderLocation;
+	bool    m_boolIsGlobalInclude;
+
+};
 
 
 #endif // MIXEDCLASSES_H

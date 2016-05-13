@@ -663,9 +663,7 @@ void MainWindow::on_actionImport_from_HTML_triggered()
 		QByteArray htmlsource = file.readAll();
 		// get wui configuration from html
 		QDir fpath = QFileInfo(file).absoluteDir();
-		baData = GetWtFromHtml(htmlsource, NULL, "", fpath.absolutePath().toUtf8());
-		// Copy each stylesheet and possible resources. Update baData path to local /styles/
-		GetStylesFromHtml(baData);
+		baData = QByteArray(); // TODO : IMPLEMENT !
 		// load into tree model for validation
 		if (!m_treemodel.loadNewConfiguration(baData))
 		{

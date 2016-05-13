@@ -3792,7 +3792,93 @@ QString WtQtNavigationBar::getParentWidgetId()
 	return m_strParentId;
 }
 
+/*
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+*****************************************************             WtQtPromotedWidget             ***************************************************************
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+*/
 
+
+
+WtQtPromotedWidget::WtQtPromotedWidget(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WContainerWidget(wparent), WtQtWidget(qparent)
+{
+
+}
+
+WtQtPromotedWidget::WtQtPromotedWidget(const WtQtPromotedWidget& other)
+{
+	Q_UNUSED(other)
+}
+
+WtQtPromotedWidget::~WtQtPromotedWidget()
+{
+
+}
+
+QString WtQtPromotedWidget::Wt_className()
+{
+	return "WPromotedWidget"; //  not real, just to follow convention
+}
+
+QString WtQtPromotedWidget::Wt_id()
+{
+	return QString::fromStdString(Wt::WContainerWidget::id());
+}
+
+void WtQtPromotedWidget::Wt_setId(QString id)
+{
+	Wt::WContainerWidget::setId(id.toStdString());
+}
+
+QString WtQtPromotedWidget::Wt_styleClass()
+{
+	return QString::fromStdString(Wt::WContainerWidget::styleClass().toUTF8());
+}
+
+void WtQtPromotedWidget::Wt_setStyleClass(QString styleclass)
+{
+	Wt::WContainerWidget::setStyleClass(Wt::WString::fromUTF8(styleclass.toStdString()));
+}
+
+QString WtQtPromotedWidget::Wt_isInline()
+{
+	return QString("%1").arg(Wt::WContainerWidget::isInline());
+}
+
+void WtQtPromotedWidget::Wt_setInline(QString isinline)
+{
+	Wt::WContainerWidget::setInline(isinline.toUInt());
+}
+
+QString WtQtPromotedWidget::Wt_promotedClass()
+{
+	return m_strPromotedClass;
+}
+
+void WtQtPromotedWidget::Wt_setPromotedClass(QString promotedClass)
+{
+	m_strPromotedClass = promotedClass;
+}
+
+QString WtQtPromotedWidget::Wt_headerLocation()
+{
+	return m_strHeaderLocation;
+}
+
+void WtQtPromotedWidget::Wt_setHeaderLocation(QString headerLocation)
+{
+	m_strHeaderLocation = headerLocation;
+}
+
+QString WtQtPromotedWidget::Wt_isGlobalInclude()
+{
+	return QString("%1").arg(m_boolIsGlobalInclude);
+}
+
+void WtQtPromotedWidget::Wt_setGlobalInclude(QString isGlobalInclude)
+{
+	m_boolIsGlobalInclude = isGlobalInclude.toUInt();
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -4484,4 +4570,16 @@ QString WtQtNavigationBar::Cpp_title()
 QString WtQtNavigationBar::Cpp_responsive()
 {
 	return Wt_id() + "->setResponsive(\"" + Wt_responsive() +  + "\");";
+}
+
+
+
+QString WtQtPromotedWidget::Cpp_declare()
+{
+	return Wt_promotedClass() + " *" + Wt_id() + ";";
+}
+
+QString WtQtPromotedWidget::Cpp_instantiate()
+{
+	return Wt_id() + " = new " + Wt_promotedClass() + "(" + Cpp_getCorrectParentId() + ");\n";
 }

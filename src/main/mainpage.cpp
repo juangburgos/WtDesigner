@@ -794,6 +794,17 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 		else
 			object = new WtQtNavigationBar(wparent, qparent);
 	}
+	else if (element->attribute("Wt_className").compare("WPromotedWidget") == 0)
+	{
+		if (irow >= 0 && irow < wparent->children().size())
+		{
+			object = new WtQtPromotedWidget(NULL, qparent);
+			Wt::WContainerWidget *wwobject = dynamic_cast<Wt::WContainerWidget*>(object);
+			wparent->insertWidget(irow, wwobject);
+		}
+		else
+			object = new WtQtPromotedWidget(wparent, qparent);
+	}
 	else
 	{
 		qDebug() << "[ERROR] : Unknown Wt Element."; // TODO : do something, now it crashes
