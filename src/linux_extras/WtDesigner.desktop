@@ -2,7 +2,7 @@
 [Desktop Entry]
 GenericName=WtDesigner
 Name=WtDesigner
-Version=1.0.1
+Version=1.0.2
 Exec=bash {UNKNOWN_PATH}/WtDesigner.sh
 Icon={UNKNOWN_PATH}/WtDesigner_logo_linux.xpm
 Comment=Wt C++ Web Application Tool

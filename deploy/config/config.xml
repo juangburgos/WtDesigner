@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>WtDesigner</Name>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Title>WtDesigner (Windows 64-bits)</Title>
     <Publisher>Juan Gonzalez Burgos</Publisher>
     <StartMenuDir>WtDesigner</StartMenuDir>

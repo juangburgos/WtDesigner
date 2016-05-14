@@ -2,19 +2,19 @@
 
 ***
 
-[Download Windows Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Windowsx64/v.1.0.1/)
+[Download Windows Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Windowsx64/v.1.0.2/)
 
 * Install "vcredist_x64.exe" before running WtDesigner for the first time.
 * Run WtDesigner with Administrator rights in Windows.
 
 ***
 
-[Download Linux Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Linux64/v.1.0.1/)
+[Download Linux Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Linux64/v.1.0.2/)
 
 * Might be necessary to:
 
 ```bash
-$ chmod +x ./WtDesignerInstallerV.1.0.1.run
+$ chmod +x ./WtDesignerInstallerV.1.0.2.run
 ```
 
 * Tested on **CentOS7** and **Ubuntu14.04**
