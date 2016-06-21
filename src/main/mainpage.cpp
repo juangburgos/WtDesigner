@@ -414,7 +414,7 @@ WidgetFactory(QObject *qparent,
     }
     else
     {
-        return new WtQtContainerWidget(wparent, qparent);
+        return new WidgetT(wparent, qparent);
     }
 }
 
