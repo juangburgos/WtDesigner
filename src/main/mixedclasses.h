@@ -1018,14 +1018,14 @@ public:
 
 };
 
-class WtQtWCalendar : public WtQtCompositeWidget, public Wt::WCalendar
+class WtQtCalendar : public WtQtCompositeWidget, public Wt::WCalendar
 {
 	Q_OBJECT
 
 public:
-	WtQtWCalendar(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
-	~WtQtWCalendar();
-	WtQtWCalendar(const WtQtWCalendar& other);
+	WtQtCalendar(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
+	~WtQtCalendar();
+	WtQtCalendar(const WtQtCalendar& other);
 
 	QString Wt_className(); // [NOTE] : need to add to helperfunctions::GetMetaObjectByClassName
 

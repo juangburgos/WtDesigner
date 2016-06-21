@@ -398,433 +398,111 @@ bool MainPage::PerformDisconnection(Wt_ConnectionConfig *conConfig)
 	return true;
 }
 
+typedef QObject * (*ElementFactory) (QObject *, Wt::WContainerWidget *, int);
+
+template <typename WidgetT, typename WtWidgetT>
+static QObject *
+WidgetFactory(QObject *qparent,
+              Wt::WContainerWidget *wparent,
+              int row)
+{
+    if (row >= 0 && row < static_cast<int>(wparent->children().size()))
+    {
+        auto *object = new WidgetT(NULL, qparent);
+        wparent->insertWidget(row, dynamic_cast<WtWidgetT *>(object));
+        return object;
+    }
+    else
+    {
+        return new WtQtContainerWidget(wparent, qparent);
+    }
+}
+
+template<typename WidgetT, typename WidgetParentT>
+static QObject *
+InternalChildWidgetFactory(QObject *qparent,
+                           Wt::WContainerWidget *,
+                           int)
+{
+    auto *newparent = dynamic_cast<WidgetParentT*>(qparent);
+    if (newparent)
+    {
+        return new WidgetT(newparent);
+    }
+    qDebug() << "[ERROR] : Could not cast " << typeid(WidgetT).name() << " parent to " << typeid(WidgetParentT).name() << ".";
+    qDebug() << "[ERROR] : parent id    = " << qparent->property("Wt_id").toString();
+    qDebug() << "[ERROR] : parent class = " << qparent->property("Wt_className").toString();
+
+    /* todo: handle this or provide a place holder widget */
+    return nullptr;
+}
+
+#define WTD_MAKE_WIDGET_LUT_ENTRY(BASENAME) \
+        {"W" #BASENAME, &WidgetFactory<WtQt ## BASENAME, Wt::W ## BASENAME>}
+
+#define WTD_MAKE_WIDGET_LUT_ENTRY_INTL(BASENAME, PARENTBASENAME) \
+        {"W" #BASENAME, &InternalChildWidgetFactory<WtQt ## BASENAME, WtQt ## PARENTBASENAME>}
+
+#include <unordered_map>
+
 QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WContainerWidget * wparent, QObject * qparent)
 {
-	QObject *object = NULL;
+	static const std::unordered_map<std::string, ElementFactory> lookup({
+        WTD_MAKE_WIDGET_LUT_ENTRY(ContainerWidget),
+        WTD_MAKE_WIDGET_LUT_ENTRY(Anchor),
+        WTD_MAKE_WIDGET_LUT_ENTRY(Text),
+        WTD_MAKE_WIDGET_LUT_ENTRY(LineEdit),
+        WTD_MAKE_WIDGET_LUT_ENTRY(Image),
+        WTD_MAKE_WIDGET_LUT_ENTRY(PushButton),
+        WTD_MAKE_WIDGET_LUT_ENTRY(Template),
+        WTD_MAKE_WIDGET_LUT_ENTRY(SplitButton),
+        WTD_MAKE_WIDGET_LUT_ENTRY(RadioButton),
+        WTD_MAKE_WIDGET_LUT_ENTRY(CheckBox),
+        WTD_MAKE_WIDGET_LUT_ENTRY(ComboBox),
+        WTD_MAKE_WIDGET_LUT_ENTRY(InPlaceEdit),
+        WTD_MAKE_WIDGET_LUT_ENTRY(TextArea),
+        WTD_MAKE_WIDGET_LUT_ENTRY(SelectionBox),
+        WTD_MAKE_WIDGET_LUT_ENTRY(SpinBox),
+        WTD_MAKE_WIDGET_LUT_ENTRY(DoubleSpinBox),
+        WTD_MAKE_WIDGET_LUT_ENTRY(TimeEdit),
+        WTD_MAKE_WIDGET_LUT_ENTRY(DateEdit),
+        WTD_MAKE_WIDGET_LUT_ENTRY(Calendar),
+        WTD_MAKE_WIDGET_LUT_ENTRY(Slider),
+        WTD_MAKE_WIDGET_LUT_ENTRY(FileUpload),
+        WTD_MAKE_WIDGET_LUT_ENTRY(ProgressBar),
+        WTD_MAKE_WIDGET_LUT_ENTRY(GroupBox),
+        WTD_MAKE_WIDGET_LUT_ENTRY(Panel),
+        WTD_MAKE_WIDGET_LUT_ENTRY(StackedWidget),
+        WTD_MAKE_WIDGET_LUT_ENTRY(TabWidget),
+        WTD_MAKE_WIDGET_LUT_ENTRY_INTL(TabItem, TabWidget),
+        WTD_MAKE_WIDGET_LUT_ENTRY(Menu),
+        WTD_MAKE_WIDGET_LUT_ENTRY_INTL(MenuItem, Menu),
+        WTD_MAKE_WIDGET_LUT_ENTRY(PopupMenu),
+        WTD_MAKE_WIDGET_LUT_ENTRY_INTL(PopupItem, PopupMenu),
+        WTD_MAKE_WIDGET_LUT_ENTRY(Table),
+        WTD_MAKE_WIDGET_LUT_ENTRY(Tree),
+        WTD_MAKE_WIDGET_LUT_ENTRY(TreeTable),
+        WTD_MAKE_WIDGET_LUT_ENTRY(NavigationBar),
 
-	bool validRow = irow >= 0 && irow < static_cast<int>(wparent->children().size());
+        /* special/irregular factory entries come here */
+        {"WPromotedWidget", &WidgetFactory<WtQtPromotedWidget, Wt::WContainerWidget>},
+	});
 
-	if (!wparent)
-	{
-		wparent = GetWContainerParent(qparent);
-	}
+	try {
+	    auto factory = lookup.at(element->attribute("Wt_className").toStdString());
+	    return factory(qparent,
+	                   wparent ? wparent : GetWContainerParent(qparent),
+	                   irow);
+	} catch (std::out_of_range) {
+	    /* handle special cases which can not be handled by default factories here */
 
-	if (element->attribute("Wt_className").compare("WContainerWidget") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtContainerWidget(NULL, qparent);
-			Wt::WContainerWidget *wwobject = dynamic_cast<Wt::WContainerWidget*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtContainerWidget(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WAnchor") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtAnchor(NULL, qparent);
-			Wt::WAnchor *wwobject = dynamic_cast<Wt::WAnchor*>(object); // [NOTE] changed casting to wanchor otherwise crash (this is because WtQtAnchor already inerits from a mixed-class)
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtAnchor(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WText") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtText(NULL, qparent);
-			Wt::WText *wwobject = dynamic_cast<Wt::WText*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtText(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WLineEdit") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtLineEdit(NULL, qparent);
-			Wt::WLineEdit *wwobject = dynamic_cast<Wt::WLineEdit*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtLineEdit(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WImage") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtImage(NULL, qparent);
-			Wt::WImage *wwobject = dynamic_cast<Wt::WImage*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtImage(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WPushButton") == 0) // [TODO] first part was commented?
-	{
-		if (validRow)
-		{
-			object = new WtQtPushButton(NULL, qparent);
-			Wt::WPushButton *wwobject = dynamic_cast<Wt::WPushButton*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtPushButton(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WTemplate") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtTemplate(NULL, qparent);
-			Wt::WTemplate *wwobject = dynamic_cast<Wt::WTemplate*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtTemplate(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WSplitButton") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtSplitButton(NULL, qparent);
-			Wt::WSplitButton *wwobject = dynamic_cast<Wt::WSplitButton*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtSplitButton(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WRadioButton") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtRadioButton(NULL, qparent);
-			Wt::WRadioButton *wwobject = dynamic_cast<Wt::WRadioButton*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtRadioButton(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WCheckBox") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtCheckBox(NULL, qparent);
-			Wt::WCheckBox *wwobject = dynamic_cast<Wt::WCheckBox*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtCheckBox(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WComboBox") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtComboBox(NULL, qparent);
-			Wt::WComboBox *wwobject = dynamic_cast<Wt::WComboBox*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtComboBox(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WInPlaceEdit") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtInPlaceEdit(NULL, qparent);
-			Wt::WInPlaceEdit *wwobject = dynamic_cast<Wt::WInPlaceEdit*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtInPlaceEdit(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WTextArea") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtTextArea(NULL, qparent);
-			Wt::WTextArea *wwobject = dynamic_cast<Wt::WTextArea*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtTextArea(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WSelectionBox") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtSelectionBox(NULL, qparent);
-			Wt::WSelectionBox *wwobject = dynamic_cast<Wt::WSelectionBox*>(object); 
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtSelectionBox(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WSpinBox") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtSpinBox(NULL, qparent);
-			Wt::WSpinBox *wwobject = dynamic_cast<Wt::WSpinBox*>(object); 
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtSpinBox(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WDoubleSpinBox") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtDoubleSpinBox(NULL, qparent);
-			Wt::WDoubleSpinBox *wwobject = dynamic_cast<Wt::WDoubleSpinBox*>(object); 
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtDoubleSpinBox(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WTimeEdit") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtTimeEdit(NULL, qparent);
-			Wt::WTimeEdit *wwobject = dynamic_cast<Wt::WTimeEdit*>(object); 
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtTimeEdit(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WDateEdit") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtDateEdit(NULL, qparent);
-			Wt::WDateEdit *wwobject = dynamic_cast<Wt::WDateEdit*>(object); 
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtDateEdit(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WCalendar") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtWCalendar(NULL, qparent);
-			Wt::WCalendar *wwobject = dynamic_cast<Wt::WCalendar*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtWCalendar(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WSlider") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtSlider(NULL, qparent);
-			Wt::WSlider *wwobject = dynamic_cast<Wt::WSlider*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtSlider(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WFileUpload") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtFileUpload(NULL, qparent);
-			Wt::WFileUpload *wwobject = dynamic_cast<Wt::WFileUpload*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtFileUpload(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WProgressBar") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtProgressBar(NULL, qparent);
-			Wt::WProgressBar *wwobject = dynamic_cast<Wt::WProgressBar*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtProgressBar(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WGroupBox") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtGroupBox(NULL, qparent);
-			Wt::WGroupBox *wwobject = dynamic_cast<Wt::WGroupBox*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtGroupBox(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WPanel") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtPanel(NULL, qparent);
-			Wt::WPanel *wwobject = dynamic_cast<Wt::WPanel*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtPanel(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WStackedWidget") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtStackedWidget(NULL, qparent);
-			Wt::WStackedWidget *wwobject = dynamic_cast<Wt::WStackedWidget*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtStackedWidget(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WTabWidget") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtTabWidget(NULL, qparent);
-			Wt::WTabWidget *wwobject = dynamic_cast<Wt::WTabWidget*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtTabWidget(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WTabItem") == 0)
-	{
-		WtQtTabWidget *newparent = dynamic_cast<WtQtTabWidget*>(qparent);
-		if (newparent)
-		{
-			object = new WtQtTabItem(newparent);
-		}
-		else
-		{
-			qDebug() << "[ERROR] : Could not cast WtQtTabItem parent as WtQtWTabWidget.";
-			qDebug() << "[ERROR] : WtQtTabItem parent id    = " << qparent->property("Wt_id").toString();
-			qDebug() << "[ERROR] : WtQtTabItem parend class = " << qparent->property("Wt_className").toString();
-		}
-	}
-	else if (element->attribute("Wt_className").compare("WMenu") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtMenu(NULL, qparent);
-			Wt::WMenu *wwobject = dynamic_cast<Wt::WMenu*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtMenu(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WMenuItem") == 0)
-	{
-		WtQtMenu *newparent = dynamic_cast<WtQtMenu*>(qparent);
-		if (newparent)
-		{
-			object = new WtQtMenuItem(newparent);
-		}
-		else
-		{
-			qDebug() << "[ERROR] : Could not cast WtQtMenuItem parent as WtQtMenu.";
-			qDebug() << "[ERROR] : WtQtMenuItem parent id    = " << qparent->property("Wt_id").toString();
-			qDebug() << "[ERROR] : WtQtMenuItem parend class = " << qparent->property("Wt_className").toString();
-		}
-	}
-	else if (element->attribute("Wt_className").compare("WPopupMenu") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtPopupMenu(NULL, qparent);
-			Wt::WWidget *wwobject = dynamic_cast<WtQtPopupMenu*>(object)->getInternalWWidget();
-			if (wwobject)
-			{
-				wparent->insertWidget(irow, wwobject);
-			}
-		}
-		else
-			object = new WtQtPopupMenu(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WPopupItem") == 0)
-	{
-		WtQtPopupMenu *newparent = dynamic_cast<WtQtPopupMenu*>(qparent);
-		if (newparent)
-		{
-			object = new WtQtPopupItem(newparent);
-		}
-		else
-		{
-			qDebug() << "[ERROR] : Could not cast WtQtPopupItem parent as WtQtPopupMenu.";
-			qDebug() << "[ERROR] : WtQtPopupItem parent id    = " << qparent->property("Wt_id").toString();
-			qDebug() << "[ERROR] : WtQtPopupItem parend class = " << qparent->property("Wt_className").toString();
-		}
-	}
-	else if (element->attribute("Wt_className").compare("WTable") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtTable(NULL, qparent);
-			Wt::WTable *wwobject = dynamic_cast<Wt::WTable*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtTable(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WTree") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtTree(NULL, qparent);
-			Wt::WTree *wwobject = dynamic_cast<Wt::WTree*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtTree(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WTreeTable") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtTreeTable(NULL, qparent);
-			Wt::WTreeTable *wwobject = dynamic_cast<Wt::WTreeTable*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtTreeTable(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WNavigationBar") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtNavigationBar(NULL, qparent);
-			Wt::WNavigationBar *wwobject = dynamic_cast<Wt::WNavigationBar*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtNavigationBar(wparent, qparent);
-	}
-	else if (element->attribute("Wt_className").compare("WPromotedWidget") == 0)
-	{
-		if (validRow)
-		{
-			object = new WtQtPromotedWidget(NULL, qparent);
-			Wt::WContainerWidget *wwobject = dynamic_cast<Wt::WContainerWidget*>(object);
-			wparent->insertWidget(irow, wwobject);
-		}
-		else
-			object = new WtQtPromotedWidget(wparent, qparent);
-	}
-	else
-	{
-		qDebug() << "[ERROR] : Unknown Wt Element."; // TODO : do something, now it crashes
-		qDebug() << "[ERROR] : Unknown element className  = " << element->attribute("Wt_className");
-		qDebug() << "[ERROR] : Unknown element lineNumber = " << element->lineNumber();
-	}
+        qDebug() << "[ERROR] : Unknown Wt Element."; // TODO : do something, now it crashes
+        qDebug() << "[ERROR] : Unknown element className  = " << element->attribute("Wt_className");
+        qDebug() << "[ERROR] : Unknown element lineNumber = " << element->lineNumber();
 
-	return object;
+        /* todo: instead of crashing we should return an place holder widget */
+        return nullptr;
+	}
 }
 
 void MainPage::AddStyleSheetFile(QString &strPath)

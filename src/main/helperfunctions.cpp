@@ -391,7 +391,7 @@ QMetaObject GetMetaObjectByClassName(QString strClassName)
 	}
 	else if (strClassName.compare("WCalendar") == 0)
 	{
-		metaObj = WtQtWCalendar::staticMetaObject;
+		metaObj = WtQtCalendar::staticMetaObject;
 	}
 	else if (strClassName.compare("WSlider") == 0)
 	{
