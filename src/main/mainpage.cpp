@@ -447,7 +447,7 @@ InternalChildWidgetFactory(QObject *qparent,
 
 QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WContainerWidget * wparent, QObject * qparent)
 {
-	static const std::unordered_map<std::string, ElementFactory> lookup({
+    static const std::unordered_map<std::string, ElementFactory> lookup({
         WTD_MAKE_WIDGET_LUT_ENTRY(ContainerWidget),
         WTD_MAKE_WIDGET_LUT_ENTRY(Anchor),
         WTD_MAKE_WIDGET_LUT_ENTRY(Text),
@@ -486,15 +486,15 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 
         /* special/irregular factory entries come here */
         {"WPromotedWidget", &WidgetFactory<WtQtPromotedWidget, Wt::WContainerWidget>},
-	});
+    });
 
-	try {
-	    auto factory = lookup.at(element->attribute("Wt_className").toStdString());
-	    return factory(qparent,
-	                   wparent ? wparent : GetWContainerParent(qparent),
-	                   irow);
-	} catch (std::out_of_range) {
-	    /* handle special cases which can not be handled by default factories here */
+    try {
+        auto factory = lookup.at(element->attribute("Wt_className").toStdString());
+        return factory(qparent,
+                       wparent ? wparent : GetWContainerParent(qparent),
+                       irow);
+    } catch (std::out_of_range) {
+        /* handle special cases which can not be handled by default factories here */
 
         qDebug() << "[ERROR] : Unknown Wt Element."; // TODO : do something, now it crashes
         qDebug() << "[ERROR] : Unknown element className  = " << element->attribute("Wt_className");
@@ -502,7 +502,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 
         /* todo: instead of crashing we should return an place holder widget */
         return nullptr;
-	}
+    }
 }
 
 void MainPage::AddStyleSheetFile(QString &strPath)
