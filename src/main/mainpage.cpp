@@ -493,7 +493,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
         return factory(qparent,
                        wparent ? wparent : GetWContainerParent(qparent),
                        irow);
-    } catch (std::out_of_range) {
+    } catch (const std::out_of_range &) {
         /* handle special cases which can not be handled by default factories here */
 
         qDebug() << "[ERROR] : Unknown Wt Element."; // TODO : do something, now it crashes
