@@ -4286,7 +4286,7 @@ QString WtQtProgressBar::Cpp_value()
 
 QString WtQtGroupBox::Cpp_title()
 {
-	return Wt_id() + "->setTitle(" + Wt_title() + ");";
+	return Wt_id() + "->setTitle(Wt::WString::fromUTF8(\"" + Wt_title() + "\"));";
 }
 
 QString WtQtGroupBox::Cpp_htmlTagName()
@@ -4297,7 +4297,7 @@ QString WtQtGroupBox::Cpp_htmlTagName()
 
 QString WtQtPanel::Cpp_title()
 {
-	return Wt_id() + "->setTitle(" + Wt_title() + ");";
+	return Wt_id() + "->setTitle(Wt::WString::fromUTF8(\"" + Wt_title() + "\"));";
 }
 
 QString WtQtPanel::Cpp_isCollapsible()
