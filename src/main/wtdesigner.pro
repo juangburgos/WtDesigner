@@ -80,6 +80,7 @@ SOURCES      += ./main.cpp                                      \
                 ./mainpage.cpp                                  \
                 ./mainwindow.cpp                                \
 		./mixedclasses.cpp                              \
+		./myglobals.cpp									\
 		./myundocommands.cpp                            \				
                 ./mywebview.cpp                                 \
                 ./helperfunctions.cpp                           \

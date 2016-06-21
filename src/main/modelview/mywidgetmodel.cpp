@@ -18,8 +18,6 @@
 #include "mywidgetmodel.h"
 #include "myglobals.h"
 
-#include <QApplication>
-
 WWidgetNode::WWidgetNode(WWIDGETNODETYPE intNodeType, QString &strPath, int row, WWidgetNode *parent /*= 0*/) : QObject(parent)
 {
 	m_intNodeType     = intNodeType;
@@ -122,7 +120,7 @@ void WWidgetNode::setupNodeChildren()
 
 	if (m_intNodeType == WIDGET)
 	{
-	    MyWidgetModel::getMapIconsByClassName().insert(m_strName, m_icon);
+	    Icons::GetCache().insert(m_strName, m_icon);
 	}
 
 	// set name for category
@@ -435,17 +433,4 @@ QByteArray MyWidgetModel::findWidgetConfigRecursive(WWidgetNode * wparent, QStri
 		}
 	}
 	return QByteArray();
-}
-
-QMap<QString, QIcon> &
-MyWidgetModel::getMapIconsByClassName()
-{
-    static QMap<QString, QIcon> cache;
-    static auto conn = QObject::connect(qApp,
-                                        &QCoreApplication::aboutToQuit,
-                                        [&]{
-        qDebug() << "clearing icon cache";
-        cache.clear();
-    });
-    return cache;
 }

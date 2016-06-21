@@ -93,8 +93,6 @@ public:
 				     
 	void             replaceUniqueId(QString oldId, QString newId);
 				     
-	void             setMapIconsByClassName(const QMap<QString, QIcon> &mapIcons);
-				     
 	bool             isHiddenRootElem(WDomElem * elem);
 				     
 	QString          findCloserContainer(QString &name);
@@ -139,8 +137,6 @@ private:
 	QByteArray   execXQueryOnConfig(QString strQuery);
 
 	QList<QString> mstrlistAllIds;
-
-	QMap<QString, QIcon> m_mapIconByClassName;
 };
 
 #endif // WQTREEMODEL_H

@@ -149,8 +149,6 @@ void MainPage::create()
 
 void MainPage::destroy()
 {
-    qDebug() << __FUNCTION__;
-
     // mark wtapp disconnected from mainwindow if connected
     if (thisQtConnected)
     {
