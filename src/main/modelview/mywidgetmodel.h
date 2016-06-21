@@ -63,8 +63,6 @@ public:
 				   
 	void           debugPrintState(QString header = "");
 
-	static QMap<QString, QIcon> m_mapIconByClassName;
-
 private:		   
 	WWIDGETNODETYPE         m_intNodeType; // could be "root", "category", "widget"
 	QString                 m_strPath;
@@ -97,7 +95,7 @@ public:
 
 	QByteArray    getWidgetConfigByName(QString strWidgetName);
 
-	QMap<QString, QIcon> getMapIconsByClassName();
+	static QMap<QString, QIcon> & getMapIconsByClassName();
 
 private:
 	WWidgetNode   * wRootNode;

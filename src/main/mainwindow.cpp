@@ -33,7 +33,7 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
 	m_pwidgetmodel = new MyWidgetModel(g_strLocalWidgetsPath, this); // widget model should come first because it loads the icons
 	ui.treeviewWtWidgets->setModel(m_pwidgetmodel);
 	ui.treeviewWtWidgets->expandAll();
-	m_treemodel.setMapIconsByClassName(m_pwidgetmodel->getMapIconsByClassName()); // pass icons from widget model to tree model
+	m_treemodel.setMapIconsByClassName(MyWidgetModel::getMapIconsByClassName()); // pass icons from widget model to tree model
 	ui.treeviewWtTree->setModel(&m_treemodel);
 	ui.treeviewWtProperties->setModel(&m_propertymodel);
 	ui.treeviewWtSignalsSlots->setModel(&m_sigslotmodel);
@@ -1417,7 +1417,7 @@ void MainWindow::on_treeviewWtTree_contextMenu(const QPoint &point)
 	QModelIndex index = ui.treeviewWtTree->indexAt(point);
 
 	// for icons
-    QMap<QString, QIcon>  mapIcons = m_pwidgetmodel->getMapIconsByClassName();
+    auto &mapIcons = MyWidgetModel::getMapIconsByClassName();
 
 	if (!index.isValid())
 	{

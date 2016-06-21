@@ -880,7 +880,7 @@ void MyTreeModel::getUniqueIdList(QDomElement *elem)
 	}
 }
 
-void MyTreeModel::setMapIconsByClassName(QMap<QString, QIcon> mapIcons)
+void MyTreeModel::setMapIconsByClassName(const QMap<QString, QIcon> &mapIcons)
 {
 	m_mapIconByClassName = mapIcons;
 }

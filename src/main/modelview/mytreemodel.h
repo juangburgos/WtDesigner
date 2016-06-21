@@ -93,7 +93,7 @@ public:
 				     
 	void             replaceUniqueId(QString oldId, QString newId);
 				     
-	void             setMapIconsByClassName(QMap<QString, QIcon> mapIcons);
+	void             setMapIconsByClassName(const QMap<QString, QIcon> &mapIcons);
 				     
 	bool             isHiddenRootElem(WDomElem * elem);
 				     
