@@ -402,6 +402,8 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 {
 	QObject *object = NULL;
 
+	bool validRow = irow >= 0 && irow < static_cast<int>(wparent->children().size());
+
 	if (!wparent)
 	{
 		wparent = GetWContainerParent(qparent);
@@ -409,7 +411,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 
 	if (element->attribute("Wt_className").compare("WContainerWidget") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtContainerWidget(NULL, qparent);
 			Wt::WContainerWidget *wwobject = dynamic_cast<Wt::WContainerWidget*>(object);
@@ -420,7 +422,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WAnchor") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtAnchor(NULL, qparent);
 			Wt::WAnchor *wwobject = dynamic_cast<Wt::WAnchor*>(object); // [NOTE] changed casting to wanchor otherwise crash (this is because WtQtAnchor already inerits from a mixed-class)
@@ -431,7 +433,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WText") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtText(NULL, qparent);
 			Wt::WText *wwobject = dynamic_cast<Wt::WText*>(object);
@@ -442,7 +444,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WLineEdit") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtLineEdit(NULL, qparent);
 			Wt::WLineEdit *wwobject = dynamic_cast<Wt::WLineEdit*>(object);
@@ -453,7 +455,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WImage") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtImage(NULL, qparent);
 			Wt::WImage *wwobject = dynamic_cast<Wt::WImage*>(object);
@@ -464,7 +466,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WPushButton") == 0) // [TODO] first part was commented?
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtPushButton(NULL, qparent);
 			Wt::WPushButton *wwobject = dynamic_cast<Wt::WPushButton*>(object);
@@ -475,7 +477,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WTemplate") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtTemplate(NULL, qparent);
 			Wt::WTemplate *wwobject = dynamic_cast<Wt::WTemplate*>(object);
@@ -486,7 +488,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WSplitButton") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtSplitButton(NULL, qparent);
 			Wt::WSplitButton *wwobject = dynamic_cast<Wt::WSplitButton*>(object);
@@ -497,7 +499,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WRadioButton") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtRadioButton(NULL, qparent);
 			Wt::WRadioButton *wwobject = dynamic_cast<Wt::WRadioButton*>(object);
@@ -508,7 +510,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WCheckBox") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtCheckBox(NULL, qparent);
 			Wt::WCheckBox *wwobject = dynamic_cast<Wt::WCheckBox*>(object);
@@ -519,7 +521,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WComboBox") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtComboBox(NULL, qparent);
 			Wt::WComboBox *wwobject = dynamic_cast<Wt::WComboBox*>(object);
@@ -530,7 +532,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WInPlaceEdit") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtInPlaceEdit(NULL, qparent);
 			Wt::WInPlaceEdit *wwobject = dynamic_cast<Wt::WInPlaceEdit*>(object);
@@ -541,7 +543,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WTextArea") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtTextArea(NULL, qparent);
 			Wt::WTextArea *wwobject = dynamic_cast<Wt::WTextArea*>(object);
@@ -552,7 +554,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WSelectionBox") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtSelectionBox(NULL, qparent);
 			Wt::WSelectionBox *wwobject = dynamic_cast<Wt::WSelectionBox*>(object); 
@@ -563,7 +565,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WSpinBox") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtSpinBox(NULL, qparent);
 			Wt::WSpinBox *wwobject = dynamic_cast<Wt::WSpinBox*>(object); 
@@ -574,7 +576,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WDoubleSpinBox") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtDoubleSpinBox(NULL, qparent);
 			Wt::WDoubleSpinBox *wwobject = dynamic_cast<Wt::WDoubleSpinBox*>(object); 
@@ -585,7 +587,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WTimeEdit") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtTimeEdit(NULL, qparent);
 			Wt::WTimeEdit *wwobject = dynamic_cast<Wt::WTimeEdit*>(object); 
@@ -596,7 +598,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WDateEdit") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtDateEdit(NULL, qparent);
 			Wt::WDateEdit *wwobject = dynamic_cast<Wt::WDateEdit*>(object); 
@@ -607,7 +609,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WCalendar") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtWCalendar(NULL, qparent);
 			Wt::WCalendar *wwobject = dynamic_cast<Wt::WCalendar*>(object);
@@ -618,7 +620,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WSlider") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtSlider(NULL, qparent);
 			Wt::WSlider *wwobject = dynamic_cast<Wt::WSlider*>(object);
@@ -629,7 +631,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WFileUpload") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtFileUpload(NULL, qparent);
 			Wt::WFileUpload *wwobject = dynamic_cast<Wt::WFileUpload*>(object);
@@ -640,7 +642,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WProgressBar") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtProgressBar(NULL, qparent);
 			Wt::WProgressBar *wwobject = dynamic_cast<Wt::WProgressBar*>(object);
@@ -651,7 +653,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WGroupBox") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtGroupBox(NULL, qparent);
 			Wt::WGroupBox *wwobject = dynamic_cast<Wt::WGroupBox*>(object);
@@ -662,7 +664,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WPanel") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtPanel(NULL, qparent);
 			Wt::WPanel *wwobject = dynamic_cast<Wt::WPanel*>(object);
@@ -673,7 +675,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WStackedWidget") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtStackedWidget(NULL, qparent);
 			Wt::WStackedWidget *wwobject = dynamic_cast<Wt::WStackedWidget*>(object);
@@ -684,7 +686,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WTabWidget") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtTabWidget(NULL, qparent);
 			Wt::WTabWidget *wwobject = dynamic_cast<Wt::WTabWidget*>(object);
@@ -709,7 +711,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WMenu") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtMenu(NULL, qparent);
 			Wt::WMenu *wwobject = dynamic_cast<Wt::WMenu*>(object);
@@ -734,7 +736,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WPopupMenu") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtPopupMenu(NULL, qparent);
 			Wt::WWidget *wwobject = dynamic_cast<WtQtPopupMenu*>(object)->getInternalWWidget();
@@ -762,7 +764,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WTable") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtTable(NULL, qparent);
 			Wt::WTable *wwobject = dynamic_cast<Wt::WTable*>(object);
@@ -773,7 +775,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WTree") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtTree(NULL, qparent);
 			Wt::WTree *wwobject = dynamic_cast<Wt::WTree*>(object);
@@ -784,7 +786,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WTreeTable") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtTreeTable(NULL, qparent);
 			Wt::WTreeTable *wwobject = dynamic_cast<Wt::WTreeTable*>(object);
@@ -795,7 +797,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WNavigationBar") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtNavigationBar(NULL, qparent);
 			Wt::WNavigationBar *wwobject = dynamic_cast<Wt::WNavigationBar*>(object);
@@ -806,7 +808,7 @@ QObject * MainPage::CreateWtQtInstance(QDomElement * element, int irow, Wt::WCon
 	}
 	else if (element->attribute("Wt_className").compare("WPromotedWidget") == 0)
 	{
-		if (irow >= 0 && irow < wparent->children().size())
+		if (validRow)
 		{
 			object = new WtQtPromotedWidget(NULL, qparent);
 			Wt::WContainerWidget *wwobject = dynamic_cast<Wt::WContainerWidget*>(object);
