@@ -24,24 +24,30 @@
 
 bool MainPage::qtConnected = false;
 
-MainPage::MainPage(const Wt::WEnvironment& env, MainWindow *mainwindow) :
-	Wt::WQApplication(env, true) // [IMPORTANT] : second param has to be set to TRUE
+MainPage::MainPage(const Wt::WEnvironment& env, MainWindow *mainwindow)
+        : Wt::WQApplication(env, true) // [IMPORTANT] : second param has to be set to TRUE
+        , m_mainwindow(mainwindow)
+        , m_qtroot(nullptr)
+        , thisQtConnected(false)
 {
-	m_mainwindow = mainwindow;
-	m_qtroot     = NULL; 
-	// necessary to dynamically update webpage
-	enableUpdates(true);
-	// don't know if necessary
-	Wt::WString::setDefaultEncoding(Wt::UTF8);
+    // necessary to dynamically update webpage
+    enableUpdates(true);
+    // don't know if necessary
+    Wt::WString::setDefaultEncoding(Wt::UTF8);
 }
 
 MainPage::~MainPage()
 {
-
 }
 
 void MainPage::create()
 {
+    /* prevent leakage in case of double allocation */
+    if (m_qtroot)
+    {
+        qCritical() << "main page already initialized";
+        return;
+    }
 	QEventLoop evtblocker;
 	m_qtroot = new SignalEmiter(NULL, this);
 	// from mainwindow to mainpage
@@ -143,20 +149,26 @@ void MainPage::create()
 
 void MainPage::destroy()
 {
-	// mark wtapp disconnected from mainwindow if connected
-	if (thisQtConnected)
-	{
-		// mark as not connected
-		thisQtConnected = false;
-		qtConnected = false;
-	}
-	// clear connections list
-	qDeleteAll(m_qtroot->m_listConnections);
-	m_qtroot->m_listConnections.clear();
-	// delete qt object
-	delete m_qtroot;
+    qDebug() << __FUNCTION__;
 
+    // mark wtapp disconnected from mainwindow if connected
+    if (thisQtConnected)
+    {
+        // mark as not connected
+        thisQtConnected = false;
+        qtConnected = false;
+    }
+    if (m_qtroot)
+    {
+        // clear connections list
+        qDeleteAll(m_qtroot->m_listConnections);
+        m_qtroot->m_listConnections.clear();
+        // delete qt object
+        delete m_qtroot;
+        m_qtroot = nullptr;
+    }
 }
+
 // TODO : FIX BY SEPARATING INTO TWO DIFFFERENT FUNCTIONS
 void MainPage::LoadRecursiveTree(QDomElement element, Wt::WContainerWidget *wparent/*=0*/, QObject *qparent/*=0*/, int irow/*=-1*/)
 {
@@ -1103,7 +1115,7 @@ void SignalEmiter::on_InsertConfig(QByteArray strConfigFraction, QString strPare
 
 void SignalEmiter::on_GenerateAutoGenCpp(QString strProjName)
 {
-	Q_EMIT SendAutoGenCpp(GetAutoGenCpp(mp_owner->m_qtroot, strProjName));
+	Q_EMIT SendAutoGenCpp(GetAutoGenCpp(mp_owner->GetQtRoot(), strProjName));
 }
 
 
@@ -1153,7 +1165,7 @@ void SignalEmiter::on_UpdateAllProperties()
 	if (lock)
 	{
 		// Update all properties
-		HelpUpdateAllProperties(mp_owner->m_qtroot);
+		HelpUpdateAllProperties(mp_owner->GetQtRoot());
 		// Push the changes to the browser
 		mp_owner->triggerUpdate();
 	}
