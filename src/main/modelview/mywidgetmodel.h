@@ -29,7 +29,6 @@
 #include <QFile>
 #include <QIcon>
 
-
 //#include <algorithm>
 
 enum WWIDGETNODETYPE
@@ -63,8 +62,6 @@ public:
 				   
 	void           debugPrintState(QString header = "");
 
-	static QMap<QString, QIcon> m_mapIconByClassName;
-
 private:		   
 	WWIDGETNODETYPE         m_intNodeType; // could be "root", "category", "widget"
 	QString                 m_strPath;
@@ -96,8 +93,6 @@ public:
 	QModelIndex   parent     ( const QModelIndex &index )                                             const;
 
 	QByteArray    getWidgetConfigByName(QString strWidgetName);
-
-	QMap<QString, QIcon> getMapIconsByClassName();
 
 private:
 	WWidgetNode   * wRootNode;

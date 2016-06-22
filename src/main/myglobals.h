@@ -19,6 +19,7 @@
 #define MY_GLOBALS_H
 
 #include <QString>
+#include <QIcon>
 
 const QString g_strLocalRootPath      = "./"      ;
 const QString g_strLocalResourcesPath = "./resources/";
@@ -56,5 +57,14 @@ const QString g_strThemeBootstrat3 = "Boostrap 3";
 const QString g_strThemeAttr    = "Wt_theme";
 const QString g_strTitleAttr    = "Wt_title";
 
+/** Global icon cache.
+ *
+ * See https://bugreports.qt.io/browse/QTBUG-50829
+ */
+class Icons
+{
+public:
+    static QMap<QString, QIcon> & GetCache();
+};
 
 #endif

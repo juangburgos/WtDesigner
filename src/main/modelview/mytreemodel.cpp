@@ -341,7 +341,7 @@ QVariant MyTreeModel::data(const QModelIndex &index, int role) const
 	{
 		if ( index.column() == 1 )
 		{
-			return m_mapIconByClassName.value(strClassName);
+			return Icons::GetCache().value(strClassName);
 		}
 	}
 
@@ -878,11 +878,6 @@ void MyTreeModel::getUniqueIdList(QDomElement *elem)
         QDomElement elemTemp = elem->childNodes().at(i).toElement();
         getUniqueIdList(&elemTemp);
 	}
-}
-
-void MyTreeModel::setMapIconsByClassName(QMap<QString, QIcon> mapIcons)
-{
-	m_mapIconByClassName = mapIcons;
 }
 
 bool MyTreeModel::isHiddenRootElem(WDomElem * elem)

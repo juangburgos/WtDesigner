@@ -33,10 +33,11 @@ TARGET        = WtDesigner
 
 CONFIG       -= flat
 CONFIG       += no_batch
+CONFIG       += debug_and_release
 
 QT           += core xml widgets gui webkitwidgets svg xmlpatterns
 
-DEFINES      += QT_DLL QT_WEBKITWIDGETS_LIB QT_WIDGETS_LIB QT_XML_LIB 
+DEFINES      += QT_DLL QT_WEBKITWIDGETS_LIB QT_WIDGETS_LIB QT_XML_LIB
 
 DESTDIR       = ../../bin/WtDesigner/
 
@@ -56,7 +57,6 @@ HEADERS      += ./myglobals.h                                   \
                 ./mixedclasses.h                                \
                 ./myundocommands.h                              \                
                 ./mywebview.h                                   \
-                ./wtserverworker.h                              \
                 ./helperfunctions.h                             \
                 ./wtwithqtlib/DispatchThread.h                  \
                 ./wtwithqtlib/WQApplication.h                   \
@@ -80,9 +80,9 @@ SOURCES      += ./main.cpp                                      \
                 ./mainpage.cpp                                  \
                 ./mainwindow.cpp                                \
 		./mixedclasses.cpp                              \
+		./myglobals.cpp									\
 		./myundocommands.cpp                            \				
-                ./mywebview.cpp                                 \               
-                ./wtserverworker.cpp                            \
+                ./mywebview.cpp                                 \
                 ./helperfunctions.cpp                           \
                 ./wtwithqtlib/DispatchThread.cpp                \
                 ./wtwithqtlib/WQApplication.cpp                 \

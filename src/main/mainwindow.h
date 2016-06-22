@@ -18,6 +18,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <Wt/WServer>
+
 #include <QMainWindow>
 #include <QScrollArea>
 #include <QFileDialog>
@@ -44,7 +46,6 @@
 
 #include "myundocommands.h"
 
-#include "wtserverworker.h"
 #include "myglobals.h"
 
 #include "./dialogs/dialogconfig/dialogconfig.h"
@@ -202,7 +203,7 @@ private:
 	int                m_argc;
 	char             **m_argv;
 	QVector<QString>   m_vectWtParams;
-	WtServerWorker    *mp_WtServerWorker;
+	std::unique_ptr<Wt::WServer> m_server;
 					  
 	MyWebView         *m_WebView;
 	QString            m_Address;
