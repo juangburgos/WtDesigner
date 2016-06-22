@@ -2,19 +2,19 @@
 
 ***
 
-[Download Windows Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Windowsx64/v.1.0.2/)
+[Download Windows Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Windowsx64/v.1.0.3/)
 
 * Install "vcredist_x64.exe" before running WtDesigner for the first time.
 * Run WtDesigner with Administrator rights in Windows.
 
 ***
 
-[Download Linux Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Linux64/v.1.0.2/)
+[Download Linux Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Linux64/v.1.0.3/)
 
 * Might be necessary to:
 
 ```bash
-$ chmod +x ./WtDesignerInstallerV.1.0.2.run
+$ chmod +x ./WtDesignerInstallerV.1.0.3.run
 ```
 
 * Tested on **CentOS7** and **Ubuntu14.04**
@@ -28,6 +28,16 @@ $ chmod +x ./WtDesignerInstallerV.1.0.2.run
 ## What
 
 A WYSIWYG (What You See Is What You Get) front-end editor which serves as bride between HTML/CSS and the [Wt C++ library](http://www.webtoolkit.eu/wt). It helps create web applications using C++ and the Wt library with just a few clicks. It also simplifies the usage of the Wt library by auto generating most of the boilerplate code and previewing the graphics of the end result without having to compile any C++ code.
+
+***
+
+## Who
+
+List of contributors:
+
+* [juangburgos](https://github.com/juangburgos).
+
+* [cls-nebadje](https://github.com/cls-nebadje).
 
 ***
 
