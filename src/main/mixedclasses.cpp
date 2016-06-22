@@ -2079,52 +2079,52 @@ void WtQtDateEdit::Wt_setFormat(QString format)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtWCalendar::WtQtWCalendar(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WCalendar(wparent), WtQtCompositeWidget(qparent)
+WtQtCalendar::WtQtCalendar(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WCalendar(wparent), WtQtCompositeWidget(qparent)
 {
 
 }
 
-WtQtWCalendar::WtQtWCalendar(const WtQtWCalendar& other)
+WtQtCalendar::WtQtCalendar(const WtQtCalendar& other)
 {
 	Q_UNUSED(other)
 }
 
-WtQtWCalendar::~WtQtWCalendar()
+WtQtCalendar::~WtQtCalendar()
 {
 
 }
 
-QString WtQtWCalendar::Wt_className()
+QString WtQtCalendar::Wt_className()
 {
 	return "WCalendar";
 }
 
-QString WtQtWCalendar::Wt_id()
+QString WtQtCalendar::Wt_id()
 {
 	return QString::fromStdString(id());
 }
 
-void WtQtWCalendar::Wt_setId(QString id)
+void WtQtCalendar::Wt_setId(QString id)
 {
 	setId(id.toStdString());
 }
 
-QString WtQtWCalendar::Wt_styleClass()
+QString WtQtCalendar::Wt_styleClass()
 {
 	return QString::fromStdString(styleClass().toUTF8());
 }
 
-void WtQtWCalendar::Wt_setStyleClass(QString styleclass)
+void WtQtCalendar::Wt_setStyleClass(QString styleclass)
 {
 	setStyleClass(Wt::WString::fromUTF8(styleclass.toStdString()));
 }
 
-QString WtQtWCalendar::Wt_isInline()
+QString WtQtCalendar::Wt_isInline()
 {
 	return QString("%1").arg(isInline());
 }
 
-void WtQtWCalendar::Wt_setInline(QString isinline)
+void WtQtCalendar::Wt_setInline(QString isinline)
 {
 	setInline(isinline.toUInt());
 }
@@ -4286,7 +4286,7 @@ QString WtQtProgressBar::Cpp_value()
 
 QString WtQtGroupBox::Cpp_title()
 {
-	return Wt_id() + "->setTitle(" + Wt_title() + ");";
+	return Wt_id() + "->setTitle(Wt::WString::fromUTF8(\"" + Wt_title() + "\"));";
 }
 
 QString WtQtGroupBox::Cpp_htmlTagName()
@@ -4297,7 +4297,7 @@ QString WtQtGroupBox::Cpp_htmlTagName()
 
 QString WtQtPanel::Cpp_title()
 {
-	return Wt_id() + "->setTitle(" + Wt_title() + ");";
+	return Wt_id() + "->setTitle(Wt::WString::fromUTF8(\"" + Wt_title() + "\"));";
 }
 
 QString WtQtPanel::Cpp_isCollapsible()

@@ -51,8 +51,8 @@ public:
 	MainPage(const Wt::WEnvironment& env, MainWindow *mainwindow);
 	~MainPage();
 
-	void create();
-	void destroy();
+	virtual void create();
+	virtual void destroy();
 
 	void SetupUi(Wt::WContainerWidget *wtroot);
 
@@ -68,13 +68,16 @@ public:
 	bool PerformConnection(Wt_ConnectionConfig *conConfig);
 	bool PerformDisconnection(Wt_ConnectionConfig *conConfig);
 
-	SignalEmiter * m_qtroot;
+    SignalEmiter * GetQtRoot()
+    {
+        return m_qtroot;
+    }
+private:
+    MainWindow *m_mainwindow;
+    SignalEmiter * m_qtroot;
 
-	bool thisQtConnected;
-	static bool qtConnected;
-
-	MainWindow *m_mainwindow;
-	
+    bool thisQtConnected;
+    static bool qtConnected;
 };
 
 class SignalEmiter : public WtQtInteractWidget // instead of inheriting WContainerWidget, it contains a ref to one

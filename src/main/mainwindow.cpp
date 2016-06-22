@@ -19,11 +19,12 @@
 #include "mainwindow.h"
 #include "helperfunctions.h"
 
+#include "mainpage.h"
+
+
 MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
 	: QMainWindow(parent)
 {
-	// create the wt server
-	mp_WtServerWorker = new WtServerWorker(this);
 	// setup the main window ui
 	ui.setupUi(this);
 	// set all icons color
@@ -32,7 +33,6 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
 	m_pwidgetmodel = new MyWidgetModel(g_strLocalWidgetsPath, this); // widget model should come first because it loads the icons
 	ui.treeviewWtWidgets->setModel(m_pwidgetmodel);
 	ui.treeviewWtWidgets->expandAll();
-	m_treemodel.setMapIconsByClassName(m_pwidgetmodel->getMapIconsByClassName()); // pass icons from widget model to tree model
 	ui.treeviewWtTree->setModel(&m_treemodel);
 	ui.treeviewWtProperties->setModel(&m_propertymodel);
 	ui.treeviewWtSignalsSlots->setModel(&m_sigslotmodel);
@@ -127,8 +127,7 @@ MainWindow::~MainWindow()
 {
 	// Stop Wt server
 	StopWtServer();
-	// Delete Wt server
-	delete mp_WtServerWorker;
+
 	// Delete old local /resources/ and /temp/ folders
 	if (QDir(g_strLocalResourcesPath).exists()) { QDir(g_strLocalResourcesPath).removeRecursively(); }
 	if (QDir(g_strLocalTempPath).exists())   { QDir(g_strLocalTempPath).removeRecursively();   }
@@ -425,48 +424,77 @@ void MainWindow::LoadDefaultConfig()
 
 void MainWindow::StartWtServer()
 {
-	// (re)configure ip address for webview
-	m_Address = "http://127.0.0.1:" + m_vectWtParams[WT_VALHTTPPORT];
-	// set settings related attrs that might have changed in settings dialog
-	QDomElement docElem = m_treemodel.getDocument().documentElement();
-	docElem.setAttribute(g_strThemeAttr, m_strWtTheme);
-	docElem.setAttribute(g_strTitleAttr, m_strWtTitle);
-	// start Wt server
-	mp_WtServerWorker->ConfigureWtServer(m_vectWtParams);
-	mp_WtServerWorker->start();
-	// load page [IMPORTANT] : DO NOT DELETE LINE BELOW OR PAGE WILL NEVER LOAD
-	on_LoadPage();
+    if (m_server)
+    {
+        StopWtServer();
+    }
+
+    // (re)configure ip address for webview
+    m_Address = "http://127.0.0.1:" + m_vectWtParams[WT_VALHTTPPORT];
+
+    // set settings related attrs that might have changed in settings dialog
+    QDomElement docElem = m_treemodel.getDocument().documentElement();
+    docElem.setAttribute(g_strThemeAttr, m_strWtTheme);
+    docElem.setAttribute(g_strTitleAttr, m_strWtTitle);
+
+    std::vector<std::string> args;
+    for (const auto &s : m_vectWtParams)
+    {
+        args.emplace_back(s.toStdString());
+    }
+    std::vector<char *> argv;
+    for (const auto &s : args)
+    {
+        argv.emplace_back(const_cast<char *>(s.c_str()));
+    }
+    m_server = std::unique_ptr < Wt::WServer
+            > (new Wt::WServer(argv.size(), argv.data()));
+
+    auto wtApplicationFactory = [&](const Wt::WEnvironment& env)
+    {
+        return new MainPage(env, this);
+    };
+    m_server->addEntryPoint(Wt::Application, wtApplicationFactory);
+
+    try
+    {
+        m_server->start();
+    } catch (const Wt::WServer::Exception &e)
+    {
+        qCritical() << "wt server start failed with: " << e.what();
+        m_server = decltype(m_server)();
+        return;
+    }
+    // load page [IMPORTANT] : DO NOT DELETE LINE BELOW OR PAGE WILL NEVER LOAD
+    on_LoadPage();
 }
 
-void MainWindow::StopWtServer() 
+void MainWindow::StopWtServer()
 {
-	// load something else
-	m_WebView->load(QUrl("http://www.webtoolkit.eu/wt"));
-	// shutdown Wt server
-	if (mp_WtServerWorker->isRunning())
-	{
-		mp_WtServerWorker->quit();
-	}
-	// wait if necessary
-	int counter = 0;
-	while (mp_WtServerWorker->isRunning())
-	{
-		QThread::msleep(100);
-		QApplication::processEvents();
-		counter++;
-		if (counter == 15)
-		{
-			break;
-		}
-	}
-	if (counter == 15)
-	{
-		qDebug() << "[ERROR] Could not stop Wt Server cleanly";
-		mp_WtServerWorker->quit();
-		mp_WtServerWorker->terminate();
-	}
-	// [NOTE] very important
-	m_WebView->settings()->clearMemoryCaches();
+    if (!m_server)
+    {
+        return;
+    }
+
+    // load something else
+    m_WebView->load(QUrl("http://www.webtoolkit.eu/wt"));
+
+    // shutdown Wt server
+    if (m_server->isRunning())
+    {
+        try
+        {
+            m_server->stop();
+        } catch (const Wt::WServer::Exception &e)
+        {
+            qCritical() << "wt server stop failed with: " << e.what();
+        }
+    }
+    // dispose Wt server object by resetting unique_ptr
+    m_server = decltype(m_server)();
+
+    // [NOTE] very important
+    m_WebView->settings()->clearMemoryCaches();
 }
 
 void MainWindow::LoadFileConfig(QByteArray config) 
@@ -1341,8 +1369,8 @@ void MainWindow::on_actionPreferences_triggered()
 
 void MainWindow::on_ReloadWtServer()
 {
-	StopWtServer(); 
-	StartWtServer();
+    StopWtServer();
+    StartWtServer();
 #ifdef Q_OS_WIN
 	// because this is called when config is changed (i.e. the lib path might have changed)
 	m_listLibFileNames.clear();
@@ -1388,7 +1416,7 @@ void MainWindow::on_treeviewWtTree_contextMenu(const QPoint &point)
 	QModelIndex index = ui.treeviewWtTree->indexAt(point);
 
 	// for icons
-    QMap<QString, QIcon>  mapIcons = m_pwidgetmodel->getMapIconsByClassName();
+    auto &mapIcons = Icons::GetCache();
 
 	if (!index.isValid())
 	{

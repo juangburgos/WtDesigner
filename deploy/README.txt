@@ -22,7 +22,7 @@ All
 
 Generate installer with:
 
-binarycreator --offline-only -c config/config.xml -p packages WtDesignerInstallerV.1.0.2.exe
+binarycreator --offline-only -c config/config.xml -p packages WtDesignerInstallerV.1.0.3.exe
 
 PATH=$PATH:/home/juangburgos/Qt/QtIFW2.0.1/bin/
-binarycreator --offline-only -c config/config_nix.xml -p packages WtDesignerInstallerV.1.0.2.run
+binarycreator --offline-only -c config/config_nix.xml -p packages WtDesignerInstallerV.1.0.3.run

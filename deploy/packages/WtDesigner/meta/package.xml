@@ -2,8 +2,8 @@
 <Package>
     <DisplayName>WtDesigner</DisplayName>
     <Description>A WYSIWYG designer for the Wt C++ library.</Description>
-    <Version>1.0.2</Version>
-    <ReleaseDate>2016-05-16</ReleaseDate>
+    <Version>1.0.3</Version>
+    <ReleaseDate>2016-06-16</ReleaseDate>
     <Default>true</Default>
     <Script>installscript.qs</Script>
     <ForcedInstallation>true</ForcedInstallation>
