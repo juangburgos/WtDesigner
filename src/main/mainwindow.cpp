@@ -471,7 +471,7 @@ void MainWindow::StartWtServer()
 
 void MainWindow::StopWtServer()
 {
-    if (not m_server)
+    if (!m_server)
     {
         return;
     }
