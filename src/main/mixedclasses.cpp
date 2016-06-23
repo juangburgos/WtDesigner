@@ -138,7 +138,10 @@ WtQtWidget::Wt_Slots_ WtQtWidget::GetSlotEnumByName(QString name)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtContainerWidget::WtQtContainerWidget(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WContainerWidget(wparent), WtQtInteractWidget(qparent)
+WtQtContainerWidget::WtQtContainerWidget(Wt::WContainerWidget *wparent /*= 0*/,
+                                         QObject *qparent /*= 0*/)
+    : WtQtInteractWidget(qparent)
+    , Wt::WContainerWidget(wparent)
 {
 
 }
@@ -206,7 +209,10 @@ void WtQtContainerWidget::Wt_setHtmlTagName(QString tagname)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtAnchor::WtQtAnchor(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WAnchor(wparent), WtQtContainerWidget(wparent, qparent)
+WtQtAnchor::WtQtAnchor(Wt::WContainerWidget *wparent /*= 0*/,
+                       QObject *qparent /*= 0*/)
+    : WtQtContainerWidget(wparent, qparent)
+    , Wt::WAnchor(wparent)
 {
 
 }
@@ -342,7 +348,10 @@ void WtQtAnchor::Wt_setTextFormat(QString textFormat)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtText::WtQtText(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WText(wparent), WtQtInteractWidget(qparent)
+WtQtText::WtQtText(Wt::WContainerWidget *wparent /*= 0*/,
+                   QObject *qparent /*= 0*/)
+    : WtQtInteractWidget(qparent)
+    , Wt::WText(wparent)
 {
 
 }
@@ -482,7 +491,10 @@ void WtQtText::Wt_setTextFormat(QString textFormat)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtLineEdit::WtQtLineEdit(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WLineEdit(wparent), WtQtFormWidget(qparent)
+WtQtLineEdit::WtQtLineEdit(Wt::WContainerWidget *wparent /*= 0*/,
+                           QObject *qparent /*= 0*/)
+    : WtQtFormWidget(qparent)
+    , Wt::WLineEdit(wparent)
 {
 	m_boolIsSearch = false;
 	// check if parent is navbar
@@ -568,7 +580,10 @@ void WtQtLineEdit::Wt_setEmptyText(QString emptytext)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtPushButton::WtQtPushButton(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WPushButton(wparent), WtQtFormWidget(qparent)
+WtQtPushButton::WtQtPushButton(Wt::WContainerWidget *wparent /*= 0*/,
+                               QObject *qparent /*= 0*/)
+    : WtQtFormWidget(qparent)
+    , Wt::WPushButton(wparent)
 {
 
 }
@@ -674,7 +689,10 @@ void WtQtPushButton::Wt_setLink(QString link)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtImage::WtQtImage(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WImage(wparent), WtQtInteractWidget(qparent)
+WtQtImage::WtQtImage(Wt::WContainerWidget *wparent /*= 0*/,
+                     QObject *qparent /*= 0*/)
+    : WtQtInteractWidget(qparent)
+    , Wt::WImage(wparent)
 {
 	strImageLink = "";
 }
@@ -752,7 +770,10 @@ void WtQtImage::Wt_setImageLink(QString imagelink)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtTemplate::WtQtTemplate(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WTemplate(wparent), WtQtInteractWidget(qparent)
+WtQtTemplate::WtQtTemplate(Wt::WContainerWidget *wparent /*= 0*/,
+                           QObject *qparent /*= 0*/)
+    : WtQtInteractWidget(qparent)
+    , Wt::WTemplate(wparent)
 {
 	m_textFormat = Wt::XHTMLText;
 }
@@ -863,7 +884,10 @@ void WtQtTemplate::Wt_setTextFormat(QString textFormat)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtSplitButton::WtQtSplitButton(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WSplitButton(wparent), WtQtCompositeWidget(qparent)
+WtQtSplitButton::WtQtSplitButton(Wt::WContainerWidget *wparent /*= 0*/,
+                                 QObject *qparent /*= 0*/)
+    : WtQtCompositeWidget(qparent)
+    , Wt::WSplitButton(wparent)
 {
 
 }
@@ -971,7 +995,10 @@ void WtQtSplitButton::Wt_setAllItems(QString strAllItems)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtRadioButton::WtQtRadioButton(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WRadioButton("Some Text", wparent), WtQtAbstractToggleButton(qparent)
+WtQtRadioButton::WtQtRadioButton(Wt::WContainerWidget *wparent /*= 0*/,
+                                 QObject *qparent /*= 0*/)
+    : WtQtAbstractToggleButton(qparent)
+    , Wt::WRadioButton("Some Text", wparent)
 {
 	m_printed = false;
 	m_qtparent = dynamic_cast<WtQtWidget*>(qparent);
@@ -1158,7 +1185,10 @@ void WtQtRadioButton::clearAllPrinted()
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtCheckBox::WtQtCheckBox(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WCheckBox("Some Text", wparent), WtQtAbstractToggleButton(qparent)
+WtQtCheckBox::WtQtCheckBox(Wt::WContainerWidget *wparent /*= 0*/,
+                           QObject *qparent /*= 0*/)
+    : WtQtAbstractToggleButton(qparent)
+    , Wt::WCheckBox("Some Text", wparent)
 {
 
 }
@@ -1244,7 +1274,10 @@ void WtQtCheckBox::Wt_setText(QString text)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtComboBox::WtQtComboBox(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WComboBox(wparent), WtQtFormWidget(qparent)
+WtQtComboBox::WtQtComboBox(Wt::WContainerWidget *wparent /*= 0*/,
+                           QObject *qparent /*= 0*/)
+    : WtQtFormWidget(qparent)
+    , Wt::WComboBox(wparent)
 {
 
 }
@@ -1354,7 +1387,10 @@ void WtQtComboBox::Wt_setAllItems(QString strAllItems)
 */
 
 
-WtQtInPlaceEdit::WtQtInPlaceEdit(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WInPlaceEdit("This is editable text", wparent), WtQtCompositeWidget(qparent)
+WtQtInPlaceEdit::WtQtInPlaceEdit(Wt::WContainerWidget *wparent /*= 0*/,
+                                 QObject *qparent /*= 0*/)
+    : WtQtCompositeWidget(qparent)
+    , Wt::WInPlaceEdit("This is editable text", wparent)
 {
 	m_boolButtonsEnabled = true;
 }
@@ -1440,7 +1476,10 @@ void WtQtInPlaceEdit::Wt_setButtonsEnabled(QString isinline)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtTextArea::WtQtTextArea(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WTextArea(wparent), WtQtFormWidget(qparent)
+WtQtTextArea::WtQtTextArea(Wt::WContainerWidget *wparent /*= 0*/,
+                           QObject *qparent /*= 0*/)
+    : WtQtFormWidget(qparent)
+    , Wt::WTextArea(wparent)
 {
 
 }
@@ -1546,7 +1585,10 @@ void WtQtTextArea::Wt_setRows(QString rows)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtSelectionBox::WtQtSelectionBox(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WSelectionBox(wparent), WtQtComboBox(wparent, qparent)
+WtQtSelectionBox::WtQtSelectionBox(Wt::WContainerWidget *wparent /*= 0*/,
+                                   QObject *qparent /*= 0*/)
+    : WtQtComboBox(wparent, qparent)
+    , Wt::WSelectionBox(wparent)
 {
 	WtQtComboBox::setHidden(true);
 }
@@ -1655,7 +1697,10 @@ void WtQtSelectionBox::Wt_setAllItems(QString strAllItems)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtSpinBox::WtQtSpinBox(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WSpinBox(wparent), WtQtLineEdit(wparent, qparent)
+WtQtSpinBox::WtQtSpinBox(Wt::WContainerWidget *wparent /*= 0*/,
+                         QObject *qparent /*= 0*/)
+    : WtQtLineEdit(wparent, qparent)
+    , Wt::WSpinBox(wparent)
 {
 	WtQtLineEdit::setHidden(true);
 	// TODO : locale error
@@ -1763,7 +1808,10 @@ void WtQtSpinBox::Wt_setValue(QString value)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtDoubleSpinBox::WtQtDoubleSpinBox(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WDoubleSpinBox(wparent), WtQtLineEdit(wparent, qparent)
+WtQtDoubleSpinBox::WtQtDoubleSpinBox(Wt::WContainerWidget *wparent /*= 0*/,
+                                     QObject *qparent /*= 0*/)
+    : WtQtLineEdit(wparent, qparent)
+    , Wt::WDoubleSpinBox(wparent)
 {
 	WtQtLineEdit::setHidden(true);
 	// TODO : locale error
@@ -1891,7 +1939,10 @@ void WtQtDoubleSpinBox::Wt_setDecimals(QString decimals)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtTimeEdit::WtQtTimeEdit(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WTimeEdit(wparent), WtQtLineEdit(wparent, qparent)
+WtQtTimeEdit::WtQtTimeEdit(Wt::WContainerWidget *wparent /*= 0*/,
+                           QObject *qparent /*= 0*/)
+    : WtQtLineEdit(wparent, qparent)
+    , Wt::WTimeEdit(wparent)
 {
 	WtQtLineEdit::setHidden(true);
 	setTime(Wt::WTime::currentServerTime());
@@ -1990,7 +2041,10 @@ void WtQtTimeEdit::Wt_setFormat(QString format)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtDateEdit::WtQtDateEdit(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WDateEdit(wparent), WtQtLineEdit(wparent, qparent)
+WtQtDateEdit::WtQtDateEdit(Wt::WContainerWidget *wparent /*= 0*/,
+                           QObject *qparent /*= 0*/)
+    : WtQtLineEdit(wparent, qparent)
+    , Wt::WDateEdit(wparent)
 {
 	WtQtLineEdit::setHidden(true);
 	setDate(Wt::WDate::currentServerDate());
@@ -2079,7 +2133,10 @@ void WtQtDateEdit::Wt_setFormat(QString format)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtCalendar::WtQtCalendar(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WCalendar(wparent), WtQtCompositeWidget(qparent)
+WtQtCalendar::WtQtCalendar(Wt::WContainerWidget *wparent /*= 0*/,
+                           QObject *qparent /*= 0*/)
+    : WtQtCompositeWidget(qparent)
+    , Wt::WCalendar(wparent)
 {
 
 }
@@ -2135,7 +2192,10 @@ void WtQtCalendar::Wt_setInline(QString isinline)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtSlider::WtQtSlider(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WSlider(wparent), WtQtFormWidget(qparent)
+WtQtSlider::WtQtSlider(Wt::WContainerWidget *wparent /*= 0*/,
+                       QObject *qparent /*= 0*/)
+    : WtQtFormWidget(qparent)
+    , Wt::WSlider(wparent)
 {
 
 }
@@ -2251,7 +2311,10 @@ void WtQtSlider::Wt_setTickInterval(QString interval)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtFileUpload::WtQtFileUpload(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WFileUpload(wparent), WtQtWebWidget(qparent)
+WtQtFileUpload::WtQtFileUpload(Wt::WContainerWidget *wparent /*= 0*/,
+                               QObject *qparent /*= 0*/)
+    : WtQtWebWidget(qparent)
+    , Wt::WFileUpload(wparent)
 {
 
 }
@@ -2317,7 +2380,10 @@ void WtQtFileUpload::Wt_setInline(QString isinline)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtProgressBar::WtQtProgressBar(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WProgressBar(wparent), WtQtInteractWidget(qparent)
+WtQtProgressBar::WtQtProgressBar(Wt::WContainerWidget *wparent /*= 0*/,
+                                 QObject *qparent /*= 0*/)
+    : WtQtInteractWidget(qparent)
+    , Wt::WProgressBar(wparent)
 {
 
 }
@@ -2413,7 +2479,10 @@ void WtQtProgressBar::Wt_setValue(QString value)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtGroupBox::WtQtGroupBox(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WGroupBox(wparent), WtQtContainerWidget(wparent, qparent)
+WtQtGroupBox::WtQtGroupBox(Wt::WContainerWidget *wparent /*= 0*/,
+                           QObject *qparent /*= 0*/)
+    : WtQtContainerWidget(wparent, qparent)
+    , Wt::WGroupBox(wparent)
 {
 
 }
@@ -2489,7 +2558,10 @@ void WtQtGroupBox::Wt_setTitle(QString text)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtPanel::WtQtPanel(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WPanel(wparent), WtQtCompositeWidget(qparent)
+WtQtPanel::WtQtPanel(Wt::WContainerWidget *wparent /*= 0*/,
+                     QObject *qparent /*= 0*/)
+    : WtQtCompositeWidget(qparent)
+    , Wt::WPanel(wparent)
 {
 	if (wparent == NULL)
 	{
@@ -2585,7 +2657,10 @@ QString WtQtPanel::getCentralWidgetId()
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtStackedWidget::WtQtStackedWidget(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WStackedWidget(wparent), WtQtContainerWidget(wparent, qparent)
+WtQtStackedWidget::WtQtStackedWidget(Wt::WContainerWidget *wparent /*= 0*/,
+                                     QObject *qparent /*= 0*/)
+    : WtQtContainerWidget(wparent, qparent)
+    , Wt::WStackedWidget(wparent)
 {
 
 }
@@ -2665,7 +2740,10 @@ void WtQtStackedWidget::Wt_setCurrentIndex(QString index)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtTabWidget::WtQtTabWidget(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WTabWidget(wparent), WtQtCompositeWidget(qparent)
+WtQtTabWidget::WtQtTabWidget(Wt::WContainerWidget *wparent /*= 0*/,
+                             QObject *qparent /*= 0*/)
+    : WtQtCompositeWidget(qparent)
+    , Wt::WTabWidget(wparent)
 {
 	m_beingDeleted = false;
 	m_wparent = NULL;
@@ -2858,7 +2936,10 @@ void WtQtTabItem::Wt_setTabCloseable(QString bclosable)
 */
 
 // TODO : overload cpp_instantiate to acomodate wstackedwidget
-WtQtMenu::WtQtMenu(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WMenu(new Wt::WStackedWidget(), wparent), WtQtCompositeWidget(qparent)
+WtQtMenu::WtQtMenu(Wt::WContainerWidget *wparent /*= 0*/,
+                   QObject *qparent /*= 0*/)
+    : WtQtCompositeWidget(qparent)
+    , Wt::WMenu(new Wt::WStackedWidget(), wparent)
 {
 	m_isLeftWMenu  = false;
 	m_beingDeleted = false;
@@ -3428,7 +3509,10 @@ void WtQtPopupItem::Wt_setCloseable(QString closable)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtTable::WtQtTable(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WTable(wparent), WtQtInteractWidget(qparent)
+WtQtTable::WtQtTable(Wt::WContainerWidget *wparent /*= 0*/,
+                     QObject *qparent /*= 0*/)
+    : WtQtInteractWidget(qparent)
+    , Wt::WTable(wparent)
 {
 	// Just some entries for display
 	this->elementAt(0, 1)->addWidget(new Wt::WText("Column 1"));
@@ -3518,7 +3602,10 @@ void WtQtTable::Wt_setHeaderCountVertical(QString headcount)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtTree::WtQtTree(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WTree(wparent), WtQtCompositeWidget(qparent)
+WtQtTree::WtQtTree(Wt::WContainerWidget *wparent /*= 0*/,
+                   QObject *qparent /*= 0*/)
+    : WtQtCompositeWidget(qparent)
+    , Wt::WTree(wparent)
 {
 	Wt::WTreeNode *node = new Wt::WTreeNode("Furniture");
 
@@ -3593,7 +3680,10 @@ void WtQtTree::Wt_setInline(QString isinline)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtTreeTable::WtQtTreeTable(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WTreeTable(wparent), WtQtCompositeWidget(qparent)
+WtQtTreeTable::WtQtTreeTable(Wt::WContainerWidget *wparent /*= 0*/,
+                             QObject *qparent /*= 0*/)
+    : WtQtCompositeWidget(qparent)
+    , Wt::WTreeTable(wparent)
 {
 	//resize(650, 200);
 	tree()->setSelectionMode(Wt::ExtendedSelection);
@@ -3687,8 +3777,10 @@ Wt::WTreeTableNode * WtQtTreeTable::addNode(Wt::WTreeTableNode *parent, const ch
 
 
 
-WtQtNavigationBar::WtQtNavigationBar(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/)
-	: Wt::WNavigationBar(wparent), WtQtInteractWidget(qparent)
+WtQtNavigationBar::WtQtNavigationBar(Wt::WContainerWidget *wparent /*= 0*/,
+                                     QObject *qparent /*= 0*/)
+	: WtQtInteractWidget(qparent)
+    , Wt::WNavigationBar(wparent)
 {
 	m_wparent = NULL;
 	if (wparent)
@@ -3800,7 +3892,10 @@ QString WtQtNavigationBar::getParentWidgetId()
 
 
 
-WtQtPromotedWidget::WtQtPromotedWidget(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WContainerWidget(wparent), WtQtWidget(qparent)
+WtQtPromotedWidget::WtQtPromotedWidget(Wt::WContainerWidget *wparent /*= 0*/,
+                                       QObject *qparent /*= 0*/)
+    : WtQtWidget(qparent)
+    , Wt::WContainerWidget(wparent)
 {
 
 }
