@@ -146,11 +146,6 @@ WtQtContainerWidget::WtQtContainerWidget(Wt::WContainerWidget *wparent /*= 0*/,
 
 }
 
-WtQtContainerWidget::WtQtContainerWidget(const WtQtContainerWidget& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtContainerWidget::~WtQtContainerWidget()
 {
 
@@ -215,11 +210,6 @@ WtQtAnchor::WtQtAnchor(Wt::WContainerWidget *wparent /*= 0*/,
     , Wt::WAnchor(wparent)
 {
 
-}
-
-WtQtAnchor::WtQtAnchor(const WtQtAnchor& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtAnchor::~WtQtAnchor()
@@ -354,11 +344,6 @@ WtQtText::WtQtText(Wt::WContainerWidget *wparent /*= 0*/,
     , Wt::WText(wparent)
 {
 
-}
-
-WtQtText::WtQtText(const WtQtText& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtText::~WtQtText()
@@ -506,11 +491,6 @@ WtQtLineEdit::WtQtLineEdit(Wt::WContainerWidget *wparent /*= 0*/,
 	}
 }
 
-WtQtLineEdit::WtQtLineEdit(const WtQtLineEdit& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtLineEdit::~WtQtLineEdit()
 {
 
@@ -586,11 +566,6 @@ WtQtPushButton::WtQtPushButton(Wt::WContainerWidget *wparent /*= 0*/,
     , Wt::WPushButton(wparent)
 {
 
-}
-
-WtQtPushButton::WtQtPushButton(const WtQtPushButton& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtPushButton::~WtQtPushButton()
@@ -697,11 +672,6 @@ WtQtImage::WtQtImage(Wt::WContainerWidget *wparent /*= 0*/,
 	strImageLink = "";
 }
 
-WtQtImage::WtQtImage(const WtQtImage& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtImage::~WtQtImage()
 {
 
@@ -776,11 +746,6 @@ WtQtTemplate::WtQtTemplate(Wt::WContainerWidget *wparent /*= 0*/,
     , Wt::WTemplate(wparent)
 {
 	m_textFormat = Wt::XHTMLText;
-}
-
-WtQtTemplate::WtQtTemplate(const WtQtTemplate& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtTemplate::~WtQtTemplate()
@@ -890,11 +855,6 @@ WtQtSplitButton::WtQtSplitButton(Wt::WContainerWidget *wparent /*= 0*/,
     , Wt::WSplitButton(wparent)
 {
 
-}
-
-WtQtSplitButton::WtQtSplitButton(const WtQtSplitButton& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtSplitButton::~WtQtSplitButton()
@@ -1021,11 +981,6 @@ WtQtRadioButton::WtQtRadioButton(Wt::WContainerWidget *wparent /*= 0*/,
 		buttongroup = new Wt::WButtonGroup();
 	}
 	buttongroup->addButton(this, -1);
-}
-
-WtQtRadioButton::WtQtRadioButton(const WtQtRadioButton& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtRadioButton::~WtQtRadioButton()
@@ -1193,11 +1148,6 @@ WtQtCheckBox::WtQtCheckBox(Wt::WContainerWidget *wparent /*= 0*/,
 
 }
 
-WtQtCheckBox::WtQtCheckBox(const WtQtCheckBox& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtCheckBox::~WtQtCheckBox()
 {
 
@@ -1280,11 +1230,6 @@ WtQtComboBox::WtQtComboBox(Wt::WContainerWidget *wparent /*= 0*/,
     , Wt::WComboBox(wparent)
 {
 
-}
-
-WtQtComboBox::WtQtComboBox(const WtQtComboBox& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtComboBox::~WtQtComboBox()
@@ -1395,11 +1340,6 @@ WtQtInPlaceEdit::WtQtInPlaceEdit(Wt::WContainerWidget *wparent /*= 0*/,
 	m_boolButtonsEnabled = true;
 }
 
-WtQtInPlaceEdit::WtQtInPlaceEdit(const WtQtInPlaceEdit& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtInPlaceEdit::~WtQtInPlaceEdit()
 {
 
@@ -1482,11 +1422,6 @@ WtQtTextArea::WtQtTextArea(Wt::WContainerWidget *wparent /*= 0*/,
     , Wt::WTextArea(wparent)
 {
 
-}
-
-WtQtTextArea::WtQtTextArea(const WtQtTextArea& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtTextArea::~WtQtTextArea()
@@ -1591,11 +1526,6 @@ WtQtSelectionBox::WtQtSelectionBox(Wt::WContainerWidget *wparent /*= 0*/,
     , Wt::WSelectionBox(wparent)
 {
 	WtQtComboBox::setHidden(true);
-}
-
-WtQtSelectionBox::WtQtSelectionBox(const WtQtSelectionBox& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtSelectionBox::~WtQtSelectionBox()
@@ -1707,11 +1637,6 @@ WtQtSpinBox::WtQtSpinBox(Wt::WContainerWidget *wparent /*= 0*/,
 	// TODO : set disabled?
 }
 
-WtQtSpinBox::WtQtSpinBox(const WtQtSpinBox& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtSpinBox::~WtQtSpinBox()
 {
 
@@ -1816,11 +1741,6 @@ WtQtDoubleSpinBox::WtQtDoubleSpinBox(Wt::WContainerWidget *wparent /*= 0*/,
 	WtQtLineEdit::setHidden(true);
 	// TODO : locale error
 	// TODO : set disabled?
-}
-
-WtQtDoubleSpinBox::WtQtDoubleSpinBox(const WtQtDoubleSpinBox& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtDoubleSpinBox::~WtQtDoubleSpinBox()
@@ -1950,11 +1870,6 @@ WtQtTimeEdit::WtQtTimeEdit(Wt::WContainerWidget *wparent /*= 0*/,
 	// TODO : set disabled?
 }
 
-WtQtTimeEdit::WtQtTimeEdit(const WtQtTimeEdit& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtTimeEdit::~WtQtTimeEdit()
 {
 
@@ -2052,11 +1967,6 @@ WtQtDateEdit::WtQtDateEdit(Wt::WContainerWidget *wparent /*= 0*/,
 	// TODO : set disabled?
 }
 
-WtQtDateEdit::WtQtDateEdit(const WtQtDateEdit& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtDateEdit::~WtQtDateEdit()
 {
 
@@ -2141,11 +2051,6 @@ WtQtCalendar::WtQtCalendar(Wt::WContainerWidget *wparent /*= 0*/,
 
 }
 
-WtQtCalendar::WtQtCalendar(const WtQtCalendar& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtCalendar::~WtQtCalendar()
 {
 
@@ -2198,11 +2103,6 @@ WtQtSlider::WtQtSlider(Wt::WContainerWidget *wparent /*= 0*/,
     , Wt::WSlider(wparent)
 {
 
-}
-
-WtQtSlider::WtQtSlider(const WtQtSlider& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtSlider::~WtQtSlider()
@@ -2319,11 +2219,6 @@ WtQtFileUpload::WtQtFileUpload(Wt::WContainerWidget *wparent /*= 0*/,
 
 }
 
-WtQtFileUpload::WtQtFileUpload(const WtQtFileUpload& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtFileUpload::~WtQtFileUpload()
 {
 
@@ -2386,11 +2281,6 @@ WtQtProgressBar::WtQtProgressBar(Wt::WContainerWidget *wparent /*= 0*/,
     , Wt::WProgressBar(wparent)
 {
 
-}
-
-WtQtProgressBar::WtQtProgressBar(const WtQtProgressBar& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtProgressBar::~WtQtProgressBar()
@@ -2487,11 +2377,6 @@ WtQtGroupBox::WtQtGroupBox(Wt::WContainerWidget *wparent /*= 0*/,
 
 }
 
-WtQtGroupBox::WtQtGroupBox(const WtQtGroupBox& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtGroupBox::~WtQtGroupBox()
 {
 
@@ -2577,11 +2462,6 @@ WtQtPanel::WtQtPanel(Wt::WContainerWidget *wparent /*= 0*/,
 	setCentralWidget(m_centralWidget);
 }
 
-WtQtPanel::WtQtPanel(const WtQtPanel& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtPanel::~WtQtPanel()
 {
 
@@ -2665,11 +2545,6 @@ WtQtStackedWidget::WtQtStackedWidget(Wt::WContainerWidget *wparent /*= 0*/,
     , Wt::WStackedWidget(wparent)
 {
 
-}
-
-WtQtStackedWidget::WtQtStackedWidget(const WtQtStackedWidget& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtStackedWidget::~WtQtStackedWidget()
@@ -2765,11 +2640,6 @@ WtQtTabWidget::WtQtTabWidget(Wt::WContainerWidget *wparent /*= 0*/,
 	}
 }
 
-WtQtTabWidget::WtQtTabWidget(const WtQtTabWidget& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtTabWidget::~WtQtTabWidget()
 {
 	m_beingDeleted = true;
@@ -2832,11 +2702,6 @@ WtQtTabItem::WtQtTabItem(WtQtTabWidget *qparent) : WtQtContainerWidget(qparent->
 	m_qparent     = qparent;
 	m_childWidget = dynamic_cast<Wt::WContainerWidget*>(this);
 	m_qparent->addTab(m_childWidget, Wt::WString("Label"));
-}
-
-WtQtTabItem::WtQtTabItem(const WtQtTabItem& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtTabItem::~WtQtTabItem()
@@ -2975,10 +2840,6 @@ WtQtMenu::WtQtMenu(Wt::WContainerWidget *wparent /*= 0*/,
 		m_isLeftWMenu = true;
 	}
 }
-WtQtMenu::WtQtMenu(const WtQtMenu& other)
-{
-	Q_UNUSED(other)
-}
 
 WtQtMenu::~WtQtMenu()
 {
@@ -3046,11 +2907,6 @@ WtQtMenuItem::WtQtMenuItem(WtQtMenu *qparent) : WtQtContainerWidget(qparent->get
 	m_qparent       = qparent;
 	m_contentwidget = dynamic_cast<Wt::WContainerWidget*>(this);
 	m_menuitem      = m_qparent->addItem(Wt::WString("Label"), m_contentwidget);
-}
-
-WtQtMenuItem::WtQtMenuItem(const WtQtMenuItem& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtMenuItem::~WtQtMenuItem()
@@ -3195,11 +3051,6 @@ WtQtPopupMenu::WtQtPopupMenu(Wt::WContainerWidget *wparent /*= 0*/, QObject *qpa
 		qDebug() << "[ERROR] Invalid Wt parent in WtQtMenu::WtQtMenu";
 		this->deleteLater();
 	}
-}
-
-WtQtPopupMenu::WtQtPopupMenu(const WtQtPopupMenu& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtPopupMenu::~WtQtPopupMenu()
@@ -3403,11 +3254,6 @@ WtQtPopupItem::WtQtPopupItem(WtQtPopupMenu *qparent) : WtQtContainerWidget(0, qp
 	m_menuitem = m_qparent->getWPopupMenu()->addItem(Wt::WString("Label"));
 }
 
-WtQtPopupItem::WtQtPopupItem(const WtQtPopupItem& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtPopupItem::~WtQtPopupItem()
 {
 	if (!m_qparent->isBeingDeleted())
@@ -3531,11 +3377,6 @@ WtQtTable::WtQtTable(Wt::WContainerWidget *wparent /*= 0*/,
 	this->elementAt(2, 0)->addWidget(new Wt::WText("Row 1"));
 }
 
-WtQtTable::WtQtTable(const WtQtTable& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtTable::~WtQtTable()
 {
 
@@ -3639,11 +3480,6 @@ WtQtTree::WtQtTree(Wt::WContainerWidget *wparent /*= 0*/,
 	three->addChildNode(new Wt::WTreeNode("Sleepy"));
 }
 
-WtQtTree::WtQtTree(const WtQtTree& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtTree::~WtQtTree()
 {
 	
@@ -3723,11 +3559,6 @@ WtQtTreeTable::WtQtTreeTable(Wt::WContainerWidget *wparent /*= 0*/,
 	root->expand();
 }
 
-WtQtTreeTable::WtQtTreeTable(const WtQtTreeTable& other)
-{
-	Q_UNUSED(other)
-}
-
 WtQtTreeTable::~WtQtTreeTable()
 {
 	
@@ -3804,11 +3635,6 @@ WtQtNavigationBar::WtQtNavigationBar(Wt::WContainerWidget *wparent /*= 0*/,
 	m_strParentId = qparent->property("Wt_id").toString();
 	// init as not responsive
 	m_strResponsive = "0";
-}
-
-WtQtNavigationBar::WtQtNavigationBar(const WtQtNavigationBar& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtNavigationBar::~WtQtNavigationBar()
@@ -3909,11 +3735,6 @@ WtQtPromotedWidget::WtQtPromotedWidget(Wt::WContainerWidget *wparent /*= 0*/,
     , m_boolIsGlobalInclude(false) // todo question: is the default no global include?
 {
 
-}
-
-WtQtPromotedWidget::WtQtPromotedWidget(const WtQtPromotedWidget& other)
-{
-	Q_UNUSED(other)
 }
 
 WtQtPromotedWidget::~WtQtPromotedWidget()

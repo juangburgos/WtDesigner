@@ -258,7 +258,8 @@ class WtQtContainerWidget : public WtQtInteractWidget, public Wt::WContainerWidg
 public:
 	WtQtContainerWidget(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtContainerWidget();
-	WtQtContainerWidget( const WtQtContainerWidget& other );
+	WtQtContainerWidget(const WtQtContainerWidget &) = delete;
+	WtQtContainerWidget & operator=(const WtQtContainerWidget &) = delete;
 
 	QString Wt_className();
 
@@ -296,7 +297,8 @@ class WtQtAnchor : public WtQtContainerWidget, public Wt::WAnchor // [NOTE] if i
 public:
 	WtQtAnchor(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtAnchor();
-	WtQtAnchor(const WtQtAnchor& other);
+	WtQtAnchor(const WtQtAnchor &) = delete;
+	WtQtAnchor & operator=(const WtQtAnchor &) = delete;
 
 	QString Wt_className();
 
@@ -350,7 +352,8 @@ class WtQtText : public WtQtInteractWidget, public Wt::WText
 public:
 	WtQtText(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtText();
-	WtQtText(const WtQtText& other);
+	WtQtText(const WtQtText& other) = delete;
+	WtQtText & operator=(const WtQtText &) = delete;
 
 	QString Wt_className();
 
@@ -387,7 +390,8 @@ class WtQtLineEdit : public WtQtFormWidget, public Wt::WLineEdit
 public:
 	WtQtLineEdit(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtLineEdit();
-	WtQtLineEdit(const WtQtLineEdit& other);
+	WtQtLineEdit(const WtQtLineEdit &) = delete;
+	WtQtLineEdit & operator=(const WtQtLineEdit &) = delete;
 
 	QString Wt_className();
 
@@ -424,7 +428,8 @@ class WtQtPushButton : public WtQtFormWidget, public Wt::WPushButton
 public:
 	WtQtPushButton(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtPushButton();
-	WtQtPushButton(const WtQtPushButton& other);
+	WtQtPushButton(const WtQtPushButton &) = delete;
+	WtQtPushButton & operator=(const WtQtPushButton &) = delete;
 
 	QString Wt_className();
 
@@ -466,7 +471,8 @@ class WtQtImage : public WtQtInteractWidget, public Wt::WImage
 public:
 	WtQtImage(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtImage();
-	WtQtImage(const WtQtImage& other);
+	WtQtImage(const WtQtImage &) = delete;
+	WtQtImage & operator=(const WtQtImage &) = delete;
 
 	QString Wt_className();
 
@@ -505,7 +511,8 @@ class WtQtTemplate : public WtQtInteractWidget, public Wt::WTemplate
 public:
 	WtQtTemplate(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtTemplate();
-	WtQtTemplate(const WtQtTemplate& other);
+	WtQtTemplate(const WtQtTemplate &) = delete;
+	WtQtTemplate & operator=(const WtQtTemplate &) = delete;
 
 	QString Wt_className();
 
@@ -549,7 +556,8 @@ class WtQtSplitButton  : public WtQtCompositeWidget, public Wt::WSplitButton
 public:
 	WtQtSplitButton(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtSplitButton();
-	WtQtSplitButton(const WtQtSplitButton& other);
+	WtQtSplitButton(const WtQtSplitButton &) = delete;
+	WtQtSplitButton & operator=(const WtQtSplitButton &) = delete;
 
 	QString Wt_className(); // [NOTE] : need to add to helperfunctions::GetMetaObjectByClassName
 
@@ -586,7 +594,8 @@ class WtQtRadioButton : public WtQtAbstractToggleButton, public Wt::WRadioButton
 public: // [NOTE] need to pass a string to WRadioButton constructorotherwise it does not create the label and therefore not able to modify it later
 	WtQtRadioButton(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtRadioButton();
-	WtQtRadioButton(const WtQtRadioButton& other);
+	WtQtRadioButton(const WtQtRadioButton &) = delete;
+	WtQtRadioButton & operator=(const WtQtRadioButton &) = delete;
 
 	QString Wt_className();
 
@@ -630,7 +639,8 @@ class WtQtCheckBox : public WtQtAbstractToggleButton, public Wt::WCheckBox
 public: // [NOTE] need to pass a string to WCheckBox constructorotherwise it does not create the label and therefore not able to modify it later
 	WtQtCheckBox(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtCheckBox();
-	WtQtCheckBox(const WtQtCheckBox& other);
+	WtQtCheckBox(const WtQtCheckBox &) = delete;
+	WtQtCheckBox & operator=(const WtQtCheckBox &) = delete;
 
 	QString Wt_className();
 
@@ -665,7 +675,8 @@ class WtQtComboBox : public WtQtFormWidget, public Wt::WComboBox
 public:
 	WtQtComboBox(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtComboBox();
-	WtQtComboBox(const WtQtComboBox& other);
+	WtQtComboBox(const WtQtComboBox &) = delete;
+	WtQtComboBox & operator=(const WtQtComboBox &) = delete;
 
 	QString Wt_className();
 
@@ -706,7 +717,8 @@ class WtQtInPlaceEdit : public WtQtCompositeWidget, public Wt::WInPlaceEdit
 public:
 	WtQtInPlaceEdit(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtInPlaceEdit();
-	WtQtInPlaceEdit(const WtQtInPlaceEdit& other);
+	WtQtInPlaceEdit(const WtQtInPlaceEdit &) = delete;
+	WtQtInPlaceEdit & operator=(const WtQtInPlaceEdit &) = delete;
 
 	QString Wt_className(); // [NOTE] : need to add to helperfunctions::GetMetaObjectByClassName
 
@@ -756,7 +768,8 @@ class WtQtTextArea : public WtQtFormWidget, public Wt::WTextArea
 public:
 	WtQtTextArea(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtTextArea();
-	WtQtTextArea(const WtQtTextArea& other);
+	WtQtTextArea(const WtQtTextArea &) = delete;
+	WtQtTextArea & operator=(const WtQtTextArea &) = delete;
 
 	QString Wt_className();
 
@@ -799,7 +812,8 @@ class WtQtSelectionBox : public WtQtComboBox, public Wt::WSelectionBox
 public:
 	WtQtSelectionBox(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtSelectionBox();
-	WtQtSelectionBox(const WtQtSelectionBox& other);
+	WtQtSelectionBox(const WtQtSelectionBox &) = delete;
+	WtQtSelectionBox & operator=(const WtQtSelectionBox &) = delete;
 
 	QString Wt_className();
 
@@ -840,7 +854,8 @@ class WtQtSpinBox : public WtQtLineEdit, public Wt::WSpinBox
 public:
 	WtQtSpinBox(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtSpinBox();
-	WtQtSpinBox(const WtQtSpinBox& other);
+	WtQtSpinBox(const WtQtSpinBox &) = delete;
+	WtQtSpinBox & operator=(const WtQtSpinBox &) = delete;
 
 	QString Wt_className();
 
@@ -893,7 +908,8 @@ class WtQtDoubleSpinBox : public WtQtLineEdit, public Wt::WDoubleSpinBox
 public:
 	WtQtDoubleSpinBox(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtDoubleSpinBox();
-	WtQtDoubleSpinBox(const WtQtDoubleSpinBox& other);
+	WtQtDoubleSpinBox(const WtQtDoubleSpinBox &) = delete;
+	WtQtDoubleSpinBox & operator=(const WtQtDoubleSpinBox &) = delete;
 
 	QString Wt_className();
 
@@ -949,7 +965,8 @@ class WtQtTimeEdit : public WtQtLineEdit, public Wt::WTimeEdit
 public:
 	WtQtTimeEdit(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtTimeEdit();
-	WtQtTimeEdit(const WtQtTimeEdit& other);
+	WtQtTimeEdit(const WtQtTimeEdit &) = delete;
+	WtQtTimeEdit & operator=(const WtQtTimeEdit &) = delete;
 
 	QString Wt_className();
 
@@ -991,7 +1008,8 @@ class WtQtDateEdit : public WtQtLineEdit, public Wt::WDateEdit
 public:
 	WtQtDateEdit(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtDateEdit();
-	WtQtDateEdit(const WtQtDateEdit& other);
+	WtQtDateEdit(const WtQtDateEdit &) = delete;
+	WtQtDateEdit & operator=(const WtQtDateEdit &) = delete;
 
 	QString Wt_className();
 
@@ -1025,7 +1043,8 @@ class WtQtCalendar : public WtQtCompositeWidget, public Wt::WCalendar
 public:
 	WtQtCalendar(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtCalendar();
-	WtQtCalendar(const WtQtCalendar& other);
+	WtQtCalendar(const WtQtCalendar &) = delete;
+	WtQtCalendar & operator=(const WtQtCalendar &) = delete;
 
 	QString Wt_className(); // [NOTE] : need to add to helperfunctions::GetMetaObjectByClassName
 
@@ -1059,7 +1078,8 @@ class WtQtSlider : public WtQtFormWidget, public Wt::WSlider
 public:
 	WtQtSlider(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtSlider();
-	WtQtSlider(const WtQtSlider& other);
+	WtQtSlider(const WtQtSlider &) = delete;
+	WtQtSlider & operator=(const WtQtSlider &) = delete;
 
 	QString Wt_className();
 
@@ -1104,7 +1124,8 @@ class WtQtFileUpload : public WtQtWebWidget, public Wt::WFileUpload
 public:
 	WtQtFileUpload(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtFileUpload();
-	WtQtFileUpload(const WtQtFileUpload& other);
+	WtQtFileUpload(const WtQtFileUpload &) = delete;
+	WtQtFileUpload & operator=(const WtQtFileUpload &) = delete;
 
 	QString Wt_className();
 
@@ -1136,7 +1157,8 @@ class WtQtProgressBar : public WtQtInteractWidget, public Wt::WProgressBar
 public:
 	WtQtProgressBar(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtProgressBar();
-	WtQtProgressBar(const WtQtProgressBar& other);
+	WtQtProgressBar(const WtQtProgressBar &) = delete;
+	WtQtProgressBar & operator=(const WtQtProgressBar &) = delete;
 
 	QString Wt_className();
 
@@ -1179,7 +1201,8 @@ class WtQtGroupBox : public WtQtContainerWidget, public Wt::WGroupBox // [NOTE] 
 public:
 	WtQtGroupBox(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtGroupBox();
-	WtQtGroupBox(const WtQtGroupBox& other);
+	WtQtGroupBox(const WtQtGroupBox &) = delete;
+	WtQtGroupBox & operator=(const WtQtGroupBox &) = delete;
 
 	QString Wt_className();
 
@@ -1221,7 +1244,8 @@ class WtQtPanel : public WtQtCompositeWidget, public Wt::WPanel
 public:
 	WtQtPanel(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtPanel();
-	WtQtPanel(const WtQtPanel& other);
+	WtQtPanel(const WtQtPanel &) = delete;
+	WtQtPanel & operator=(const WtQtPanel &) = delete;
 
 	QString Wt_className(); // [NOTE] : need to add to helperfunctions::GetMetaObjectByClassName
 
@@ -1268,7 +1292,8 @@ class WtQtStackedWidget : public WtQtContainerWidget, public Wt::WStackedWidget 
 public:
 	WtQtStackedWidget(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtStackedWidget();
-	WtQtStackedWidget(const WtQtStackedWidget& other);
+	WtQtStackedWidget(const WtQtStackedWidget &) = delete;
+	WtQtStackedWidget & operator=(const WtQtStackedWidget &) = delete;
 
 	QString Wt_className();
 
@@ -1302,7 +1327,8 @@ class WtQtTabWidget : public WtQtCompositeWidget, public Wt::WTabWidget
 public:
 	WtQtTabWidget(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtTabWidget();
-	WtQtTabWidget(const WtQtTabWidget& other);
+	WtQtTabWidget(const WtQtTabWidget &) = delete;
+	WtQtTabWidget & operator=(const WtQtTabWidget &) = delete;
 
 	QString Wt_className();
 
@@ -1343,7 +1369,8 @@ class WtQtTabItem : public WtQtContainerWidget
 public:
 	WtQtTabItem(WtQtTabWidget *qparent);
 	~WtQtTabItem();
-	WtQtTabItem(const WtQtTabItem& other);
+	WtQtTabItem(const WtQtTabItem &) = delete;
+	WtQtTabItem & operator=(const WtQtTabItem &) = delete;
 
 	QString Wt_className();
 
@@ -1401,7 +1428,8 @@ class WtQtMenu : public WtQtCompositeWidget, public Wt::WMenu
 public:
 	WtQtMenu(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtMenu();
-	WtQtMenu(const WtQtMenu& other);
+	WtQtMenu(const WtQtMenu &) = delete;
+	WtQtMenu & operator=(const WtQtMenu &) = delete;
 
 	QString Wt_className();
 
@@ -1443,7 +1471,8 @@ class WtQtMenuItem : public WtQtContainerWidget
 public:
 	WtQtMenuItem(WtQtMenu *qparent);
 	~WtQtMenuItem();
-	WtQtMenuItem(const WtQtMenuItem& other);
+	WtQtMenuItem(const WtQtMenuItem &) = delete;
+	WtQtMenuItem & operator=(const WtQtMenuItem &) = delete;
 
 	QString Wt_className();
 
@@ -1494,7 +1523,8 @@ class WtQtPopupMenu : public WtQtContainerWidget // need to instantiate WtQtCont
 public:// doesnt add WContainerWidget to Wt tree but does add to Qt tree to be able to be found
 	WtQtPopupMenu(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0); 
 	~WtQtPopupMenu();
-	WtQtPopupMenu(const WtQtPopupMenu& other);
+	WtQtPopupMenu(const WtQtPopupMenu &) = delete;
+	WtQtPopupMenu & operator=(const WtQtPopupMenu &) = delete;
 
 	QString Wt_className();
 
@@ -1558,7 +1588,8 @@ class WtQtPopupItem : public WtQtContainerWidget
 public:
 	WtQtPopupItem(WtQtPopupMenu *qparent); // hides WContainerWidget
 	~WtQtPopupItem();
-	WtQtPopupItem(const WtQtPopupItem& other);
+	WtQtPopupItem(const WtQtPopupItem &) = delete;
+	WtQtPopupItem & operator=(const WtQtPopupItem) = delete;
 
 	QString Wt_className();
 
@@ -1620,7 +1651,8 @@ class WtQtTable : public WtQtInteractWidget, public Wt::WTable
 public:
 	WtQtTable(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtTable();
-	WtQtTable(const WtQtTable& other);
+	WtQtTable(const WtQtTable &) = delete;
+	WtQtTable & operator=(const WtQtTable &) = delete;
 
 	QString Wt_className();
 
@@ -1655,7 +1687,8 @@ class WtQtTree : public WtQtCompositeWidget, public Wt::WTree
 public:
 	WtQtTree(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtTree();
-	WtQtTree(const WtQtTree& other);
+	WtQtTree(const WtQtTree &) = delete;
+	WtQtTree & operator=(const WtQtTree &) = delete;
 
 	QString Wt_className();
 
@@ -1677,7 +1710,8 @@ class WtQtTreeTable : public WtQtCompositeWidget, public Wt::WTreeTable
 public:
 	WtQtTreeTable(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtTreeTable();
-	WtQtTreeTable(const WtQtTreeTable& other);
+	WtQtTreeTable(const WtQtTreeTable &) = delete;
+	WtQtTreeTable & operator=(const WtQtTreeTable) = delete;
 
 	QString Wt_className();
 
@@ -1717,7 +1751,8 @@ class WtQtNavigationBar : public WtQtInteractWidget, public Wt::WNavigationBar /
 public:
 	WtQtNavigationBar(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtNavigationBar();
-	WtQtNavigationBar(const WtQtNavigationBar& other);
+	WtQtNavigationBar(const WtQtNavigationBar &) = delete;
+	WtQtNavigationBar & operator=(const WtQtNavigationBar &) = delete;
 
 	QString Wt_className();
 
@@ -1770,7 +1805,8 @@ class WtQtPromotedWidget : public WtQtWidget, public Wt::WContainerWidget
 public:
 	WtQtPromotedWidget(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtPromotedWidget();
-	WtQtPromotedWidget(const WtQtPromotedWidget& other);
+	WtQtPromotedWidget(const WtQtPromotedWidget &) = delete;
+	WtQtPromotedWidget & operator=(const WtQtPromotedWidget &) = delete;
 
 	QString Wt_className(); // "WPromotedWidget" not real, just to follow convention
 
