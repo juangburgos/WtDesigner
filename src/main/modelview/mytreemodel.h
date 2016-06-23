@@ -29,7 +29,7 @@
 class WDomElem : public QObject
 {
 public:
-	WDomElem(QDomElement &elem, int row, WDomElem *parent = 0);
+	WDomElem(QDomElement &elem, int row, WDomElem *parent = nullptr);
 	~WDomElem();
 	WDomElem  * getChild(int i);
 	WDomElem  * getParent();
