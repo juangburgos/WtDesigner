@@ -3896,6 +3896,7 @@ WtQtPromotedWidget::WtQtPromotedWidget(Wt::WContainerWidget *wparent /*= 0*/,
                                        QObject *qparent /*= 0*/)
     : WtQtWidget(qparent)
     , Wt::WContainerWidget(wparent)
+    , m_boolIsGlobalInclude(false) // todo question: is the default no global include?
 {
 
 }
