@@ -1193,12 +1193,12 @@ QByteArray MyTreeModel::execXQueryOnConfig(QString strQuery)
 
 bool MyTreeModel::isInvolvedInConnection(QString strElemId)
 {
-	QStringList listAllInvolvedInCopnnections;
+	QStringList listAllInvolvedInConnections;
 	// get all involved item ids
-	listAllInvolvedInCopnnections.append(getAllSignalSendersIds());
-	listAllInvolvedInCopnnections.append(getAllSignalReceiverdIds());
+	listAllInvolvedInConnections.append(getAllSignalSendersIds());
+	listAllInvolvedInConnections.append(getAllSignalReceiverdIds());
 	// test this
-	if (listAllInvolvedInCopnnections.contains(strElemId, Qt::CaseInsensitive));
+	if (listAllInvolvedInConnections.contains(strElemId, Qt::CaseInsensitive));
 	{
 		return true;
 	}
