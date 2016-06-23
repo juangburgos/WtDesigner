@@ -180,6 +180,8 @@ void WPropNode::updateRowNumbers()
 
 void WPropNode::debugWDomElemState(QString header /*= ""*/)
 {
+    Q_UNUSED(header);
+
 	//qDebug() << "-----------------------[DEBUGWDOMELEMSTATE]-------------------------";
 	//for (int i = 0; i < countChild(); i++)
 	//{

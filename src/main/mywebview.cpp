@@ -228,6 +228,8 @@ void MyWebView::dropEvent(QDropEvent *event)
 
 void MyWebView::leaveEvent(QEvent * event)
 {
+    Q_UNUSED(event);
+
 	if (!m_boolEnableEvtProcess) { return; }
 
 	// Restore old element
@@ -254,6 +256,8 @@ void MyWebView::on_loadStarted()
 
 void MyWebView::on_loadFinished(bool ok)
 {
+    Q_UNUSED(ok);
+
 	m_boolEnableEvtProcess = true;
 	QObject    *p_parent  = parent();
 	MainWindow *p_mwindow = qobject_cast<MainWindow*>(p_parent);

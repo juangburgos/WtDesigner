@@ -228,7 +228,8 @@ bool WConnectElem::replaceChild(int pos, QDomElement &element)
 
 void WConnectElem::debugWDomElemState(QString header /*= ""*/)
 {
-	////Q_UNUSED(header)
+	Q_UNUSED(header);
+
 	//qDebug() << "-----------------------[DEBUGWDOMELEMSTATE]-------------------------";
 	//qDebug() << "[DOM]--------------------" << header << "-----------------------";
 	//for (int i = 0; i < getElem().childNodes().count(); i++)

@@ -467,6 +467,8 @@ QMetaObject GetMetaObjectByClassName(QString strClassName)
 
 void SetIconColor(QString svgres, QIcon &svgicon, QString svgcolor)
 {
+    Q_UNUSED(svgcolor);
+
 	// open svg resource load contents to qbytearray
 	QFile file(svgres);
 	file.open(QIODevice::ReadOnly);

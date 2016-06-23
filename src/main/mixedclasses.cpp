@@ -2539,6 +2539,8 @@ QString WtQtGroupBox::Wt_htmlTagName()
 
 void WtQtGroupBox::Wt_setHtmlTagName(QString tagname)
 {
+    Q_UNUSED(tagname);
+
 	//Wt::WGroupBox::setHtmlTagName(tagname.toStdString());
 }
 
@@ -2717,6 +2719,8 @@ QString WtQtStackedWidget::Wt_htmlTagName()
 
 void WtQtStackedWidget::Wt_setHtmlTagName(QString tagname)
 {
+    Q_UNUSED(tagname);
+
 	//Wt::WStackedWidget::setHtmlTagName(tagname.toStdString());
 }
 
@@ -2885,7 +2889,9 @@ QString WtQtTabItem::Wt_htmlTagName()
 
 void WtQtTabItem::Wt_setHtmlTagName(QString tagname)
 {
-	//m_childWidget->setHtmlTagName(tagname.toStdString());
+    Q_UNUSED(tagname);
+
+    //m_childWidget->setHtmlTagName(tagname.toStdString());
 }
 
 QString WtQtTabItem::Wt_tabText()
@@ -3097,6 +3103,8 @@ QString WtQtMenuItem::Wt_htmlTagName()
 
 void WtQtMenuItem::Wt_setHtmlTagName(QString tagname)
 {
+    Q_UNUSED(tagname);
+
 	//m_contentwidget->setHtmlTagName(tagname.toStdString());
 }
 
@@ -3450,6 +3458,8 @@ QString WtQtPopupItem::Wt_htmlTagName()
 
 void WtQtPopupItem::Wt_setHtmlTagName(QString tagname)
 {
+    Q_UNUSED(tagname);
+
 	//m_menuitem->setHtmlTagName(tagname.toStdString());
 }
 

@@ -190,6 +190,8 @@ void WWidgetNode::updateRowNumbers()
 
 void WWidgetNode::debugPrintState(QString header /*= ""*/)
 {
+    Q_UNUSED(header);
+
 	//qDebug() << "-----------------------[DEBUGWDOMELEMSTATE]-------------------------";
 	//for (int i = 0; i < countChild(); i++)
 	//{
