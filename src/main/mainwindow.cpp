@@ -1506,7 +1506,15 @@ void MainWindow::ShowNewFileSystemMenu(QPoint pos, bool isRightClick /*= false*/
 
 	QMenu       rightClickMenu;
 
-	QAction  *addCss, *addJs, *remCss, *remJs, *newFile, *newFolder, *existFile, *existFolder, *remov;
+	QAction  *addCss(nullptr);
+	QAction  *addJs(nullptr);
+	QAction  *remCss(nullptr);
+	QAction  *remJs(nullptr);
+	QAction  *newFile(nullptr);
+	QAction  *newFolder(nullptr);
+	QAction  *existFile(nullptr);
+	QAction  *existFolder(nullptr);
+	QAction  *remov(nullptr);
 	QAction  * res;
 
 	index = ui.treeviewWtResources->currentIndex();

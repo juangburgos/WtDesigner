@@ -10,4 +10,4 @@ export LD_LIBRARY_PATH
 export QT_QPA_PLATFORM_PLUGIN_PATH=.
 # [JGB] Added 'cd' command for WtDesigner to run in its own path
 cd $dirname
-$dirname/WtDesigner "$@"
+$dirname/WtDesigner $@
