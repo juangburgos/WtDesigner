@@ -1070,11 +1070,13 @@ class WtQtSlider : public WtQtFormWidget, public Wt::WSlider
 		Q_PROPERTY(QString Wt_maximum          READ Wt_maximum          WRITE Wt_setMaximum)
 		Q_PROPERTY(QString Wt_value            READ Wt_value            WRITE Wt_setValue)
 		Q_PROPERTY(QString Wt_tickInterval     READ Wt_tickInterval     WRITE Wt_setTickInterval)
+		Q_PROPERTY(QString Wt_orientation      READ Wt_orientation      WRITE Wt_setOrientation)
 		// Cpp code generation
 		Q_PROPERTY(QString Cpp_minimum         READ Cpp_minimum)
 		Q_PROPERTY(QString Cpp_maximum         READ Cpp_maximum)
 		Q_PROPERTY(QString Cpp_value           READ Cpp_value)
 		Q_PROPERTY(QString Cpp_tickInterval    READ Cpp_tickInterval)
+		Q_PROPERTY(QString Cpp_orientation     READ Cpp_orientation)
 public:
 	WtQtSlider(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
 	~WtQtSlider();
@@ -1110,11 +1112,15 @@ public:
 	QString Wt_tickInterval();
 	void    Wt_setTickInterval(QString interval);
 
+	QString Wt_orientation();
+	void    Wt_setOrientation(QString orientation);
+
 	// Cpp code generation
 	QString Cpp_minimum();
 	QString Cpp_maximum();
 	QString Cpp_value();
 	QString Cpp_tickInterval();
+	QString Cpp_orientation();
 };
 
 

@@ -2205,6 +2205,22 @@ void WtQtSlider::Wt_setTickInterval(QString interval)
 	Wt::WSlider::setTickInterval(interval.toInt());
 }
 
+QString WtQtSlider::Wt_orientation()
+{
+	return QString("%1").arg(static_cast<int>(Wt::WSlider::orientation()));
+}
+
+void WtQtSlider::Wt_setOrientation(QString orientation)
+{
+	if (orientation.toInt() == 2) {
+		Wt::WSlider::setOrientation(Wt::Orientation::Vertical);
+		Wt::WSlider::removeStyleClass("Wt-slider-h");
+	} else {
+		Wt::WSlider::setOrientation(Wt::Orientation::Horizontal);
+		Wt::WSlider::removeStyleClass("Wt-slider-v");
+	}
+}
+
 /*
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 *****************************************************             WtQtFileUpload             **************************************************************
@@ -4190,6 +4206,11 @@ QString WtQtSlider::Cpp_value()
 QString WtQtSlider::Cpp_tickInterval()
 {
 	return Wt_id() + "->setTickInterval(" + Wt_tickInterval() + ");";
+}
+
+QString WtQtSlider::Cpp_orientation()
+{
+	return Wt_id() + "->setOrientation(" + Wt_orientation() + ");";
 }
 
 
