@@ -2205,6 +2205,29 @@ void WtQtSlider::Wt_setTickInterval(QString interval)
 	Wt::WSlider::setTickInterval(interval.toInt());
 }
 
+QString WtQtSlider::Wt_tickPosition()
+{
+	return QString("%1").arg(Wt::WSlider::tickPosition());
+}
+
+void WtQtSlider::Wt_setTickPosition(QString position)
+{
+	switch(position.toInt()) {
+	case 1:		// Left/Above
+		Wt::WSlider::setTickPosition(Wt::WSlider::TicksLeft);
+		break;
+	case 2:		// Right/Below
+		Wt::WSlider::setTickPosition(Wt::WSlider::TicksRight);
+		break;
+	case 3:		// BothSides
+		Wt::WSlider::setTickPosition(Wt::WSlider::TicksBothSides);
+		break;
+	default:	// None
+		Wt::WSlider::setTickPosition(Wt::WSlider::NoTicks);
+		break;
+	}
+}
+
 QString WtQtSlider::Wt_orientation()
 {
 	return QString("%1").arg(static_cast<int>(Wt::WSlider::orientation()));
@@ -4206,6 +4229,11 @@ QString WtQtSlider::Cpp_value()
 QString WtQtSlider::Cpp_tickInterval()
 {
 	return Wt_id() + "->setTickInterval(" + Wt_tickInterval() + ");";
+}
+
+QString WtQtSlider::Cpp_tickPosition()
+{
+	return Wt_id() + "->setTickPosition(" + Wt_tickPosition() + ");";
 }
 
 QString WtQtSlider::Cpp_orientation()

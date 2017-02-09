@@ -1,1 +1,1 @@
-<WObject Wt_className="WSlider" Wt_id="slider" Wt_minimum="0" Wt_maximum="10" Wt_value="5" Wt_tickInterval="1" Wt_orientation="1" Wt_isInline="0"/>
+<WObject Wt_className="WSlider" Wt_id="slider" Wt_minimum="0" Wt_maximum="10" Wt_value="5" Wt_tickInterval="1" Wt_tickPosition="0" Wt_orientation="1" Wt_isInline="0"/>
