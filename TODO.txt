@@ -1,56 +1,12 @@
->> Categories
 
-- Buttons    
-	> WPushButton      : Forms->Push button       : Button that user can click to execute a command.
-	> WSplitButton     : Navigation->Split button : Button in addition to a drop down button which are shown next to each other
-	> WRadioButton     : Forms->Radio buttons     : Button which appear on a group to provide mutually exclusive on/off options
-X WButtonGroup     : Forms->Radio buttons     : Like WRadioButton but only one can be selected at a time
-	> WCheckBox        : Forms->Chech boxes       : Button which provide on/off options
-
-- Input      
-	> WComboBox        : Forms->Combo box         : Presents a drop-down list allowing user to select one option
-	> WLineEdit        : Forms->Line/Text editor  : Allows user to input a single line text entry
-	> WInPlaceEdit     : Forms->In-place edit     : In-place-editable text with possible buttons
-	> WTextArea        : Forms->Line/Text editor  : Allows user to input multi-line text entry
-X  WTextEdit        : Forms->Line/Text editor  : Full-featured editor for rich text editing
-	> WSelectionBox    : Forms->Selection box     : Shows a box with a list which allow use to select one or more entries of the list
-	> WSpinBox         : Forms->Line/Text editor  : Like a line edit but only allows integer numbers, has up/down arrows to increase/decrease the number
-	> WDoubleSpinBox   : Forms->Line/Text editor  : Like spin box but allows only real numbers (with decimals)
-	> WTimeEdit        : Forms->Date entry        : Like a line edit but only allows a time format like hh:mm:ss
-	> WDateEdit        : Forms->Date entry        : Like a line edit but only allows a date format like DD/MM/YYYY
-	> WCalendar        : Forms->Date entry        : Provides navigation by month and year to indicate a date
-	> WSlider          : Forms->Slider            : Provider a linear control which the user can drag to define an integer value
-	> WFileUpload      : Forms->File upload       : A "choose file" button which allow to define a file to upload
-
-- Display    
-	> WImage           : Layout->Images           : Adds an image to the user interface
-	> WText            : Layout->Text             : Adds plain or markup text to the user interface.
-	> WProgressBar     : Forms->Progress bar      : A bar from 0% to 100% to express progress
-X WWidget          : *Might have to be a dummy : Simple frame that could transform to charts, media, etc...
-	> WTemplate        : *Forms->HTML Templates   : Allows to insert user-defined HTML code with place-holders that the user can change in program logic.
-
-- Containers
-WCW	> WContainerWidget : *Layout->Containers      : Basic container
-WCW	> WGroupBox        : Layout->Grouping wigets  : A title and a list of items to group
-CCW	> WPanel           : Layout->Grouping wigets  : Similar to GroupBox but item list is collapsible
-
-- Navigation
-	> WAnchor          : Navigation->Anchor          : A HTML anchor or "link"
-WCW	> WStackedWidget   : *Navigation->Stacked widget : A set of windows superimposed over each other. The window that is actually shown at any time given, is decided on program logic
-PCW > WTabWidget       : Navigation->Tab widget      : A set of windows superimposed over each other with a tabs on the top which allow the user which window to show
-PCW	> WMenu            : *Navigation->Menu           : Works in conjunction with a WStackedWidget, which manages the contents
-	> WPopupMenu       : Navigation->Popup menu      : Context menu that is presented in a popup window
-	> WNavigationBar   : Navigation->Navigation bar  : Organizes contents in window- or application-specific drop down menus which are grouped in a parent menu	
-
+Widgets
 - Views      
-	> WTable           : Trees&Tables->Tables        : Displays a table
-	> WTree            : Trees&Tables->Trees         : Displays a tree in one column
 	· WTreeTable       : Trees&Tables->Trees         : Displays a tree and more possible columns
 	· WTableView       : Trees&Tables->Trees         : Different implementation of WTable (icon can be the same)
 	· WTreeView        : Trees&Tables->Trees         : Different implementation of WTree (icon can be the same)
 
 
-x) Optional : Pipe IPC
+Pipe IPC
 - Check if qt app without console in CONFIG still uses stdin, stdout
   by making a new qt app that spans a new process and talks to the
   originall app. This is because there is no way to test it by itself

@@ -43,11 +43,11 @@ public:
     void setTabletWidthRef  (int * p_int_tablet_width);
     void setLaptopWidthRef  (int * p_int_laptop_width);
     void setComputerWidthRef(int * p_int_computer_width);
-
+#ifdef Q_OS_WIN
 	void setIncludeDirRef (QString * p_str_includedir);
 	void setLibraryDirRef (QString * p_str_librarydir);
 	void setBinaryDirRef  (QString * p_str_binarydir );
-
+#endif
 	void setServerPortRef   (QString * p_str_server_port);
 	void setWtThemeRef      (QString * p_str_wt_theme);
 	void setWtTitleRef      (QString * p_str_wt_title);
@@ -74,11 +74,13 @@ private Q_SLOTS:
 
     void on_spin_computer_width_valueChanged(int arg1);
 
+#ifdef Q_OS_WIN
     void on_push_includedir_clicked();
 
     void on_push_librarydir_clicked();
 
     void on_push_binarydir_clicked();
+#endif
 
     void on_spin_app_server_port_valueChanged(int arg1);
 
@@ -96,9 +98,11 @@ private:
 	int     int_tablet_width  ;
 	int     int_laptop_width  ;
 	int     int_computer_width;
+#ifdef Q_OS_WIN
 	QString str_includedir    ;
 	QString str_librarydir    ;
 	QString str_binarydir     ;
+#endif
 	QString str_server_port   ;
 	QString str_wt_theme      ;
 	QString str_wt_title      ;
@@ -110,9 +114,11 @@ private:
     int     * m_p_int_tablet_width  ;
     int     * m_p_int_laptop_width  ;
     int     * m_p_int_computer_width;
+#ifdef Q_OS_WIN
 	QString * m_p_str_includedir    ;
 	QString * m_p_str_librarydir    ;
 	QString * m_p_str_binarydir     ;
+#endif
 	QString * m_p_str_server_port   ;
 	QString * m_p_str_wt_theme      ;
 	QString * m_p_str_wt_title      ;

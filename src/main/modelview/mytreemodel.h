@@ -60,44 +60,42 @@ public:
 	MyTreeModel(QDomDocument document = QDomDocument(), QObject *parent = 0);
 	~MyTreeModel();
 
-	Qt::ItemFlags flags      ( const QModelIndex &index )                                             const;
-	QVariant      data       ( const QModelIndex &index, int role )                                   const;
-	QVariant      headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
-	int           rowCount   ( const QModelIndex &parent = QModelIndex() )                            const;
-	int           columnCount( const QModelIndex &parent = QModelIndex() )                            const;
-	QModelIndex   index      ( int row, int column, const QModelIndex &parent = QModelIndex() )       const;
-	QModelIndex   parent     ( const QModelIndex &index )                                             const;
-
-	bool          removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
-	bool          insertRows(int row, int count, const QModelIndex & parent = QModelIndex());
-
-	bool          appendElem(QDomElement &element = QDomElement(), const QModelIndex & parent = QModelIndex());
-	bool          insertElem(int row, QDomElement &element = QDomElement(), const QModelIndex & parent = QModelIndex());
-
-	QDomDocument  getDocument() { return domDocument; }
-
-	WDomElem    * getElemByName (QString &name);
-	WDomElem    * getElemByIndex(QModelIndex index);
-
-	QModelIndex   getIndexByName(QString &name);
-	QModelIndex   getIndexByItem(WDomElem * welem);
-
-	bool          removeElemByName(QString &name);
-	bool          removeElemByIndex(QModelIndex index);
-
-	bool		  appendElemIntoName(QByteArray config, QString &name);
-	bool          appendElemIntoIndex(QByteArray config, QModelIndex index);
-
-	void          clearDocument();
-	bool          loadNewConfiguration(QByteArray config);
-
-	void          replaceUniqueId(QString oldId, QString newId);
-
-	void          setMapIconsByClassName(QMap<QString, QIcon> mapIcons);
-
-	bool          isHiddenRootElem(WDomElem * elem);
-
-	QString       findCloserContainer(QString &name);
+	Qt::ItemFlags    flags      ( const QModelIndex &index )                                             const;
+	QVariant         data       ( const QModelIndex &index, int role )                                   const;
+	QVariant         headerData ( int section, Qt::Orientation orientation, int role = Qt::DisplayRole ) const;
+	int              rowCount   ( const QModelIndex &parent = QModelIndex() )                            const;
+	int              columnCount( const QModelIndex &parent = QModelIndex() )                            const;
+	QModelIndex      index      ( int row, int column, const QModelIndex &parent = QModelIndex() )       const;
+	QModelIndex      parent     ( const QModelIndex &index )                                             const;
+				     
+	bool             removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
+	bool             insertRows(int row, int count, const QModelIndex & parent = QModelIndex());
+				     
+    bool             appendElem(QDomElement &element, const QModelIndex & parent = QModelIndex());
+    bool             insertElem(int row, QDomElement &element, const QModelIndex & parent = QModelIndex());
+				     
+	QDomDocument     getDocument() { return domDocument; }
+				     
+	WDomElem    *    getElemByName (QString &name);
+	WDomElem    *    getElemByIndex(QModelIndex index);
+				     
+	QModelIndex      getIndexByName(QString &name);
+	QModelIndex      getIndexByItem(WDomElem * welem);
+				     
+	bool             removeElemByName(QString &name);
+	bool             removeElemByIndex(QModelIndex index);
+				     
+	bool		     appendElemIntoName(QByteArray config, QString &name);
+	bool             appendElemIntoIndex(QByteArray config, QModelIndex index);
+				     
+	void             clearDocument();
+	bool             loadNewConfiguration(QByteArray config);
+				     
+	void             replaceUniqueId(QString oldId, QString newId);
+				     
+	bool             isHiddenRootElem(WDomElem * elem);
+				     
+	QString          findCloserContainer(QString &name);
 
 	QList<QFileInfo> getAllTrackedCssFiles();
 	bool			 removeTrackedCssFile(QFileInfo fileRef, bool bShowDiag = false);
@@ -113,6 +111,8 @@ public:
 	QStringList      getAllSignalSendersIds();
 	QStringList      getAllSignalReceiverdIds();
 
+	void             replaceIdInUniqueList(QString strOldId, QString strNewId);
+
 Q_SIGNALS:
 	void             removedTrackedCssFile(QFileInfo fileRef);
 	void             appendedTrackedCssFile(QFileInfo fileRef);
@@ -124,6 +124,7 @@ private:
 	WDomElem   * wRootHiddenElem;
 
 	void         getUniqueIdList(QDomElement *elem); 
+	void         removeFromUniqueIdList(QDomElement *elem);
 	void         clearCurrentConfig();
 	void         loadDefaultConfig();
 	WDomElem   * findItemByName(WDomElem * parent, QString &name);
@@ -136,8 +137,6 @@ private:
 	QByteArray   execXQueryOnConfig(QString strQuery);
 
 	QList<QString> mstrlistAllIds;
-
-	QMap<QString, QIcon> m_mapIconByClassName;
 };
 
 #endif // WQTREEMODEL_H

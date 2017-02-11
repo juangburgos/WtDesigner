@@ -79,8 +79,8 @@ public:
 	bool          removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
 	bool          insertRows(int row, int count, const QModelIndex & parent = QModelIndex());
 
-	bool          appendNode(QString &node = QString(""), const QModelIndex & parent = QModelIndex());
-	bool          insertNode(int row, QString &node = QString(""), const QModelIndex & parent = QModelIndex());
+    bool          appendNode(QString &node, const QModelIndex & parent);
+    bool          insertNode(int row, QString &node, const QModelIndex & parent);
 
 	QDomElement   getRootElem() { return wRootElement; }
 	WPropNode   * getRootNode() { return wRootNode; }

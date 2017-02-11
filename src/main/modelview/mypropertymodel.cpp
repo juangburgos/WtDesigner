@@ -17,6 +17,7 @@
 
 #include "mypropertymodel.h"
 #include "myglobals.h"
+#include "../helperfunctions.h"
 
 #include <QMessageBox>
 
@@ -197,7 +198,8 @@ void WPropNode::debugWDomElemState(QString header /*= ""*/)
 MyPropertyModel::MyPropertyModel(QObject *parent /*= 0*/) : QAbstractItemModel(parent)
 {
 	// create internal empty root
-	wRootNode    = new WPropNode(QString("root"), 0, NULL);
+    QString strTemp("root");
+    wRootNode    = new WPropNode(strTemp, 0, NULL);
 	wRootElement = QDomElement();
 }
 
@@ -258,7 +260,7 @@ QVariant MyPropertyModel::data(const QModelIndex &index, int role) const
 
 			if (!wRootElement.isNull())
 			{
-				return wRootElement.attribute(welem->getString(), ""); // Display attribute if available
+				return DecodeTextXML(wRootElement.attribute(welem->getString(), "")); // Display attribute if available
 			}
 			return "";
 
@@ -383,22 +385,29 @@ bool MyPropertyModel::setData(const QModelIndex &index, const QVariant &value, i
 	// change data (in QDomElement)
 	WPropNode *wnode = getNodeByIndex(index);
 
+	// early exit (if value did not change at all)
+	QString strNewValue = EncodeTextXML(value.toString());
+	if (strNewValue.compare(wRootElement.attribute(wnode->getString())) == 0)
+	{
+		return false;
+	}
+
 	// check if repeated Id
 	if (wnode->getString().compare(g_strIdAttr) == 0)
 	{
-		if (isNewIdCppKeyword(value.toString()))
+		if (isNewIdCppKeyword(strNewValue))
 		{
 			QMessageBox msgBox;
 			msgBox.setIcon(QMessageBox::Critical);
-			msgBox.setText(tr("The id = \"") + value.toString() + tr("\" is a C++ keyword. Please use a different id."));
+			msgBox.setText(tr("The id = \"") + strNewValue + tr("\" is a C++ keyword. Please use a different id."));
 			msgBox.exec();
 			return false;
 		}
-		if (isNewIdRepeated(value.toString()))
+		if (isNewIdRepeated(strNewValue))
 		{
 			QMessageBox msgBox;
 			msgBox.setIcon(QMessageBox::Critical);
-			msgBox.setText(tr("The id = \"") + value.toString() + tr("\" is already in use. Please use a different one."));
+			msgBox.setText(tr("The id = \"") + strNewValue + tr("\" is already in use. Please use a different one."));
 			msgBox.exec();
 			return false;
 		}
@@ -408,7 +417,7 @@ bool MyPropertyModel::setData(const QModelIndex &index, const QVariant &value, i
 	wnode->strOldId  = wRootElement.attribute(g_strIdAttr);
 	wnode->strOldVal = wRootElement.attribute(wnode->getString());
 
-	wRootElement.setAttribute(wnode->getString(), value.toString());
+	wRootElement.setAttribute(wnode->getString(), strNewValue);
 
 	Q_EMIT dataChanged(index, index);
 
@@ -469,13 +478,15 @@ bool MyPropertyModel::insertRows(int row, int count, const QModelIndex & parent 
 	{
 		for (int i = 0; i < count; i++)
 		{
-			result &= parentElem->appendChild(QString("default"));
+            QString strTemp = QString("default");
+            result &= parentElem->appendChild(strTemp);
 		}
 
 	}
 	else
 	{
-		result &= parentElem->insertChild(row, count, QString("default"));
+        QString strTemp = QString("default");
+        result &= parentElem->insertChild(row, count, strTemp);
 	}
 	// necessary api part
 	endInsertRows();
@@ -723,7 +734,8 @@ bool MyPropertyModel::isNewIdCppKeyword(QString &strNewId)
 
 bool MyPropertyModel::isNewIdRepeated(QString &strNewId)
 {
-	return recursiveIdCheck(&wRootElement.ownerDocument().documentElement(), strNewId);
+    QDomElement elemTemp = wRootElement.ownerDocument().documentElement();
+    return recursiveIdCheck(&elemTemp, strNewId);
 }
 
 bool MyPropertyModel::recursiveIdCheck(QDomElement * elem, QString &strNewId)
@@ -736,13 +748,15 @@ bool MyPropertyModel::recursiveIdCheck(QDomElement * elem, QString &strNewId)
 	{
 		for (int i = 0; i < elem->childNodes().count(); i++)
 		{
+            QDomElement elemTemp = elem->childNodes().at(i).toElement();
 			// if not a valid node then continue (might be a signal or something)
-			if (elem->childNodes().at(i).toElement().tagName().compare(g_strValidNodeTag, Qt::CaseInsensitive) != 0 &&
-				elem->childNodes().at(i).toElement().tagName().compare(g_strWRootTag, Qt::CaseInsensitive) != 0)
+            if (elemTemp.tagName().compare(g_strValidNodeTag, Qt::CaseInsensitive) != 0 &&
+                elemTemp.tagName().compare(g_strWRootTag, Qt::CaseInsensitive) != 0)
 			{
 				continue;
 			}
-			if(recursiveIdCheck(&elem->childNodes().at(i).toElement(), strNewId))
+
+            if(recursiveIdCheck(&elemTemp, strNewId))
 			{
 				return true;
 			}

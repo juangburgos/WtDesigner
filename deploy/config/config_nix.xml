@@ -2,10 +2,10 @@
 <Installer>
     <Name>WtDesigner</Name>
     <Version>1.0.3</Version>
-    <Title>WtDesigner (Windows 64-bits)</Title>
+    <Title>WtDesigner (Linux 64-bit)</Title>
     <Publisher>Juan Gonzalez Burgos</Publisher>
     <StartMenuDir>WtDesigner</StartMenuDir>
-    <TargetDir>@ApplicationsDir@/WtDesigner</TargetDir>
+    <TargetDir>@HomeDir@/WtDesigner</TargetDir>
     <AllowSpaceInPath>true</AllowSpaceInPath>
 	<WizardStyle>Modern</WizardStyle>
 </Installer>

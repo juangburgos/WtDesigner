@@ -27,6 +27,10 @@ ui(new Ui::DialogConfig)
 {
 	ui->setupUi(this);
 
+#ifndef Q_OS_WIN
+	ui->groupBox_4->setVisible(false); // library find groubox
+#endif
+
 	m_p_str_docroot = NULL;
 	m_p_str_http_address = NULL;
 	m_p_str_http_port = NULL;
@@ -34,9 +38,11 @@ ui(new Ui::DialogConfig)
 	m_p_int_tablet_width = NULL;
 	m_p_int_laptop_width = NULL;
 	m_p_int_computer_width = NULL;
+#ifdef Q_OS_WIN
 	m_p_str_includedir = NULL;
 	m_p_str_librarydir = NULL;
 	m_p_str_binarydir = NULL;
+#endif
 	m_p_str_server_port = NULL;
 	m_p_str_wt_theme = NULL;
 	m_p_str_wt_title = NULL;
@@ -48,9 +54,11 @@ ui(new Ui::DialogConfig)
 	int_tablet_width = -1;
 	int_laptop_width = -1;
 	int_computer_width = -1;
+#ifdef Q_OS_WIN
 	str_includedir = "N/A";
 	str_librarydir = "N/A";
 	str_binarydir = "N/A";
+#endif
 	str_server_port = "N/A";
 	str_wt_theme = "N/A";
 	str_wt_title = "N/A";
@@ -108,6 +116,7 @@ void DialogConfig::setComputerWidthRef(int *p_int_computer_width)
 	else { qDebug() << "[ERROR] Invalid ComputerWidth reference in Settings Dialog"; }
 }
 
+#ifdef Q_OS_WIN
 void DialogConfig::setIncludeDirRef(QString * p_str_includedir)
 {
 	if (p_str_includedir) { m_p_str_includedir = p_str_includedir; }
@@ -120,12 +129,12 @@ void DialogConfig::setLibraryDirRef(QString * p_str_librarydir)
 	else { qDebug() << "[ERROR] Invalid LibraryDir reference in Settings Dialog"; }
 }
 
-
 void DialogConfig::setBinaryDirRef(QString * p_str_binarydir)
 {
 	if (p_str_binarydir) { m_p_str_binarydir = p_str_binarydir; }
 	else { qDebug() << "[ERROR] Invalid BinaryDir reference in Settings Dialog"; }
 }
+#endif
 
 void DialogConfig::setServerPortRef(QString * p_str_server_port)
 {
@@ -162,12 +171,14 @@ void DialogConfig::setupDialogWidgets()
 	else { qDebug() << "[ERROR] LaptopWidth is NULL in setupDialogWidgets";    return; }
 	if (m_p_int_computer_width) { int_computer_width = *m_p_int_computer_width; }
 	else { qDebug() << "[ERROR] ComputerWidth is NULL in setupDialogWidgets";  return; }
+#ifdef Q_OS_WIN
 	if (m_p_str_includedir)    { str_includedir = *m_p_str_includedir; }
 	else { qDebug() << "[ERROR] IncludeDir is NULL in setupDialogWidgets";     return; }
 	if (m_p_str_librarydir)    { str_librarydir = *m_p_str_librarydir; }
 	else { qDebug() << "[ERROR] LibraryDir is NULL in setupDialogWidgets";     return; }
 	if (m_p_str_binarydir)     { str_binarydir = *m_p_str_binarydir; }
 	else { qDebug() << "[ERROR] BinaryDir is NULL in setupDialogWidgets";      return; }
+#endif
 	if (m_p_str_server_port)      { str_server_port = *m_p_str_server_port; }
 	else { qDebug() << "[ERROR] ServerPort is NULL in setupDialogWidgets";     return; }
 	if (m_p_str_wt_theme)      { str_wt_theme = *m_p_str_wt_theme; }
@@ -182,9 +193,11 @@ void DialogConfig::setupDialogWidgets()
 	ui->spin_tablet_width->setValue(int_tablet_width);
 	ui->spin_laptop_width->setValue(int_laptop_width);
 	ui->spin_computer_width->setValue(int_computer_width);
+#ifdef Q_OS_WIN
 	ui->ledit_includedir->setText(str_includedir);
 	ui->ledit_librarydir->setText(str_librarydir);
 	ui->ledit_binarydir->setText(str_binarydir);
+#endif
 	ui->spin_app_server_port->setValue(str_server_port.toInt());
 	ui->combo_wtheme->setCurrentText(str_wt_theme);
 	ui->line_wtitle->setText(str_wt_title);
@@ -205,12 +218,14 @@ void DialogConfig::on_pushApply_clicked()
 	else { qDebug() << "[ERROR] LaptopWidth is NULL in setupDialogWidgets";     return; }
 	if (m_p_int_computer_width) { *m_p_int_computer_width = int_computer_width; }
 	else { qDebug() << "[ERROR] ComputerWidth is NULL in setupDialogWidgets";   return; }
+#ifdef Q_OS_WIN
 	if (m_p_str_includedir)     { *m_p_str_includedir = str_includedir; }
 	else { qDebug() << "[ERROR] IncludeDir is NULL in setupDialogWidgets";      return; }
 	if (m_p_str_librarydir)     { *m_p_str_librarydir = str_librarydir; }
 	else { qDebug() << "[ERROR] LibraryDir is NULL in setupDialogWidgets";      return; }
 	if (m_p_str_binarydir)      { *m_p_str_binarydir = str_binarydir; }
 	else { qDebug() << "[ERROR] BinaryDir is NULL in setupDialogWidgets";       return; }
+#endif
 	if (m_p_str_server_port)    { *m_p_str_server_port = str_server_port; }
 	else { qDebug() << "[ERROR] ServerPort is NULL in setupDialogWidgets";      return; }
 	if (m_p_str_wt_theme)       { *m_p_str_wt_theme    = str_wt_theme; }
@@ -232,12 +247,14 @@ void DialogConfig::on_pushApply_clicked()
 	m_settings.setValue("m_computer_width", *m_p_int_computer_width);
 	m_settings.endGroup();
 
+#ifdef Q_OS_WIN
 	// begin cmake config settings
 	m_settings.beginGroup("cmake");
 	m_settings.setValue("m_strincludedir", *m_p_str_includedir);
 	m_settings.setValue("m_strlibrarydir", *m_p_str_librarydir);
 	m_settings.setValue("m_strbinarydir", *m_p_str_binarydir);
 	m_settings.endGroup();
+#endif
 
 	// begin application config settings
 	m_settings.beginGroup("application");
@@ -285,6 +302,7 @@ void DialogConfig::on_spin_computer_width_valueChanged(int arg1)
 	int_computer_width = arg1;
 }
 
+#ifdef Q_OS_WIN
 void DialogConfig::on_push_includedir_clicked()
 {
 	if (QDir(str_includedir).exists()) { m_str_last_selected = str_includedir; }
@@ -365,6 +383,7 @@ void DialogConfig::on_push_binarydir_clicked()
 	tmpDir.cdUp();
 	m_str_last_selected = tmpDir.path();
 }
+#endif
 
 void DialogConfig::on_spin_app_server_port_valueChanged(int arg1)
 {

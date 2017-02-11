@@ -24,6 +24,8 @@
 #include <QVector>
 #include <QVariant>
 
+#include <Wt/Utils>
+
 #include <Wt/WObject>
 #include <Wt/WWidget>
 #include <Wt/WWebWidget>
@@ -131,7 +133,7 @@ public:
 	QString Cpp_id()         ;
 	QString Cpp_declare()    ;
 	QString Cpp_instantiate(); 
-	// TODO : Id WTF was it missing ?????????????????????????
+
 	virtual QString Cpp_styleClass() ;
 	virtual QString Cpp_isInline()   ;
 	// NOT Q_PROPERTY
@@ -284,10 +286,12 @@ class WtQtAnchor : public WtQtContainerWidget, public Wt::WAnchor // [NOTE] if i
 		Q_PROPERTY(QString Wt_link           READ Wt_link           WRITE Wt_setLink        )
 		Q_PROPERTY(QString Wt_target         READ Wt_target         WRITE Wt_setTarget      )
 		Q_PROPERTY(QString Wt_text           READ Wt_text           WRITE Wt_setText        )
+		Q_PROPERTY(QString Wt_textFormat     READ Wt_textFormat     WRITE Wt_setTextFormat  )
 		// Cpp code generation
 		Q_PROPERTY(QString Cpp_link          READ Cpp_link)
 		Q_PROPERTY(QString Cpp_target        READ Cpp_target)
 		Q_PROPERTY(QString Cpp_text          READ Cpp_text)
+		Q_PROPERTY(QString Cpp_textFormat    READ Cpp_textFormat)
 
 public:
 	WtQtAnchor(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
@@ -305,8 +309,8 @@ public:
 	QString Wt_isInline(); // [NOTE] added WAnchor specific
 	void    Wt_setInline(QString isinline);
 
-	QString Wt_htmlTagName();                   // REIMPLEMENT EMPTY
-	void    Wt_setHtmlTagName(QString tagname); // REIMPLEMENT EMPTY
+	//QString Wt_htmlTagName();                   // REIMPLEMENT EMPTY
+	//void    Wt_setHtmlTagName(QString tagname); // REIMPLEMENT EMPTY
 
 	QString Wt_link();
 	void    Wt_setLink(QString link);
@@ -317,11 +321,19 @@ public:
 	QString Wt_text();
 	void    Wt_setText(QString text);
 
+	QString Wt_textFormat();
+	void    Wt_setTextFormat(QString textFormat);
+
 	// Cpp code generation
 	QString Cpp_link();
 	QString Cpp_target();
 	QString Cpp_text();
-	QString Cpp_htmlTagName(); // REIMPLEMENT EMPTY
+	//QString Cpp_htmlTagName(); // REIMPLEMENT EMPTY
+	QString Cpp_textFormat();
+
+private:
+	QString m_strText; // Added to fix Wt bug of returning no text after being set upon initialization
+
 
 };
 
@@ -1006,14 +1018,14 @@ public:
 
 };
 
-class WtQtWCalendar : public WtQtCompositeWidget, public Wt::WCalendar
+class WtQtCalendar : public WtQtCompositeWidget, public Wt::WCalendar
 {
 	Q_OBJECT
 
 public:
-	WtQtWCalendar(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
-	~WtQtWCalendar();
-	WtQtWCalendar(const WtQtWCalendar& other);
+	WtQtCalendar(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
+	~WtQtCalendar();
+	WtQtCalendar(const WtQtCalendar& other);
 
 	QString Wt_className(); // [NOTE] : need to add to helperfunctions::GetMetaObjectByClassName
 
@@ -1741,6 +1753,58 @@ private:
 	QString                m_strParentId;
 };
 
+// Made-up widget, on WtDesigner should behave as empty container, no childrem, but
+// upon cpp autogen should insert headerLocation in includes with <> if isGlobalInclude
+// or "" if not, and declare the class according to promotedClass
+class WtQtPromotedWidget : public WtQtWidget, public Wt::WContainerWidget
+{
+	Q_OBJECT
+		// Specific if is promoted widget
+		Q_PROPERTY(QString Wt_promotedClass        READ Wt_promotedClass      WRITE Wt_setPromotedClass )
+		Q_PROPERTY(QString Wt_headerLocation       READ Wt_headerLocation     WRITE Wt_setHeaderLocation)
+		Q_PROPERTY(QString Wt_isGlobalInclude      READ Wt_isGlobalInclude    WRITE Wt_setGlobalInclude )
+		// Cpp code generation
+		//Q_PROPERTY(QString Cpp_promotedClass       READ Cpp_promotedClass  ) // [NOTE] Not necessary   
+		//Q_PROPERTY(QString Cpp_headerLocation      READ Cpp_headerLocation ) // [NOTE] Not necessary
+		//Q_PROPERTY(QString Cpp_isGlobalInclude     READ Cpp_isGlobalInclude) // [NOTE] Not necessary
+public:
+	WtQtPromotedWidget(Wt::WContainerWidget *wparent = 0, QObject *qparent = 0);
+	~WtQtPromotedWidget();
+	WtQtPromotedWidget(const WtQtPromotedWidget& other);
+
+	QString Wt_className(); // "WPromotedWidget" not real, just to follow convention
+
+	QString Wt_id();
+	void    Wt_setId(QString id);
+
+	QString Wt_styleClass();
+	void    Wt_setStyleClass(QString styleclass);
+
+	QString Wt_isInline();
+	void    Wt_setInline(QString isinline);
+
+	//QString Wt_htmlTagName();
+	//void    Wt_setHtmlTagName(QString tagname);
+
+	QString Wt_promotedClass();
+	void    Wt_setPromotedClass(QString promotedClass);
+
+	QString Wt_headerLocation();
+	void    Wt_setHeaderLocation(QString headerLocation);
+
+	QString Wt_isGlobalInclude();
+	void    Wt_setGlobalInclude(QString isGlobalInclude);
+
+	// Cpp code generation
+	QString Cpp_declare();     // declare as Wt_promotedClass
+	QString Cpp_instantiate(); // instantiate as Wt_promotedClass
+
+private:
+	QString m_strPromotedClass;
+	QString m_strHeaderLocation;
+	bool    m_boolIsGlobalInclude;
+
+};
 
 
 #endif // MIXEDCLASSES_H

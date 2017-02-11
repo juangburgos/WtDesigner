@@ -1,17 +1,43 @@
 # WtDesigner
 
-[Download Windows Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Windowsx64/v.1.0.0/)
+***
 
-**IMPORTANT:**
+[Download Windows Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Windowsx64/v.1.0.3/)
 
 * Install "vcredist_x64.exe" before running WtDesigner for the first time.
 * Run WtDesigner with Administrator rights in Windows.
 
 ***
 
+[Download Linux Binaries (64-bits)](https://sourceforge.net/projects/wtdesigner/files/Linux64/v.1.0.3/)
+
+* Might be necessary to:
+
+```bash
+$ chmod +x ./WtDesignerInstallerV.1.0.3.run
+```
+
+* Tested on **CentOS7** and **Ubuntu14.04**
+
+* Installer might ask for **sudo** password to copy _WtDesigner.desktop_ to _/usr/shared/applications/_.
+
+* If WtDesigner does not show the webpage contents, hit the **Refresh** buttton until the contents appear.
+
+***
+
 ## What
 
 A WYSIWYG (What You See Is What You Get) front-end editor which serves as bride between HTML/CSS and the [Wt C++ library](http://www.webtoolkit.eu/wt). It helps create web applications using C++ and the Wt library with just a few clicks. It also simplifies the usage of the Wt library by auto generating most of the boilerplate code and previewing the graphics of the end result without having to compile any C++ code.
+
+***
+
+## Who
+
+List of contributors:
+
+* [juangburgos](https://github.com/juangburgos).
+
+* [cls-nebadje](https://github.com/cls-nebadje).
 
 ***
 
@@ -39,16 +65,16 @@ WtDesigner was created as an attempt to reduce the complexity of creating beauti
 
 ## How
 
-WtDesigner is a tool which is also inspired by (Qt)[http://www.qt.io] (specifically QtDesigner), and it is based on the Wt library and Qt itself. It provides an easy way to develop the front-end of the web application by means of drag-and-drop elements, blocks and templates. Furthermore, it allows to preview the looks of the application, tweak it and see the results instantly without having to recompile your application.
+WtDesigner is a tool which is also inspired by [Qt](http://www.qt.io) (specifically QtDesigner), and it is based on the Wt library and Qt itself. It provides an easy way to develop the front-end of the web application by means of drag-and-drop elements, blocks and templates. Furthermore, it allows to preview the looks of the application, tweak it and see the results instantly without having to recompile your application.
 
 
-WtDesigner can be used as a stand-alone application in Windows (and soon Linux and Mac) but it also integrates into your workflow by means of popular IDE plugins.
+WtDesigner can be used as a stand-alone application in Windows (and soon Linux and Mac) but it also integrates into your workflow by means of popular IDE plugins (**Coming soon...**).
 
 ***
 
 ## Tutorials
 
-[Youtube Videos](https://www.youtube.com/playlist?list=PLy_hF6QxSYC0nQtPUdxEeLUsM3PNnqApI) (**Coming soon...**)
+[Youtube Videos](https://www.youtube.com/playlist?list=PLy_hF6QxSYC0nQtPUdxEeLUsM3PNnqApI)
 
 ## Thanks
 

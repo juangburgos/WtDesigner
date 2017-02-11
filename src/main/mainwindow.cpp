@@ -19,11 +19,12 @@
 #include "mainwindow.h"
 #include "helperfunctions.h"
 
+#include "mainpage.h"
+
+
 MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
 	: QMainWindow(parent)
 {
-	// create the wt server
-	mp_WtServerWorker = new WtServerWorker(this);
 	// setup the main window ui
 	ui.setupUi(this);
 	// set all icons color
@@ -32,7 +33,6 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
 	m_pwidgetmodel = new MyWidgetModel(g_strLocalWidgetsPath, this); // widget model should come first because it loads the icons
 	ui.treeviewWtWidgets->setModel(m_pwidgetmodel);
 	ui.treeviewWtWidgets->expandAll();
-	m_treemodel.setMapIconsByClassName(m_pwidgetmodel->getMapIconsByClassName()); // pass icons from widget model to tree model
 	ui.treeviewWtTree->setModel(&m_treemodel);
 	ui.treeviewWtProperties->setModel(&m_propertymodel);
 	ui.treeviewWtSignalsSlots->setModel(&m_sigslotmodel);
@@ -102,9 +102,11 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
 	m_dialogConfig.setTabletWidthRef  (&m_tablet_width  );
 	m_dialogConfig.setLaptopWidthRef  (&m_laptop_width  );
 	m_dialogConfig.setComputerWidthRef(&m_computer_width);
+#ifdef Q_OS_WIN
 	m_dialogConfig.setIncludeDirRef   (&m_strIncludeDir);
 	m_dialogConfig.setLibraryDirRef   (&m_strLibraryDir);
 	m_dialogConfig.setBinaryDirRef    (&m_strBinaryDir);
+#endif
 	m_dialogConfig.setServerPortRef   (&m_strServerPort);
 	m_dialogConfig.setWtThemeRef      (&m_strWtTheme);
 	m_dialogConfig.setWtTitleRef      (&m_strWtTitle);
@@ -125,8 +127,7 @@ MainWindow::~MainWindow()
 {
 	// Stop Wt server
 	StopWtServer();
-	// Delete Wt server
-	delete mp_WtServerWorker;
+
 	// Delete old local /resources/ and /temp/ folders
 	if (QDir(g_strLocalResourcesPath).exists()) { QDir(g_strLocalResourcesPath).removeRecursively(); }
 	if (QDir(g_strLocalTempPath).exists())   { QDir(g_strLocalTempPath).removeRecursively();   }
@@ -149,10 +150,12 @@ void MainWindow::SetupPersistSettings()
 	m_tablet_width   = 768;
 	m_laptop_width   = 992;
 	m_computer_width = 1200;
+#ifdef Q_OS_WIN
 	// set default cmake directories
 	m_strIncludeDir  = "";
 	m_strLibraryDir  = "";
 	m_strBinaryDir   = "";
+#endif
 	//
 	m_strServerPort = "8080";  
 	m_strWtTheme    = g_strThemeBootstrat3;
@@ -174,6 +177,7 @@ void MainWindow::SetupPersistSettings()
 	m_computer_width = m_settings.value("m_computer_width", m_computer_width ).toInt();
 	m_settings.endGroup();
 
+#ifdef Q_OS_WIN
 	// begin cmake config settings
 	m_settings.beginGroup("cmake");
 	m_strIncludeDir = m_settings.value("m_strincludedir", m_strIncludeDir).toString();
@@ -208,6 +212,7 @@ void MainWindow::SetupPersistSettings()
 		m_settings.setValue("m_strbinarydir", m_strBinaryDir);
 	}
 	m_settings.endGroup();
+#endif
 
 	// begin application config settings
 	m_settings.beginGroup("application");
@@ -216,7 +221,7 @@ void MainWindow::SetupPersistSettings()
 	m_settings.endGroup();
 }
 
-
+#ifdef Q_OS_WIN
 void MainWindow::FindLibFileNames()
 { // list of dependencies according to http://redmine.webtoolkit.eu/projects/wt/wiki/Installing_Wt_on_Ubuntu?version=34
 	// NOTE : returns empty if one or more libs are missing (wt, wtd, wthttp, wthttpd must be there if m_strLibraryDir was found)
@@ -233,7 +238,7 @@ void MainWindow::FindLibFileNames()
 													  );
 	// NOTE : later if empty then set on CMake's boost finder
 }
-
+#endif
 
 void MainWindow::SetAllIcons(QString svgcolor)
 {
@@ -419,48 +424,77 @@ void MainWindow::LoadDefaultConfig()
 
 void MainWindow::StartWtServer()
 {
-	// (re)configure ip address for webview
-	m_Address = "http://127.0.0.1:" + m_vectWtParams[WT_VALHTTPPORT];
-	// set settings related attrs that might have changed in settings dialog
-	QDomElement docElem = m_treemodel.getDocument().documentElement();
-	docElem.setAttribute(g_strThemeAttr, m_strWtTheme);
-	docElem.setAttribute(g_strTitleAttr, m_strWtTitle);
-	// start Wt server
-	mp_WtServerWorker->ConfigureWtServer(m_vectWtParams);
-	mp_WtServerWorker->start();
-	// load page [IMPORTANT] : DO NOT DELETE LINE BELOW OR PAGE WILL NEVER LOAD
-	on_LoadPage();
+    if (m_server)
+    {
+        StopWtServer();
+    }
+
+    // (re)configure ip address for webview
+    m_Address = "http://127.0.0.1:" + m_vectWtParams[WT_VALHTTPPORT];
+
+    // set settings related attrs that might have changed in settings dialog
+    QDomElement docElem = m_treemodel.getDocument().documentElement();
+    docElem.setAttribute(g_strThemeAttr, m_strWtTheme);
+    docElem.setAttribute(g_strTitleAttr, m_strWtTitle);
+
+    std::vector<std::string> args;
+    for (const auto &s : m_vectWtParams)
+    {
+        args.emplace_back(s.toStdString());
+    }
+    std::vector<char *> argv;
+    for (const auto &s : args)
+    {
+        argv.emplace_back(const_cast<char *>(s.c_str()));
+    }
+    m_server = std::unique_ptr < Wt::WServer
+            > (new Wt::WServer(argv.size(), argv.data()));
+
+    auto wtApplicationFactory = [&](const Wt::WEnvironment& env)
+    {
+        return new MainPage(env, this);
+    };
+    m_server->addEntryPoint(Wt::Application, wtApplicationFactory);
+
+    try
+    {
+        m_server->start();
+    } catch (const Wt::WServer::Exception &e)
+    {
+        qCritical() << "wt server start failed with: " << e.what();
+        m_server = decltype(m_server)();
+        return;
+    }
+    // load page [IMPORTANT] : DO NOT DELETE LINE BELOW OR PAGE WILL NEVER LOAD
+    on_LoadPage();
 }
 
-void MainWindow::StopWtServer() 
+void MainWindow::StopWtServer()
 {
-	// load something else
-	m_WebView->load(QUrl("http://www.webtoolkit.eu/wt"));
-	// shutdown Wt server
-	if (mp_WtServerWorker->isRunning())
-	{
-		mp_WtServerWorker->quit();
-	}
-	// wait if necessary
-	int counter = 0;
-	while (mp_WtServerWorker->isRunning())
-	{
-		QThread::msleep(100);
-		QApplication::processEvents();
-		counter++;
-		if (counter == 15)
-		{
-			break;
-		}
-	}
-	if (counter == 15)
-	{
-		qDebug() << "[ERROR] Could not stop Wt Server cleanly";
-		mp_WtServerWorker->quit();
-		mp_WtServerWorker->terminate();
-	}
-	// [NOTE] very important
-	m_WebView->settings()->clearMemoryCaches();
+    if (!m_server)
+    {
+        return;
+    }
+
+    // load something else
+    m_WebView->load(QUrl("http://www.webtoolkit.eu/wt"));
+
+    // shutdown Wt server
+    if (m_server->isRunning())
+    {
+        try
+        {
+            m_server->stop();
+        } catch (const Wt::WServer::Exception &e)
+        {
+            qCritical() << "wt server stop failed with: " << e.what();
+        }
+    }
+    // dispose Wt server object by resetting unique_ptr
+    m_server = decltype(m_server)();
+
+    // [NOTE] very important
+    m_WebView->settings()->clearMemoryCaches();
 }
 
 void MainWindow::LoadFileConfig(QByteArray config) 
@@ -657,9 +691,7 @@ void MainWindow::on_actionImport_from_HTML_triggered()
 		QByteArray htmlsource = file.readAll();
 		// get wui configuration from html
 		QDir fpath = QFileInfo(file).absoluteDir();
-		baData = GetWtFromHtml(htmlsource, NULL, "", fpath.absolutePath().toLatin1());
-		// Copy each stylesheet and possible resources. Update baData path to local /styles/
-		GetStylesFromHtml(baData);
+		baData = QByteArray(); // TODO : IMPLEMENT !
 		// load into tree model for validation
 		if (!m_treemodel.loadNewConfiguration(baData))
 		{
@@ -716,7 +748,8 @@ void MainWindow::on_actionCut_triggered()
 		QClipboard *clipboard = QApplication::clipboard();
 		clipboard->setText(doc.toString());
 		// remove from tree and webpage and store in command stack (done here better because in paste crashes with no simple fix)
-		MyUndoRemoveElem *remCommand = new MyUndoRemoveElem(&m_treemodel, rootElem.attribute(g_strIdAttr), this);
+        QString strTemp = rootElem.attribute(g_strIdAttr);
+        MyUndoRemoveElem *remCommand = new MyUndoRemoveElem(&m_treemodel, strTemp, this);
 		m_commandHistory.push(remCommand);
 	}
 }
@@ -762,7 +795,7 @@ void MainWindow::on_actionPaste_triggered()
 		if (mimeData->hasText()) 
 		{
 			// get config chunk and validate
-			QByteArray baconfigChunk = mimeData->text().toLatin1();
+			QByteArray baconfigChunk = mimeData->text().toUtf8();
 			QString errorStr;
 			int     errorLine;
 			int     errorColumn;
@@ -876,7 +909,18 @@ void MainWindow::LoadProjectPath(QString strProjPathToLoad)
 	QString strProjFileName = GetProjFileName(strProjPathToLoad);
 	// Copy project root /resources/ folder to local root
 	QString strProjResourcesPath = strProjPathToLoad + g_strResourcesPathConst;
-	CopyAllFilesInPath(strProjResourcesPath, g_strLocalResourcesPath, QStringList() << "*.*");
+	// Show message if could not import project (copy files locally)
+	while (!CopyAllFilesInPath(strProjResourcesPath, g_strLocalResourcesPath, QStringList() << "*.*"))
+	{
+		QMessageBox msgBox;
+		msgBox.setText("Error while importing project.");
+		msgBox.setInformativeText("There were some problems importing your project. Would you like to try again?");
+		msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+		msgBox.setIcon(QMessageBox::Question);
+		msgBox.setDefaultButton(QMessageBox::Yes);
+		QMessageBox::StandardButton ret = (QMessageBox::StandardButton)msgBox.exec();
+		if (ret == QMessageBox::No) { return; }
+	}
 	// Create temporary folder
 	QDir().mkdir(g_strLocalTempPath);
 	// Open and load project file
@@ -903,14 +947,14 @@ void MainWindow::LoadProjectPath(QString strProjPathToLoad)
 		ui.treeviewWtResources->setRootIndex(m_resourcesmodel.index(g_strLocalResourcesPath));
 		// reload stylesheets list
 		ui.listWtStylesheets->clear();
-		auto allStylesheets = m_treemodel.getAllTrackedCssFiles();
+        QList<QFileInfo> allStylesheets = m_treemodel.getAllTrackedCssFiles();
 		for (int i = 0; i < allStylesheets.count(); i++)
 		{
 			new QListWidgetItem(allStylesheets.at(i).filePath(), ui.listWtStylesheets);
 		}
 		// reload javascripts list
 		ui.listWtJavascripts->clear();
-		auto allJavascripts = m_treemodel.getAllTrackedJsFiles();
+        QList<QFileInfo> allJavascripts = m_treemodel.getAllTrackedJsFiles();
 		for (int i = 0; i < allJavascripts.count(); i++)
 		{
 			new QListWidgetItem(allJavascripts.at(i).filePath(), ui.listWtJavascripts);
@@ -996,14 +1040,17 @@ void MainWindow::UpdatePropertyTree(QDomElement elem)
 		if (strClassName.compare("QObject") == 0) { break; }
 		strClassName.remove(1, 3);
 		// add class to model
-		m_propertymodel.appendNode(strClassName);
+        m_propertymodel.appendNode(strClassName, QModelIndex());
 		// iterate properties
 		for (int i = 0; i < pmetaSuperObj->propertyCount(); i++)
 		{
 			strPropName = QString("%1").arg(pmetaSuperObj->property(i).name());
 			if (!strPropName.contains("Wt")) { continue; }
-			// IGNORE Wt_htmlTagName for other than WContainerWidget
-			if (elem.attribute(g_strClassAttr, "").compare("WContainerWidget") != 0 && strPropName.compare("Wt_htmlTagName") == 0) { continue; } // 
+			// IGNORE Wt_htmlTagName for other than WContainerWidget OR WAnchor
+			if ( ( elem.attribute(g_strClassAttr, "").compare("WContainerWidget") != 0 
+				 && elem.attribute(g_strClassAttr, "").compare("WAnchor") != 0      ) 
+				 && strPropName.compare("Wt_htmlTagName") == 0 )
+			{ continue; } // skip
 			// remove prop from previous class
 			if (!strOldClassName.isEmpty())
 			{
@@ -1024,7 +1071,8 @@ void MainWindow::UpdatePropertyTree(QDomElement elem)
 	{
 		if (rootnode->getChild(i)->countChild() == 0)
 		{
-			m_propertymodel.removeNodeByName(rootnode->getChild(i)->getString());
+            QString strTemp = rootnode->getChild(i)->getString();
+            m_propertymodel.removeNodeByName(strTemp, QModelIndex());
 			i--;
 		}
 	}
@@ -1259,10 +1307,13 @@ void MainWindow::on_ReceivedAutoGenCpp(QByteArray config)
 		//
 		if (file.open(QIODevice::ReadWrite | QFile::Truncate))
 		{
-			// generate configuration xml text from object tree and store in file
-			QTextStream stream(&file);
-			// get config from tree model
-			stream << config;
+			//// generate configuration xml text from object tree and store in file
+			//QTextStream stream(&file);
+			//// get config from tree model
+			//stream << config;
+			// [FIX] Half the problem was solved with this.
+			//       Here last 3 come with "?"
+			file.write(config);
 		}
 		else
 		{
@@ -1318,10 +1369,12 @@ void MainWindow::on_actionPreferences_triggered()
 
 void MainWindow::on_ReloadWtServer()
 {
-	StopWtServer(); 
-	StartWtServer();
+    StopWtServer();
+    StartWtServer();
+#ifdef Q_OS_WIN
 	// because this is called when config is changed (i.e. the lib path might have changed)
 	m_listLibFileNames.clear();
+#endif
 }
 
 void MainWindow::on_receivedDragOnWebview(QByteArray baconfigChunk, QString strParentElemId)
@@ -1363,7 +1416,7 @@ void MainWindow::on_treeviewWtTree_contextMenu(const QPoint &point)
 	QModelIndex index = ui.treeviewWtTree->indexAt(point);
 
 	// for icons
-	auto mapIcons = m_pwidgetmodel->getMapIconsByClassName();
+    auto &mapIcons = Icons::GetCache();
 
 	if (!index.isValid())
 	{
@@ -1388,7 +1441,8 @@ void MainWindow::on_treeviewWtTree_contextMenu(const QPoint &point)
 	if (strClassName.compare("WTabWidget") == 0)
 	{
 		act1 = rightClickMenu.addAction(tr("Add ") + "WTabItem child");
-		act1->setIcon(mapIcons.value("WTabItem"));
+        QIcon iconTemp = mapIcons.value("WTabItem");
+        act1->setIcon(iconTemp);
 		res  = rightClickMenu.exec(ui.treeviewWtTree->mapToGlobal(point));
 		if (res == act1)
 		{
@@ -1398,7 +1452,8 @@ void MainWindow::on_treeviewWtTree_contextMenu(const QPoint &point)
 	else if (strClassName.compare("WMenu") == 0)
 	{
 		act1 = rightClickMenu.addAction(tr("Add ") + "WMenuItem child");
-		act1->setIcon(mapIcons.value("WMenuItem"));
+        QIcon iconTemp = mapIcons.value("WMenuItem");
+        act1->setIcon(iconTemp);
 		res  = rightClickMenu.exec(ui.treeviewWtTree->mapToGlobal(point));
 		if (res == act1)
 		{
@@ -1677,7 +1732,7 @@ void MainWindow::CheckIfStylesheetPath(QString strPath, bool isAdd)
 {
 	// same as CheckIfStylesheet but for all files in a path
 	QDir m_Path(strPath);
-	QDirIterator it(m_Path.absolutePath().toLatin1(), QStringList() << "*.css", QDir::Files, QDirIterator::Subdirectories);
+	QDirIterator it(m_Path.absolutePath().toUtf8(), QStringList() << "*.css", QDir::Files, QDirIterator::Subdirectories);
 	// iterate css files
 	while (it.hasNext())
 	{
@@ -1725,7 +1780,7 @@ void MainWindow::CheckIfJavascriptPath(QString strPath, bool isAdd)
 {
 	// same as CheckIfJavascript but for all files in a path
 	QDir m_Path(strPath);
-	QDirIterator it(m_Path.absolutePath().toLatin1(), QStringList() << "*.js", QDir::Files, QDirIterator::Subdirectories);
+	QDirIterator it(m_Path.absolutePath().toUtf8(), QStringList() << "*.js", QDir::Files, QDirIterator::Subdirectories);
 	// iterate css files
 	while (it.hasNext())
 	{
@@ -1820,6 +1875,7 @@ void MainWindow::on_push_refresh_clicked()
 
 void MainWindow::on_actionExport_to_CMake_triggered()
 {
+#ifdef Q_OS_WIN
 	// Try to find Wt installation again
 	if (m_strIncludeDir.isEmpty())
 	{
@@ -1859,14 +1915,17 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 	{
 		FindLibFileNames();
 	}
+#endif
 	// create replace tokens list
-	QList<QPair<QString, QString>> listReplaceTokens;
+    QList<QPair<QString, QString> > listReplaceTokens;
 	listReplaceTokens.append(QPair<QString, QString>("@PROJNAME@"       , m_strProjName          ));
 	listReplaceTokens.append(QPair<QString, QString>("@PROJNAMELOWER@"  , m_strProjName.toLower()));
 	listReplaceTokens.append(QPair<QString, QString>("@PROJNAMEUPPER@"  , m_strProjName.toUpper()));
+#ifdef Q_OS_WIN
 	listReplaceTokens.append(QPair<QString, QString>("@WT_INCLUDE_PATH@", m_strIncludeDir        ));
 	listReplaceTokens.append(QPair<QString, QString>("@WT_LIB_PATH@"    , m_strLibraryDir        ));
 	listReplaceTokens.append(QPair<QString, QString>("@WT_BIN_PATH@"    , m_strBinaryDir         )); // NOTE : does not seem necessary to replace "/" for "\\" 
+#endif
 	// join params separated be space
 	QString strJointParams;
 	for (int i = WT_PARDOCROOT; i <= WT_VALHTTPPORT; i++)
@@ -1883,7 +1942,8 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 	}
 	listReplaceTokens.append(QPair<QString, QString>("@WT_PARAMS@"      , strJointParams         ));
 	// if lib files are defined
-	QString strCorrectCMakeFile = "./cmake/template_CMakeListsWithGen.txt";
+	QString strCorrectCMakeFile; 
+#ifdef Q_OS_WIN
 	if (!m_listLibFileNames.isEmpty())
 	{
 		// complete replace tokens list with lib file names
@@ -1907,7 +1967,7 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 		listReplaceTokens.append( QPair<QString, QString>("@BOOST_THREAD_RELEASE@"         ,m_listLibFileNames.filter(QRegExp("(\w)*thread[^gd]+.(lib|a)"           )).first()) );
 		listReplaceTokens.append( QPair<QString, QString>("@BOOST_RANDOM_DEBUG@"           ,m_listLibFileNames.filter(QRegExp("(\w)*random(.)*gd(.)*.(lib|a)"       )).first()) );
 		listReplaceTokens.append( QPair<QString, QString>("@BOOST_RANDOM_RELEASE@"         ,m_listLibFileNames.filter(QRegExp("(\w)*random[^gd]+.(lib|a)"           )).first()) );
-		// redefine to the one without generator
+		// the one without generator
 		strCorrectCMakeFile = "./cmake/template_CMakeLists.txt";
 	}
 	else
@@ -1917,6 +1977,10 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 		QMessageBox::critical(0, QObject::tr("Invalid Wt Library Files"), QObject::tr("Could not find Wt Library Files.\nSelect a valid library path in Settings."));
 		return;
 	}
+#endif
+#ifndef Q_OS_WIN
+	strCorrectCMakeFile = "./cmake/template_nix_CMakeLists.txt";
+#endif
 	QString strNewFileName;
 	QMessageBox msgBox;
 	QMessageBox::StandardButton respose;
@@ -1934,6 +1998,7 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 	{
 		ProcessCMakeTemplate(strCorrectCMakeFile, strNewFileName, listReplaceTokens);
 	}
+#ifdef Q_OS_WIN
 	// process "./cmake/template_vs.xml"
 	respose = QMessageBox::Ok;
 	strNewFileName = m_strProjRootPath + "/" + m_strProjName.toLower() + ".vcxproj.user";
@@ -1976,6 +2041,7 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 	{
 		ProcessCMakeTemplate("./cmake/template_eclipse_debug.xml", strNewFileName, listReplaceTokens);
 	}
+#endif
 	// process "./cmake/template_project.h"
 	respose = QMessageBox::Ok;
 	strNewFileName = m_strProjRootPath + "/" + m_strProjName.toLower() + ".h";
@@ -2018,6 +2084,22 @@ void MainWindow::on_actionExport_to_CMake_triggered()
 	{
 		ProcessCMakeTemplate("./cmake/template_main.cpp", strNewFileName, listReplaceTokens);
 	}
+#ifndef Q_OS_WIN
+	// process "./cmake/template_script.sh"
+	respose = QMessageBox::Ok;
+	strNewFileName = m_strProjRootPath + "/" + m_strProjName+ ".sh";
+	if (QFile(strNewFileName).exists())
+	{
+		msgBox.setText(tr("File ") + strNewFileName + tr(" already exists.\nWould you like to overwrite it?"));
+		msgBox.setIcon(QMessageBox::Critical);
+		msgBox.setStandardButtons(QMessageBox::Cancel | QMessageBox::Ok);
+		respose = (QMessageBox::StandardButton)msgBox.exec();
+	}
+	if (respose == QMessageBox::Ok)
+	{
+		ProcessCMakeTemplate("./cmake/template_script.sh", strNewFileName, listReplaceTokens);
+	}
+#endif
 	// Aknowledge finished
 	QMessageBox::information(0, QObject::tr("Finished Task"), QObject::tr("Finished exporting CMake project to %1.").arg(m_strProjRootPath));
 }
@@ -2046,7 +2128,7 @@ void MainWindow::on_actionHtml_Code_triggered()
 		return;
 	}
 	QString strHtml = m_WebView->page()->mainFrame()->toHtml();
-	tmpFile.write(strHtml.toLatin1());
+	tmpFile.write(strHtml.toUtf8());
 	tmpFile.flush();
 	tmpFile.close();
 	QDesktopServices::openUrl(QUrl("file:///" + tmpFile.fileName(), QUrl::TolerantMode));
@@ -2082,7 +2164,7 @@ void MainWindow::on_trackedFileWasMoved(QString strRelSourceFilePath, QString st
 
 void MainWindow::on_removedTrackedCssFile(QFileInfo fileRef)
 {
-	auto item = ui.listWtStylesheets->findItems(fileRef.filePath(), Qt::MatchExactly).first();
+    QListWidgetItem * item = ui.listWtStylesheets->findItems(fileRef.filePath(), Qt::MatchExactly).first();
 	if (item)
 	{
 		int remRow = ui.listWtStylesheets->row(item);
@@ -2099,7 +2181,7 @@ void MainWindow::on_appendedTrackedCssFile(QFileInfo fileRef)
 
 void MainWindow::on_removedTrackedJsFile(QFileInfo fileRef)
 {
-	auto item = ui.listWtJavascripts->findItems(fileRef.filePath(), Qt::MatchExactly).first();
+    QListWidgetItem * item = ui.listWtJavascripts->findItems(fileRef.filePath(), Qt::MatchExactly).first();
 	if (item)
 	{
 		int remRow = ui.listWtJavascripts->row(item);

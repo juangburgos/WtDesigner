@@ -24,9 +24,7 @@ INCLUDEPATH  += .                                                 \
 DEPENDPATH   += .
 
 LIBS         += -LC:/Wt-3.3.5-msvs2013-Windows-x86-SDK/lib        \
-                -LC:/Wt-3.3.5-msvs2013-Windows-x86-SDK/bin        \
-				-LC:/Wt-3.3.5-msvs2013-Windows-x64-SDK/lib        \
-                -LC:/Wt-3.3.5-msvs2013-Windows-x64-SDK/bin        
+				-LC:/Wt-3.3.5-msvs2013-Windows-x64-SDK/lib
 
 				
 CONFIG(debug, debug|release) {

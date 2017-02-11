@@ -206,7 +206,8 @@ void MySignalSlotsDelegate::getAllElemNames(QDomElement &parent, QStringList &st
 	}
 	for (int i = 0; i < parent.childNodes().count(); i++)
 	{
-		getAllElemNames(parent.childNodes().at(i).toElement(), strListAllElemNames);
+        QDomElement elemTemp = parent.childNodes().at(i).toElement();
+        getAllElemNames(elemTemp, strListAllElemNames);
 	}
 }
 

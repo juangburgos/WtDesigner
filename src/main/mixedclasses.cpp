@@ -18,6 +18,8 @@
 #include <QMetaEnum>
 #include <QDebug>
 
+#include <functional> // [LINUX]
+
 #include "mixedclasses.h"
 #include "mainpage.h"
 #include "helperfunctions.h"
@@ -52,8 +54,8 @@ Wt::Signals::connection WtQtInteractWidget::Wt_Connect_Step1(Wt::WInteractWidget
 
 Wt::Signals::connection WtQtInteractWidget::Wt_Connect_Step2(Wt::EventSignal< Wt::WMouseEvent > &wsignalfun, Wt::WWidget *wreceiver, Wt_Slots_ wslot, QStringList &wparameter)
 {
-	try
-	{
+    //try
+    //{
 		switch (wslot)
 		{
 		case WtQtWidget::Wt_Slots_setStyleClass:
@@ -67,12 +69,12 @@ Wt::Signals::connection WtQtInteractWidget::Wt_Connect_Step2(Wt::EventSignal< Wt
 		default:
 			break;
 		}
-	}
-	catch (Wt::Dbo::Exception* e)
+    /*}
+    catch (Wt::Dbo::Exception* e)
 	{
 		qDebug() << "[ERROR] : Exception occurred in WtQtInteractWidget::Wt_Connect_Step2";
 	}
-
+    */
 	return Wt::Signals::connection();
 
 		// http://www.webtoolkit.eu/wt/doc/reference/html/namespaceWt_1_1Signals.html
@@ -193,6 +195,7 @@ QString WtQtContainerWidget::Wt_htmlTagName()
 
 void WtQtContainerWidget::Wt_setHtmlTagName(QString tagname)
 {
+	if (tagname.isEmpty()) { return; }
 	setHtmlTagName(tagname.toStdString());
 }
 
@@ -253,15 +256,15 @@ void WtQtAnchor::Wt_setInline(QString isinline)
 	Wt::WAnchor::setInline(isinline.toUInt());
 }
 
-QString WtQtAnchor::Wt_htmlTagName()
-{
-	return QString::fromStdString(Wt::WAnchor::htmlTagName());
-}
-
-void WtQtAnchor::Wt_setHtmlTagName(QString tagname)
-{
-	//Wt::WAnchor::setHtmlTagName(tagname.toStdString());
-}
+//QString WtQtAnchor::Wt_htmlTagName()
+//{
+//	return QString::fromStdString(Wt::WAnchor::htmlTagName());
+//}
+//
+//void WtQtAnchor::Wt_setHtmlTagName(QString tagname)
+//{
+//	Wt::WAnchor::setHtmlTagName(tagname.toStdString());
+//}
 
 QString WtQtAnchor::Wt_link()
 {
@@ -289,12 +292,47 @@ void WtQtAnchor::Wt_setTarget(QString target)
 
 QString WtQtAnchor::Wt_text()
 {
-	return QString::fromStdString(text().toUTF8());
+	QString htext = QString::fromStdString(text().toUTF8());
+
+	if (htext.compare(m_strText) != 0)
+	{
+		setText(Wt::WString::fromUTF8(m_strText.toStdString()));
+		htext = QString::fromStdString(text().toUTF8());
+	}
+
+	return htext;
+
+	//htext.replace("<", "&lt;");
+	//htext.replace(">", "&gt;");
+	//htext.replace('"', "'");
+	//htext.replace("\n", "&#xA;"); // [NOTE] This must be better done by the user if desired, otherwise it corrupts html
 }
 
 void WtQtAnchor::Wt_setText(QString text)
 {
-	setTextFormat(Wt::PlainText); setText(Wt::WString::fromUTF8(text.toStdString()));
+
+	setText(Wt::WString::fromUTF8(text.toStdString()));
+	m_strText = text;
+}
+
+QString WtQtAnchor::Wt_textFormat()
+{
+	// XHTMLText
+	// Format text as XSS - safe XHTML markup'ed text.
+	// XHTMLUnsafeText
+	// Format text as XHTML markup'ed text.
+	// PlainText
+	// Format text as plain text.
+	//
+	// * The default format is Wt::XHTMLText.
+	return QString("%1").arg((int)textFormat());
+}
+
+void WtQtAnchor::Wt_setTextFormat(QString textFormat)
+{
+	setTextFormat((Wt::TextFormat)textFormat.toInt());
+	// refresh
+	setText(Wt::WString::fromUTF8(m_strText.toStdString()));
 }
 
 
@@ -591,6 +629,11 @@ void WtQtPushButton::Wt_setInline(QString isinline)
 //	setHtmlTagName(tagname.toStdString());
 //}
 
+// QUrl::fromPercentEncoding : Returns a decoded copy of input. input is first decoded from percent encoding, then converted from UTF-8 to unicode.
+// http://doc.qt.io/qt-5/qurl.html#fromPercentEncoding
+// QUrl::toPercentEncoding   : Returns an encoded copy of input. input is first converted to UTF-8, and all ASCII-characters that are not in the unreserved group are percent encoded.
+// http://doc.qt.io/qt-5/qurl.html#toPercentEncoding
+
 QString WtQtPushButton::Wt_emptyText()
 {
 	return QString::fromStdString(emptyText().toUTF8());
@@ -603,12 +646,16 @@ void WtQtPushButton::Wt_setEmptyText(QString emptytext)
 
 QString WtQtPushButton::Wt_text()
 {
+	// [FIX] Now the problem is that this feeds both Qt side and autogencpp
+	//       Now it works fine on the Qt site, but not autogencpp side
+	//       Need to find an easy way to make both work
 	return QString::fromStdString(text().toUTF8());
+	//return QString::fromStdWString(text().value()).toUtf8();
 }
 
-void WtQtPushButton::Wt_setText(QString text)
+void WtQtPushButton::Wt_setText(QString text)	
 {
-	setText(Wt::WString::fromUTF8(text.toStdString()));
+	setText(Wt::WString::fromUTF8(text.toUtf8().toStdString()));
 }
 
 QString WtQtPushButton::Wt_link()
@@ -1058,7 +1105,7 @@ QVector<WtQtRadioButton*> WtQtRadioButton::getSiblings()
 
 bool WtQtRadioButton::isFirstToPrint()
 {
-	bool boolIsFirst = false;
+	bool boolIsFirst = true; // [NOTE] needs to be true by default to handle the case where there are no siblings
 	QVector<WtQtRadioButton*> siblings = getSiblings();
 	for(int i = 0; i < siblings.count(); i++)
 	{
@@ -2032,52 +2079,52 @@ void WtQtDateEdit::Wt_setFormat(QString format)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtWCalendar::WtQtWCalendar(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WCalendar(wparent), WtQtCompositeWidget(qparent)
+WtQtCalendar::WtQtCalendar(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WCalendar(wparent), WtQtCompositeWidget(qparent)
 {
 
 }
 
-WtQtWCalendar::WtQtWCalendar(const WtQtWCalendar& other)
+WtQtCalendar::WtQtCalendar(const WtQtCalendar& other)
 {
 	Q_UNUSED(other)
 }
 
-WtQtWCalendar::~WtQtWCalendar()
+WtQtCalendar::~WtQtCalendar()
 {
 
 }
 
-QString WtQtWCalendar::Wt_className()
+QString WtQtCalendar::Wt_className()
 {
 	return "WCalendar";
 }
 
-QString WtQtWCalendar::Wt_id()
+QString WtQtCalendar::Wt_id()
 {
 	return QString::fromStdString(id());
 }
 
-void WtQtWCalendar::Wt_setId(QString id)
+void WtQtCalendar::Wt_setId(QString id)
 {
 	setId(id.toStdString());
 }
 
-QString WtQtWCalendar::Wt_styleClass()
+QString WtQtCalendar::Wt_styleClass()
 {
 	return QString::fromStdString(styleClass().toUTF8());
 }
 
-void WtQtWCalendar::Wt_setStyleClass(QString styleclass)
+void WtQtCalendar::Wt_setStyleClass(QString styleclass)
 {
 	setStyleClass(Wt::WString::fromUTF8(styleclass.toStdString()));
 }
 
-QString WtQtWCalendar::Wt_isInline()
+QString WtQtCalendar::Wt_isInline()
 {
 	return QString("%1").arg(isInline());
 }
 
-void WtQtWCalendar::Wt_setInline(QString isinline)
+void WtQtCalendar::Wt_setInline(QString isinline)
 {
 	setInline(isinline.toUInt());
 }
@@ -3011,7 +3058,8 @@ void WtQtMenuItem::Wt_setItemHidden(QString hidden)
 WtQtPopupMenu::WtQtPopupMenu(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : WtQtContainerWidget(0, qparent)
 {
 	m_isRightWMenu = false;
-	m_isSubmenu = !qparent->property("Wt_className").compare("WPopupMenu");
+    QString strTemp = qparent->property("Wt_className").toString();
+    m_isSubmenu = !strTemp.compare("WPopupMenu");
 	WtQtContainerWidget::setHidden(true);
 	m_beingDeleted = false;
 	m_wparent      = NULL;
@@ -3744,7 +3792,93 @@ QString WtQtNavigationBar::getParentWidgetId()
 	return m_strParentId;
 }
 
+/*
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+*****************************************************             WtQtPromotedWidget             ***************************************************************
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+*/
 
+
+
+WtQtPromotedWidget::WtQtPromotedWidget(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WContainerWidget(wparent), WtQtWidget(qparent)
+{
+
+}
+
+WtQtPromotedWidget::WtQtPromotedWidget(const WtQtPromotedWidget& other)
+{
+	Q_UNUSED(other)
+}
+
+WtQtPromotedWidget::~WtQtPromotedWidget()
+{
+
+}
+
+QString WtQtPromotedWidget::Wt_className()
+{
+	return "WPromotedWidget"; //  not real, just to follow convention
+}
+
+QString WtQtPromotedWidget::Wt_id()
+{
+	return QString::fromStdString(Wt::WContainerWidget::id());
+}
+
+void WtQtPromotedWidget::Wt_setId(QString id)
+{
+	Wt::WContainerWidget::setId(id.toStdString());
+}
+
+QString WtQtPromotedWidget::Wt_styleClass()
+{
+	return QString::fromStdString(Wt::WContainerWidget::styleClass().toUTF8());
+}
+
+void WtQtPromotedWidget::Wt_setStyleClass(QString styleclass)
+{
+	Wt::WContainerWidget::setStyleClass(Wt::WString::fromUTF8(styleclass.toStdString()));
+}
+
+QString WtQtPromotedWidget::Wt_isInline()
+{
+	return QString("%1").arg(Wt::WContainerWidget::isInline());
+}
+
+void WtQtPromotedWidget::Wt_setInline(QString isinline)
+{
+	Wt::WContainerWidget::setInline(isinline.toUInt());
+}
+
+QString WtQtPromotedWidget::Wt_promotedClass()
+{
+	return m_strPromotedClass;
+}
+
+void WtQtPromotedWidget::Wt_setPromotedClass(QString promotedClass)
+{
+	m_strPromotedClass = promotedClass;
+}
+
+QString WtQtPromotedWidget::Wt_headerLocation()
+{
+	return m_strHeaderLocation;
+}
+
+void WtQtPromotedWidget::Wt_setHeaderLocation(QString headerLocation)
+{
+	m_strHeaderLocation = headerLocation;
+}
+
+QString WtQtPromotedWidget::Wt_isGlobalInclude()
+{
+	return QString("%1").arg(m_boolIsGlobalInclude);
+}
+
+void WtQtPromotedWidget::Wt_setGlobalInclude(QString isGlobalInclude)
+{
+	m_boolIsGlobalInclude = isGlobalInclude.toUInt();
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3832,10 +3966,12 @@ QString WtQtAnchor::Cpp_text()
 	return Wt_id() + "->" + "setTextFormat(Wt::PlainText); " + Wt_id() + "->" + "setText(Wt::WString::fromUTF8(\"" + Wt_text() + "\"));";
 }
 
-QString WtQtAnchor::Cpp_htmlTagName()
-{
-	return "";
-}
+
+
+//QString WtQtAnchor::Cpp_htmlTagName()
+//{
+//	return "";
+//}
 
 
 
@@ -3856,12 +3992,20 @@ QString WtQtText::Cpp_textFormat()
 }
 
 
+QString WtQtAnchor::Cpp_textFormat()
+{
+	return Wt_id() + "->" + "setTextFormat((Wt::TextFormat)" + Wt_textFormat() + ");";
+}
 
 
 
 QString WtQtPushButton::Cpp_text()
 {
-	return Wt_id() + "->" + "setText(Wt::WString::fromUTF8(\"" + Wt_text() + "\"));";
+	QString strTemp = Wt_text();
+	// [FIX] Here they go out corretcly
+	return Wt_id() + "->" + "setText(Wt::WString::fromUTF8(\"" + strTemp.toUtf8() + "\"));";
+
+	//return Wt_id() + "->" + "setText(Wt::WString::fromUTF8(\"" + Wt_text() + "\"));";
 }
 
 QString WtQtPushButton::Cpp_link()
@@ -4142,7 +4286,7 @@ QString WtQtProgressBar::Cpp_value()
 
 QString WtQtGroupBox::Cpp_title()
 {
-	return Wt_id() + "->setTitle(" + Wt_title() + ");";
+	return Wt_id() + "->setTitle(Wt::WString::fromUTF8(\"" + Wt_title() + "\"));";
 }
 
 QString WtQtGroupBox::Cpp_htmlTagName()
@@ -4153,7 +4297,7 @@ QString WtQtGroupBox::Cpp_htmlTagName()
 
 QString WtQtPanel::Cpp_title()
 {
-	return Wt_id() + "->setTitle(" + Wt_title() + ");";
+	return Wt_id() + "->setTitle(Wt::WString::fromUTF8(\"" + Wt_title() + "\"));";
 }
 
 QString WtQtPanel::Cpp_isCollapsible()
@@ -4426,4 +4570,16 @@ QString WtQtNavigationBar::Cpp_title()
 QString WtQtNavigationBar::Cpp_responsive()
 {
 	return Wt_id() + "->setResponsive(\"" + Wt_responsive() +  + "\");";
+}
+
+
+
+QString WtQtPromotedWidget::Cpp_declare()
+{
+	return Wt_promotedClass() + " *" + Wt_id() + ";";
+}
+
+QString WtQtPromotedWidget::Cpp_instantiate()
+{
+	return Wt_id() + " = new " + Wt_promotedClass() + "(" + Cpp_getCorrectParentId() + ");\n";
 }

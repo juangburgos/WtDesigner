@@ -15,13 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with WtDesigner.  If not, see <http://www.gnu.org/licenses/>.
 
+
+win32 {
 # For compiling with Qt Creator
 # TEMPLATE     = app
 # For compiling with Visual Studio
 TEMPLATE      = vcapp
-
-win32 {
 RC_ICONS      = ./../../rec/WtDesigner_logo.ico
+}
+
+linux-g++ {
+CONFIG += c++11
 }
 
 
@@ -29,16 +33,23 @@ TARGET        = WtDesigner
 
 CONFIG       -= flat
 CONFIG       += no_batch
+CONFIG       += debug_and_release
 
 QT           += core xml widgets gui webkitwidgets svg xmlpatterns
 
-DEFINES      += QT_DLL QT_WEBKITWIDGETS_LIB QT_WIDGETS_LIB QT_XML_LIB 
+DEFINES      += QT_DLL QT_WEBKITWIDGETS_LIB QT_WIDGETS_LIB QT_XML_LIB
 
 DESTDIR       = ../../bin/WtDesigner/
 
 INCLUDEPATH  += ./wtwithqtlib          
 
+win32 {
 include(../wtconfig.pri)
+}
+
+linux-g++ {
+include(../wtconfig_nix.pri)
+}
 
 HEADERS      += ./myglobals.h                                   \			
                 ./mainpage.h                                    \
@@ -46,10 +57,9 @@ HEADERS      += ./myglobals.h                                   \
                 ./mixedclasses.h                                \
                 ./myundocommands.h                              \                
                 ./mywebview.h                                   \
-                ./wtserverworker.h                              \
                 ./helperfunctions.h                             \
-                ./wtwithqtlib/dispatchthread.h                  \
-                ./wtwithqtlib/wqapplication.h                   \
+                ./wtwithqtlib/DispatchThread.h                  \
+                ./wtwithqtlib/WQApplication.h                   \
                 ./modelview/mytreeview.h                        \
 		./modelview/mytreemodel.h                       \
 		./modelview/mypropertymodel.h                   \
@@ -70,12 +80,12 @@ SOURCES      += ./main.cpp                                      \
                 ./mainpage.cpp                                  \
                 ./mainwindow.cpp                                \
 		./mixedclasses.cpp                              \
+		./myglobals.cpp									\
 		./myundocommands.cpp                            \				
-                ./mywebview.cpp                                 \               
-                ./wtserverworker.cpp                            \
+                ./mywebview.cpp                                 \
                 ./helperfunctions.cpp                           \
-                ./wtwithqtlib/dispatchthread.cpp                \
-                ./wtwithqtlib/wqapplication.cpp                 \
+                ./wtwithqtlib/DispatchThread.cpp                \
+                ./wtwithqtlib/WQApplication.cpp                 \
                 ./modelview/mytreeview.cpp                      \
                 ./modelview/mytreemodel.cpp                     \
 		./modelview/mypropertymodel.cpp                 \

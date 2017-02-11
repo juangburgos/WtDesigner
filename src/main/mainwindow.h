@@ -18,6 +18,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <Wt/WServer>
+
 #include <QMainWindow>
 #include <QScrollArea>
 #include <QFileDialog>
@@ -44,7 +46,6 @@
 
 #include "myundocommands.h"
 
-#include "wtserverworker.h"
 #include "myglobals.h"
 
 #include "./dialogs/dialogconfig/dialogconfig.h"
@@ -106,7 +107,10 @@ public:
 	void CheckIfJavascriptPath(QString strPath, bool isAdd);
 
 	void SetupPersistSettings();
+
+#ifdef Q_OS_WIN
 	void FindLibFileNames();
+#endif
 
 public Q_SLOTS:
 	void on_MouseMovedOverElem(QString elem, QString strClass);
@@ -199,7 +203,7 @@ private:
 	int                m_argc;
 	char             **m_argv;
 	QVector<QString>   m_vectWtParams;
-	WtServerWorker    *mp_WtServerWorker;
+	std::unique_ptr<Wt::WServer> m_server;
 					  
 	MyWebView         *m_WebView;
 	QString            m_Address;
@@ -225,11 +229,12 @@ private:
 
 	QProgressDialog  * mp_ProcessDialog = NULL;
 
+#ifdef Q_OS_WIN
 	QString            m_strIncludeDir;
 	QString            m_strLibraryDir;
 	QString            m_strBinaryDir ;
 	QStringList        m_listLibFileNames;
-
+#endif
 	QString            m_strServerPort ;
 	QString            m_strWtTitle    ;
 	QString            m_strWtTheme    ;

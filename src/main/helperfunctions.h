@@ -38,6 +38,7 @@
 #include <QtGlobal>
 #include <QMap>
 #include <QStandardPaths>
+#include <QUrl>
 
 #include <Wt/WContainerWidget>
 
@@ -47,9 +48,10 @@ Wt::WContainerWidget * GetWContainerParent(QObject *qparent);
 
 QByteArray GetAutoGenCpp (SignalEmiter *rootobj, QString strProjName);
 
-void       ListAllIncludes (QObject *object, QStringList &strListIncludes);
-void       DeclAllWidgets  (QObject *object, QByteArray  &config);
-void       ConfigAllWidgets(QObject *object, QByteArray  &config, QByteArray tabs = "", QByteArray parentid = "");
+void       ListWtIncludes   (QObject *object, QStringList &strListIncludes);
+void       ListUserIncludes (QObject *object, QByteArray  &config);
+void       DeclAllWidgets   (QObject *object, QByteArray  &config);
+void       ConfigAllWidgets (QObject *object, QByteArray  &config, QByteArray tabs = "", QByteArray parentid = "");
 
 void       PrintAllStyleSheets(SignalEmiter *rootobj, QByteArray  &config);
 void       PrintAllJavaScripts(SignalEmiter *rootobj, QByteArray  &config);
@@ -64,20 +66,6 @@ QObject  * FindWtQtRoot     (QObject *child);
 
 QMap<QString,QObject*> GetWtQtSiblings(QObject *sibling);
 
-QByteArray      GetWtFromHtml         (QByteArray &input, QWebElement *element = NULL, QByteArray tabs = "", QByteArray filepath = "");
-void            GetStylesFromHtml     (QByteArray &config);
-
-QByteArray ProcessHEADtag  (QWebElement *element, QByteArray filepath = "");
-
-QByteArray ProcessBODYtag  (QWebElement *element);
-QByteArray ProcessDIVtag   (QWebElement *element);
-QByteArray ProcessAtag     (QWebElement *element);
-QByteArray ProcessIMGtag   (QWebElement *element, QByteArray filepath = "");
-QByteArray ProcessSPANtag  (QWebElement *element);
-QByteArray ProcessINPUTtag (QWebElement *element);
-QByteArray ProcessBUTTONtag(QWebElement *element);
-QByteArray ProcessItag     (QWebElement *element);
-
 QMetaObject GetMetaObjectByClassName(QString strClassName);
 
 void SetIconColor(QString svgres, QIcon &svgicon, QString svgcolor);
@@ -86,7 +74,7 @@ void SetAttrRecur(QDomElement &elem, QString strtagname, QString strattr, QStrin
 bool CheckValidProjPath(const QString &strProjPath);
 QString GetProjFileName(const QString &strProjPath);
 
-void CopyAllFilesInPath(QString strSourcePath, QString strTargetPath, QStringList strListTypes);
+bool CopyAllFilesInPath(QString strSourcePath, QString strTargetPath, QStringList strListTypes);
 
 QString FindWtIncludeDir(QString strRefDir = "", int level = 0);
 QString FindWtLibraryDir(QString strRefDir = "", int level = 0);
@@ -94,10 +82,14 @@ QString FindWtBinaryDir (QString strRefDir = "", int level = 0);
 
 QStringList FindWtLibFiles(QString strLibDir, QStringList listOfLibNames);
 
-QString ProcessCMakeTemplate(QString strInputFile, QString strOutputFile, QList<QPair<QString, QString>> listStrPairs);
+QString ProcessCMakeTemplate(QString strInputFile, QString strOutputFile, QList<QPair<QString, QString> > listStrPairs);
 
 bool    ValidateWtIncludeDir(QString strIncludeDir);
 bool    ValidateWtLibraryDir(QString strLibraryDir);
 bool    ValidateWtBinaryDir (QString strBinaryDir );
+
+QString EncodeTextXML(QString strInputRaw);
+QString DecodeTextXML(QString strInputEncoded);
+
 
 #endif
