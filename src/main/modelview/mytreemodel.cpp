@@ -1198,7 +1198,7 @@ bool MyTreeModel::isInvolvedInConnection(QString strElemId)
 	listAllInvolvedInCopnnections.append(getAllSignalSendersIds());
 	listAllInvolvedInCopnnections.append(getAllSignalReceiverdIds());
 	// test this
-	if (listAllInvolvedInCopnnections.contains(strElemId, Qt::CaseInsensitive));
+    if (listAllInvolvedInCopnnections.contains(strElemId, Qt::CaseInsensitive))
 	{
 		return true;
 	}
