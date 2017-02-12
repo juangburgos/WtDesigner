@@ -62,6 +62,6 @@ int main(int argc, char *argv[])
 	// found this bug in debug mode when remove and then undo main.css file : https://bugreports.qt.io/browse/QTBUG-35663
 	// close splash screen
 	splash.finish(&w);
-	// start qt´s event loop
+	// start qts event loop
 	return a.exec();
 }
