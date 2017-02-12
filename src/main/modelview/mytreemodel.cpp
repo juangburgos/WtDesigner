@@ -265,7 +265,7 @@ MyTreeModel::MyTreeModel(QDomDocument document /*= QDomDocument()*/, QObject *pa
 		// get wroot
 		QDomElement wroot;
 		wroot           = domDocument.documentElement();
-		wRootHiddenElem = new WDomElem(wroot, NULL);
+        wRootHiddenElem = new WDomElem(wroot,0);
 	}
 	else
 	{
@@ -296,7 +296,7 @@ void MyTreeModel::loadDefaultConfig()
 	// create wroot
 	wroot = domDocument.createElement("WRoot");
 	mainroot.appendChild(wroot);
-	wRootHiddenElem = new WDomElem(wroot, NULL);
+    wRootHiddenElem = new WDomElem(wroot,0);
 }
 
 
