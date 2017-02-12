@@ -981,7 +981,7 @@ bool MyTreeModel::removeTrackedCssFile(QFileInfo fileRef, bool bShowDiag /*= fal
 				msgBox.setStandardButtons(QMessageBox::Ok);
 				msgBox.setIcon(QMessageBox::Information);
 				msgBox.setDefaultButton(QMessageBox::Ok);
-				int ret = msgBox.exec();
+                msgBox.exec();
 			}
 			// remove
 			parentElem.removeChild(styleElem);
@@ -1029,7 +1029,7 @@ bool MyTreeModel::appendTrackedCssFile(QFileInfo fileRef, bool bShowDiag /*= fal
 		msgBox.setStandardButtons(QMessageBox::Ok);
 		msgBox.setIcon(QMessageBox::Information);
 		msgBox.setDefaultButton(QMessageBox::Ok);
-		int ret = msgBox.exec();
+        msgBox.exec();
 	}
 	Q_EMIT appendedTrackedCssFile(fileRef);
 	return true;
@@ -1094,7 +1094,7 @@ bool MyTreeModel::removeTrackedJsFile(QFileInfo fileRef, bool bShowDiag /*= fals
 				msgBox.setStandardButtons(QMessageBox::Ok);
 				msgBox.setIcon(QMessageBox::Information);
 				msgBox.setDefaultButton(QMessageBox::Ok);
-				int ret = msgBox.exec();
+                msgBox.exec();
 			}
 			// remove
 			parentElem.removeChild(javasElem);
@@ -1142,7 +1142,7 @@ bool MyTreeModel::appendTrackedJsFile(QFileInfo fileRef, bool bShowDiag /*= fals
 		msgBox.setStandardButtons(QMessageBox::Ok);
 		msgBox.setIcon(QMessageBox::Information);
 		msgBox.setDefaultButton(QMessageBox::Ok);
-		int ret = msgBox.exec();
+        msgBox.exec();
 	}
 	Q_EMIT appendedTrackedJsFile(fileRef);
 	return true;
