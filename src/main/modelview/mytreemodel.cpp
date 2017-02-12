@@ -265,7 +265,7 @@ MyTreeModel::MyTreeModel(QDomDocument document /*= QDomDocument()*/, QObject *pa
 		// get wroot
 		QDomElement wroot;
 		wroot           = domDocument.documentElement();
-		wRootHiddenElem = new WDomElem(wroot, NULL);
+        wRootHiddenElem = new WDomElem(wroot,0);
 	}
 	else
 	{
@@ -296,7 +296,7 @@ void MyTreeModel::loadDefaultConfig()
 	// create wroot
 	wroot = domDocument.createElement("WRoot");
 	mainroot.appendChild(wroot);
-	wRootHiddenElem = new WDomElem(wroot, NULL);
+    wRootHiddenElem = new WDomElem(wroot,0);
 }
 
 
@@ -981,7 +981,7 @@ bool MyTreeModel::removeTrackedCssFile(QFileInfo fileRef, bool bShowDiag /*= fal
 				msgBox.setStandardButtons(QMessageBox::Ok);
 				msgBox.setIcon(QMessageBox::Information);
 				msgBox.setDefaultButton(QMessageBox::Ok);
-				int ret = msgBox.exec();
+                msgBox.exec();
 			}
 			// remove
 			parentElem.removeChild(styleElem);
@@ -1029,7 +1029,7 @@ bool MyTreeModel::appendTrackedCssFile(QFileInfo fileRef, bool bShowDiag /*= fal
 		msgBox.setStandardButtons(QMessageBox::Ok);
 		msgBox.setIcon(QMessageBox::Information);
 		msgBox.setDefaultButton(QMessageBox::Ok);
-		int ret = msgBox.exec();
+        msgBox.exec();
 	}
 	Q_EMIT appendedTrackedCssFile(fileRef);
 	return true;
@@ -1094,7 +1094,7 @@ bool MyTreeModel::removeTrackedJsFile(QFileInfo fileRef, bool bShowDiag /*= fals
 				msgBox.setStandardButtons(QMessageBox::Ok);
 				msgBox.setIcon(QMessageBox::Information);
 				msgBox.setDefaultButton(QMessageBox::Ok);
-				int ret = msgBox.exec();
+                msgBox.exec();
 			}
 			// remove
 			parentElem.removeChild(javasElem);
@@ -1142,7 +1142,7 @@ bool MyTreeModel::appendTrackedJsFile(QFileInfo fileRef, bool bShowDiag /*= fals
 		msgBox.setStandardButtons(QMessageBox::Ok);
 		msgBox.setIcon(QMessageBox::Information);
 		msgBox.setDefaultButton(QMessageBox::Ok);
-		int ret = msgBox.exec();
+        msgBox.exec();
 	}
 	Q_EMIT appendedTrackedJsFile(fileRef);
 	return true;
@@ -1198,7 +1198,7 @@ bool MyTreeModel::isInvolvedInConnection(QString strElemId)
 	listAllInvolvedInCopnnections.append(getAllSignalSendersIds());
 	listAllInvolvedInCopnnections.append(getAllSignalReceiverdIds());
 	// test this
-	if (listAllInvolvedInCopnnections.contains(strElemId, Qt::CaseInsensitive));
+    if (listAllInvolvedInCopnnections.contains(strElemId, Qt::CaseInsensitive))
 	{
 		return true;
 	}
