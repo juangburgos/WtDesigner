@@ -2212,7 +2212,7 @@ QString WtQtSlider::Wt_tickPosition()
 
 void WtQtSlider::Wt_setTickPosition(QString position)
 {
-	switch(position.toInt()) {
+	switch(position.toUInt()) {
 	case 1:		// Left/Above
 		Wt::WSlider::setTickPosition(Wt::WSlider::TicksLeft);
 		break;
@@ -2235,7 +2235,7 @@ QString WtQtSlider::Wt_orientation()
 
 void WtQtSlider::Wt_setOrientation(QString orientation)
 {
-	if (orientation.toInt() == 2) {
+	if (orientation.toUInt() == 2) {
 		Wt::WSlider::setOrientation(Wt::Orientation::Vertical);
 		Wt::WSlider::removeStyleClass("Wt-slider-h");
 	} else {
@@ -4233,12 +4233,16 @@ QString WtQtSlider::Cpp_tickInterval()
 
 QString WtQtSlider::Cpp_tickPosition()
 {
-	return Wt_id() + "->setTickPosition(" + Wt_tickPosition() + ");";
+	return Wt_id() + "->setTickPosition(Wt::WSlider::" +
+			(Wt::WSlider::tickPosition()==Wt::WSlider::TicksLeft ? (Wt::WSlider::orientation()==Wt::Orientation::Vertical ? "TicksLeft" : "TicksAbove") :
+					(Wt::WSlider::tickPosition()==Wt::WSlider::TicksRight ? (Wt::WSlider::orientation()==Wt::Orientation::Vertical ? "TicksRight" : "TicksBelow") :
+							(Wt::WSlider::tickPosition()==Wt::WSlider::TicksBothSides ? "TicksBothSides" : "NoTicks"))) + ");";
 }
 
 QString WtQtSlider::Cpp_orientation()
 {
-	return Wt_id() + "->setOrientation(" + Wt_orientation() + ");";
+	return Wt_id() + "->setOrientation(Wt::Orientation::" +
+			(Wt::WSlider::orientation()==Wt::Orientation::Vertical ? "Vertical":"Horizontal") +");";
 }
 
 
