@@ -476,7 +476,7 @@ void SetIconColor(QString svgres, QIcon &svgicon, QString svgcolor)
 	doc.setContent(baData);
 	// recurivelly change color
     QDomElement elemTemp = doc.documentElement();
-    SetAttrRecur(elemTemp, "path", "fill", "white");
+    SetAttrRecur(elemTemp, "path", "fill", svgcolor);
 	// create svg renderer with edited contents
 	QSvgRenderer svgRenderer(doc.toByteArray());
 	// create pixmap target
@@ -1047,7 +1047,7 @@ QStringList FindWtLibFiles(QString strLibDir, QStringList listOfLibNames)
 	for (int i = 0; i < listOfLibNames.count(); i++)
 	{
 		//strRegex = (\w)*LIBNAME(.)*[^(EXT1|EXT2)\s]+(EXT1|EXT2)
-		strRegex = QString("(\w)*%1(.)*[^(%2)\s]+(%2)").arg(listOfLibNames.at(i)).arg(strExtensions);
+        strRegex = QString("(\\w)*%1(.)*[^(%2)\\s]+(%2)").arg(listOfLibNames.at(i)).arg(strExtensions);
 		listOfMatched = strListOfFiles.filter(QRegExp(strRegex));
 		// found previous but not current = FAIL
 		if (listOfMatched.isEmpty() && i > 0)
