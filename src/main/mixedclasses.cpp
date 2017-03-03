@@ -138,7 +138,7 @@ WtQtWidget::Wt_Slots_ WtQtWidget::GetSlotEnumByName(QString name)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-WtQtContainerWidget::WtQtContainerWidget(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : Wt::WContainerWidget(wparent), WtQtInteractWidget(qparent)
+WtQtContainerWidget::WtQtContainerWidget(Wt::WContainerWidget *wparent /*= 0*/, QObject *qparent /*= 0*/) : WtQtInteractWidget(qparent), Wt::WContainerWidget(wparent)
 {
 
 }
