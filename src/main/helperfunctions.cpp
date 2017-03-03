@@ -476,7 +476,7 @@ void SetIconColor(QString svgres, QIcon &svgicon, QString svgcolor)
 	doc.setContent(baData);
 	// recurivelly change color
     QDomElement elemTemp = doc.documentElement();
-    SetAttrRecur(elemTemp, "path", "fill", "white");
+    SetAttrRecur(elemTemp, "path", "fill", svgcolor);
 	// create svg renderer with edited contents
 	QSvgRenderer svgRenderer(doc.toByteArray());
 	// create pixmap target
