@@ -252,15 +252,17 @@ void WtQtAnchor::Wt_setInline(QString isinline)
 	Wt::WAnchor::setInline(isinline.toUInt());
 }
 
-//QString WtQtAnchor::Wt_htmlTagName()
-//{
-//	return QString::fromStdString(Wt::WAnchor::htmlTagName());
-//}
-//
-//void WtQtAnchor::Wt_setHtmlTagName(QString tagname)
-//{
+QString WtQtAnchor::Wt_htmlTagName()
+{
+	return QString::fromStdString(Wt::WAnchor::htmlTagName());
+}
+
+void WtQtAnchor::Wt_setHtmlTagName(QString tagname)
+{
+	Q_UNUSED(tagname);
+
 //	Wt::WAnchor::setHtmlTagName(tagname.toStdString());
-//}
+}
 
 QString WtQtAnchor::Wt_link()
 {
@@ -3934,10 +3936,10 @@ QString WtQtAnchor::Cpp_text()
 
 
 
-//QString WtQtAnchor::Cpp_htmlTagName()
-//{
-//	return "";
-//}
+QString WtQtAnchor::Cpp_htmlTagName()
+{
+	return "";
+}
 
 
 

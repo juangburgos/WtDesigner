@@ -311,8 +311,8 @@ public:
 	QString Wt_isInline(); // [NOTE] added WAnchor specific
 	void    Wt_setInline(QString isinline);
 
-	//QString Wt_htmlTagName();                   // REIMPLEMENT EMPTY
-	//void    Wt_setHtmlTagName(QString tagname); // REIMPLEMENT EMPTY
+	QString Wt_htmlTagName();                   // REIMPLEMENT EMPTY
+	void    Wt_setHtmlTagName(QString tagname); // REIMPLEMENT EMPTY
 
 	QString Wt_link();
 	void    Wt_setLink(QString link);
@@ -330,7 +330,7 @@ public:
 	QString Cpp_link();
 	QString Cpp_target();
 	QString Cpp_text();
-	//QString Cpp_htmlTagName(); // REIMPLEMENT EMPTY
+	QString Cpp_htmlTagName(); // REIMPLEMENT EMPTY
 	QString Cpp_textFormat();
 
 private:
