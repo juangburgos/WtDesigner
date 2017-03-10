@@ -252,15 +252,17 @@ void WtQtAnchor::Wt_setInline(QString isinline)
 	Wt::WAnchor::setInline(isinline.toUInt());
 }
 
-//QString WtQtAnchor::Wt_htmlTagName()
-//{
-//	return QString::fromStdString(Wt::WAnchor::htmlTagName());
-//}
-//
-//void WtQtAnchor::Wt_setHtmlTagName(QString tagname)
-//{
+QString WtQtAnchor::Wt_htmlTagName()
+{
+	return QString::fromStdString(Wt::WAnchor::htmlTagName());
+}
+
+void WtQtAnchor::Wt_setHtmlTagName(QString tagname)
+{
+	Q_UNUSED(tagname);
+
 //	Wt::WAnchor::setHtmlTagName(tagname.toStdString());
-//}
+}
 
 QString WtQtAnchor::Wt_link()
 {
@@ -2205,6 +2207,45 @@ void WtQtSlider::Wt_setTickInterval(QString interval)
 	Wt::WSlider::setTickInterval(interval.toInt());
 }
 
+QString WtQtSlider::Wt_tickPosition()
+{
+	return QString("%1").arg(Wt::WSlider::tickPosition());
+}
+
+void WtQtSlider::Wt_setTickPosition(QString position)
+{
+	switch(position.toUInt()) {
+	case 1:		// Left/Above
+		Wt::WSlider::setTickPosition(Wt::WSlider::TicksLeft);
+		break;
+	case 2:		// Right/Below
+		Wt::WSlider::setTickPosition(Wt::WSlider::TicksRight);
+		break;
+	case 3:		// BothSides
+		Wt::WSlider::setTickPosition(Wt::WSlider::TicksBothSides);
+		break;
+	default:	// None
+		Wt::WSlider::setTickPosition(Wt::WSlider::NoTicks);
+		break;
+	}
+}
+
+QString WtQtSlider::Wt_orientation()
+{
+	return QString("%1").arg(static_cast<int>(Wt::WSlider::orientation()));
+}
+
+void WtQtSlider::Wt_setOrientation(QString orientation)
+{
+	if (orientation.toUInt() == 2) {
+		Wt::WSlider::setOrientation(Wt::Orientation::Vertical);
+		Wt::WSlider::removeStyleClass("Wt-slider-h");
+	} else {
+		Wt::WSlider::setOrientation(Wt::Orientation::Horizontal);
+		Wt::WSlider::removeStyleClass("Wt-slider-v");
+	}
+}
+
 /*
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 *****************************************************             WtQtFileUpload             **************************************************************
@@ -3895,10 +3936,10 @@ QString WtQtAnchor::Cpp_text()
 
 
 
-//QString WtQtAnchor::Cpp_htmlTagName()
-//{
-//	return "";
-//}
+QString WtQtAnchor::Cpp_htmlTagName()
+{
+	return "";
+}
 
 
 
@@ -4190,6 +4231,20 @@ QString WtQtSlider::Cpp_value()
 QString WtQtSlider::Cpp_tickInterval()
 {
 	return Wt_id() + "->setTickInterval(" + Wt_tickInterval() + ");";
+}
+
+QString WtQtSlider::Cpp_tickPosition()
+{
+	return Wt_id() + "->setTickPosition(Wt::WSlider::" +
+			(Wt::WSlider::tickPosition()==Wt::WSlider::TicksLeft ? (Wt::WSlider::orientation()==Wt::Orientation::Vertical ? "TicksLeft" : "TicksAbove") :
+					(Wt::WSlider::tickPosition()==Wt::WSlider::TicksRight ? (Wt::WSlider::orientation()==Wt::Orientation::Vertical ? "TicksRight" : "TicksBelow") :
+							(Wt::WSlider::tickPosition()==Wt::WSlider::TicksBothSides ? "TicksBothSides" : "NoTicks"))) + ");";
+}
+
+QString WtQtSlider::Cpp_orientation()
+{
+	return Wt_id() + "->setOrientation(Wt::Orientation::" +
+			(Wt::WSlider::orientation()==Wt::Orientation::Vertical ? "Vertical":"Horizontal") +");";
 }
 
 
