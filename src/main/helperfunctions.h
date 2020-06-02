@@ -27,20 +27,20 @@
 #include <QMetaObject>
 #include <QMetaProperty>
 #include <QByteArray>
-#include <QDomDocument>
-#include <QDomElement>
-#include <QWebPage>
-#include <QWebFrame>
-#include <QWebElement>
-#include <QMessageBox>
-#include <QSvgRenderer>
+#include <QtXml/QDomDocument>
+#include <QtXml/QDomElement>
+#include <QtWebKitWidgets/QWebPage>
+#include <QtWebKitWidgets/QWebFrame>
+#include <QtWebKit/QWebElement>
+#include <QtWidgets/QMessageBox>
+#include <QtSvg/QSvgRenderer>
 #include <QPainter>
 #include <QtGlobal>
 #include <QMap>
 #include <QStandardPaths>
 #include <QUrl>
 
-#include <Wt/WContainerWidget>
+#include <Wt/WContainerWidget.h>
 
 class SignalEmiter;
 

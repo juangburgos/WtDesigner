@@ -18,7 +18,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <Wt/WServer>
+#include <Wt/WServer.h>
 
 #include <QMainWindow>
 #include <QScrollArea>
@@ -28,7 +28,7 @@
 #include <QTextStream>
 #include <QMessageBox>
 #include <QStack>
-#include <QDomDocument>
+#include <QtXml/QDomDocument>
 #include <QUndoStack>
 #include <QClipboard>
 #include <QMenu>

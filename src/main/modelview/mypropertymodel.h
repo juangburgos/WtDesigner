@@ -19,7 +19,7 @@
 #define WQPROPMODEL_H
 
 #include <QAbstractItemModel>
-#include <QDomDocument>
+#include <QtXml/QDomDocument>
 #include <QDateTime>
 #include <QDebug>
 #include <QColor>

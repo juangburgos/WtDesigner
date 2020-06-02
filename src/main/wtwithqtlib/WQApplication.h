@@ -26,7 +26,7 @@
 #ifndef WQAPPLICATION_H_
 #define WQAPPLICATION_H_
 
-#include <Wt/WApplication>
+#include <Wt/WApplication.h>
 #include <boost/thread.hpp>
 
 /*! \file WQApplication */

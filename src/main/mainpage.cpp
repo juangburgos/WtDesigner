@@ -19,8 +19,8 @@
 #include "mainwindow.h"
 #include "helperfunctions.h"
 
-#include <Wt/WBootstrapTheme>
-#include <Wt/WEnvironment>
+#include <Wt/WBootstrapTheme.h>
+#include <Wt/WEnvironment.h>
 
 bool MainPage::qtConnected = false;
 

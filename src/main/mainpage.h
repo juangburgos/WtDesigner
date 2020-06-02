@@ -19,8 +19,8 @@
 #define MAINPAGE_H
 
 #include <QObject>
-#include <QDomDocument>
-#include <QDomElement>
+#include <QtXml/QDomDocument>
+#include <QtXml/QDomElement>
 #include <QFile>
 #include <QFileInfo>
 #include <QEventLoop>
@@ -30,7 +30,7 @@
 #include <QPair>
 
 #include "wtwithqtlib/WQApplication.h"
-#include <Wt/WServer>
+#include <Wt/WServer.h>
 
 #include "mixedclasses.h"
 
