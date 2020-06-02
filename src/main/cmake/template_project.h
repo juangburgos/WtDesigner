@@ -1,7 +1,7 @@
 #ifndef @PROJNAMEUPPER@_H
 #define @PROJNAMEUPPER@_H
 
-#include <Wt/WApplication>
+#include <Wt/WApplication.h>
 
 #include "ui_@PROJNAMELOWER@.h"
 

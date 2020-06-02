@@ -21,7 +21,7 @@
 #include <QStyledItemDelegate>
 #include <QComboBox>
 #include <QLineEdit>
-#include <QDomElement>
+#include <QtXml/QDomElement>
 
 void GetAllSignalNames(QStringList &strListAllSignals);
 void GetAllSlotNames(QStringList &strListAllSlots);

@@ -28,7 +28,7 @@
 #include "wtwithqtlib/WQApplication.h"
 #include "wtwithqtlib/DispatchThread.h"
 
-#include <Wt/WLogger>
+#include <Wt/WLogger.h>
 
 namespace Wt {
 
