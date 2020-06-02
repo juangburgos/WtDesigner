@@ -72,6 +72,11 @@ WtDesigner can be used as a stand-alone application in Windows (and soon Linux a
 
 ***
 
+## Building
+cd src
+qmake
+make
+
 ## Tutorials
 
 [Youtube Videos](https://www.youtube.com/playlist?list=PLy_hF6QxSYC0nQtPUdxEeLUsM3PNnqApI)
